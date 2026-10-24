@@ -1,0 +1,38 @@
+# Cookie gate: deck_auth must equal sha256("vbui:" + DECK_PASSWORD).
+# __AUTH_TOKEN__ is filled in at container start by deck-auth.sh.
+map_hash_bucket_size 128;
+map $cookie_deck_auth $deck_ok {
+    "__AUTH_TOKEN__" 1;
+    default          0;
+}
+
+server {
+    listen 80;
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    gzip on;
+    gzip_types text/html text/css application/javascript;
+
+    location = /login.html {
+        add_header Cache-Control "no-store" always;
+    }
+
+    location = /auth-check {
+        add_header Cache-Control "no-store" always;
+        if ($deck_ok = 0) { return 401; }
+        return 204;
+    }
+
+    location /slides/ {
+        if ($deck_ok = 0) { return 401; }
+        add_header Cache-Control "private, max-age=86400" always;
+    }
+
+    location / {
+        if ($deck_ok = 0) { rewrite ^ /login.html last; }
+        add_header Cache-Control "private, no-cache" always;
+        try_files $uri $uri/ /index.html;
+    }
+}
