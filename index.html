@@ -28,8 +28,8 @@ button{font-family:inherit}
 svg.i{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:middle}
 
 /* ============ STAGE ============ */
-#viewport{position:fixed;inset:0;overflow:hidden}
-#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--s,1));overflow:hidden;background:var(--bg);box-shadow:0 0 80px rgba(0,0,0,.6)}
+#viewport{position:fixed;inset:0;overflow:hidden;overflow:clip}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--s,1));overflow:hidden;overflow:clip;background:var(--bg);box-shadow:0 0 80px rgba(0,0,0,.6)}
 .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transform:translateX(70px) scale(.985);
   transition:opacity .55s var(--ease),transform .7s var(--ease),visibility 0s linear .7s}
 .slide.past{transform:translateX(-70px) scale(.985)}
@@ -137,6 +137,16 @@ svg.i{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-l
 .code .v.f{animation:flash 1.1s var(--ease)}
 .code .hl{background:rgba(34,229,255,.14);box-shadow:-24px 0 0 rgba(34,229,255,.14),24px 0 0 rgba(34,229,255,.14);display:inline-block;min-width:100%}
 @keyframes flash{0%{background:rgba(34,229,255,.55);color:#fff}100%{background:transparent}}
+.code-bar .ctab{margin-left:8px;padding:5px 12px;border:0;border-radius:8px;background:transparent;font:600 17px var(--f-mono);color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:7px}
+.code-bar .ctab+.ctab{margin-left:0;font-family:var(--f-head)}
+.code-bar .ctab.on{background:rgba(34,229,255,.12);color:#fff;box-shadow:inset 0 0 0 1px rgba(34,229,255,.35)}
+.code-bar .ctab[data-t="ai"].on{background:rgba(168,85,247,.18);box-shadow:inset 0 0 0 1px rgba(192,132,252,.5)}
+.code-copy{display:none;margin-left:auto;align-items:center;gap:7px;font:700 15px var(--f-head);color:#fff;background:linear-gradient(135deg,#A855F7,#6366F1);border:0;border-radius:8px;padding:6px 12px;cursor:pointer}
+.code-copy.ok{background:#22C55E}
+.code-panel.ai .code-copy{display:flex}
+.code-panel.ai .code-hint,.code-panel.ai .code-rev,.code-panel.ai .code{display:none!important}
+.ai-pr{display:none;padding:16px 24px 18px;font:500 22px/1.5 var(--f-body);color:#E9DDFF;white-space:pre-wrap;background:linear-gradient(180deg,rgba(168,85,247,.07),transparent)}
+.code-panel.ai .ai-pr{display:block}
 .code-hint{margin-left:auto;display:flex;align-items:center;gap:7px;font:600 15px var(--f-head);font-style:normal;color:#7C8DB8;letter-spacing:.02em}
 .code-rev{display:none;margin-left:auto;align-items:center;gap:7px;font:700 15px var(--f-head);color:#001018;background:var(--cyan);border:0;border-radius:8px;padding:6px 12px;cursor:pointer}
 .code-panel.dirty .code-hint{display:none}.code-panel.dirty .code-rev{display:flex}
@@ -147,6 +157,10 @@ svg.i{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-l
 .code-panel.editable .code:focus .v.f{animation:none}
 
 /* ============ NAV UI ============ */
+html[lang="ms"] .en-only,html:not([lang="ms"]) .bm-only{display:none!important}
+.lang-sw{position:fixed;top:10px;right:12px;z-index:40;display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(6,14,36,.82);border:1px solid rgba(120,160,255,.3);backdrop-filter:blur(8px)}
+.lang-sw button{border:0;padding:5px 12px;border-radius:999px;background:transparent;color:#8FA0C8;font:800 13px/1 var(--f-head);letter-spacing:.06em;cursor:pointer;transition:all .25s}
+.lang-sw button.on{color:#001018;background:linear-gradient(135deg,#22E5FF,#A855F7)}
 #progress{position:fixed;top:0;left:0;height:4px;width:0;background:var(--grad);z-index:20;transition:width .6s var(--ease);box-shadow:0 0 14px rgba(34,229,255,.6)}
 body.idle{cursor:none}
 #overview{position:fixed;inset:0;z-index:40;background:rgba(3,6,16,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);overflow:auto;padding:36px 52px 60px;opacity:0;visibility:hidden;transition:opacity .35s,visibility 0s linear .35s}
@@ -565,7 +579,16 @@ body.idle{cursor:none}
 .tbtns button{height:56px;border-radius:14px;font:700 20px var(--f-head);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;color:#fff;border:1.5px solid var(--tc);background:color-mix(in srgb,var(--tc) 16%,transparent);transition:all .2s}
 .tbtns button:hover{background:color-mix(in srgb,var(--tc) 30%,transparent)}
 .tbtns svg{font-size:24px;color:var(--tc)}
-.lg{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.lg{flex:1;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.lg-card.lz{padding:24px 22px 16px}
+.lz-what{margin:0 0 12px;font-size:18px;line-height:1.35;color:#AEBEE4}
+.lz-feed{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-right:6px;scrollbar-width:thin;scrollbar-color:#2A3C70 transparent}
+.lz-img{position:relative;flex:none;height:150px;border-radius:12px;overflow:hidden;background:#18264D;display:grid;place-items:center}
+.lz-img .ph{font-size:40px;color:#3A4C80;transition:opacity .4s}
+.lz-img::after{content:'';position:absolute;inset:0;opacity:0;background:radial-gradient(circle at 75% 30%,rgba(255,255,255,.35),transparent 30%),linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 30%,#0B1530));transition:opacity .6s var(--ease)}
+.lz-img.on::after{opacity:1}.lz-img.on .ph{opacity:0}
+.lz-img b{position:absolute;z-index:1;left:12px;bottom:10px;font:600 15px var(--f-mono);color:#fff;opacity:.85}
+.lz-hint{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;font:600 16px var(--f-head);color:var(--muted)}
 .lg-card{border-radius:20px;background:#0B1735;border:1.5px solid rgba(120,160,255,.18);padding:24px 26px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .lg-card h5{margin:0 0 6px;font:800 24px var(--f-head);display:flex;align-items:center;justify-content:space-between}
 .lg-pill{font:700 15px var(--f-head);letter-spacing:.06em;padding:6px 12px;border-radius:999px;background:rgba(245,158,11,.15);color:#FCD34D}
@@ -696,6 +719,37 @@ body.idle{cursor:none}
 .lp-main b{font:800 28px var(--f-head)}
 .lp-main .blocks{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .lp-main .blocks i{border-radius:12px;background:linear-gradient(135deg,#1E3A8A,#4C1D95)}
+.pk-use{display:flex;align-items:center;gap:10px;margin:-4px 0 16px;font-size:21px;color:#FDE68A}
+.pk-use svg{font-size:26px;flex:none}
+.pk-use .pk-w{font-weight:700}
+.pk-area{flex:1;min-height:0;display:flex;justify-content:center}
+.pk-frame{width:100%;height:100%;display:flex;flex-direction:column;transition:width .5s var(--ease)}
+.pk-frame>div{flex:1;min-height:0;animation:fbIn .45s var(--ease)}
+.pk-frame.m{width:400px;padding:14px;border-radius:30px;border:3px solid #33437A;background:#081127}
+.pk-gal{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:1fr;overflow:hidden;transition:gap .3s}
+.pk-frame.m .pk-gal{grid-template-columns:1fr;grid-auto-rows:150px}
+.pk-sb{display:grid;grid-template-columns:260px 1fr;transition:gap .3s}
+.pk-frame.m .pk-sb{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+.pk-frame.m .pk-sb .lp-side{flex-direction:row;padding:10px;gap:6px}
+.pk-frame.m .pk-sb .lp-side .av{width:38px;height:38px}
+.pk-frame.m .pk-sb .lp-side a{padding:8px}
+.pk-frame.m .pk-sb .lp-side a span{display:none}
+.pk-frame.m .lp-main .blocks{grid-template-columns:1fr}
+.pk-split{display:grid;grid-template-columns:1fr 1fr;align-items:stretch;border-radius:14px;background:#0F1C40;border:1px solid rgba(120,160,255,.16);padding:28px;transition:gap .3s}
+.pk-split .tx{display:flex;flex-direction:column;justify-content:center;gap:14px}
+.pk-split small{font:700 15px var(--f-mono);color:var(--cyan);letter-spacing:.08em}
+.pk-split b{font:900 44px/1.05 var(--f-head)}
+.pk-split .lp-img{min-height:120px}
+.pk-frame.m .pk-split{grid-template-columns:1fr;grid-template-rows:auto 1fr;padding:18px}
+.pk-frame.m .pk-split b{font-size:30px}
+.pk-split .cta,.pk-stack .cta{align-self:flex-start;padding:10px 24px;border-radius:10px;background:linear-gradient(135deg,#2563EB,#7C3AED);font:700 18px var(--f-head)}
+.pk-stack{display:flex;flex-direction:column;transition:gap .3s}
+.pk-stack .sec{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:12px 22px;border-radius:12px;border:1px solid rgba(120,160,255,.16);background:#0F1C40}
+.pk-stack .sec b{font:800 20px var(--f-head)}
+.pk-stack .s1{flex:1.6;background:linear-gradient(135deg,#1E3A8A,#4C1D95)}
+.pk-stack .s4{flex-direction:row;align-items:center;justify-content:space-between;background:linear-gradient(135deg,rgba(34,229,255,.15),rgba(168,85,247,.15))}
+.pk-stack .row{display:flex;gap:12px;flex:1;max-height:60px}
+.pk-stack .row i{flex:1;border-radius:8px;background:#22325F}
 .lp-lab{font:700 15px var(--f-mono);color:var(--muted);letter-spacing:.04em}
 .grp{display:flex;flex-direction:column;gap:20px}
 .grp.hide{display:none}
@@ -1490,6 +1544,102 @@ body.idle{cursor:none}
 .s12-dv small{font-size:20px;color:#E4E9FA}
 .s12-dv .ln1{justify-self:stretch;height:4px;border-radius:2px;background:#E4E9FA}
 .s12-dv .sp1{justify-self:stretch;align-self:stretch;border:3px dashed #22E5FF;border-radius:8px;background:rgba(30,60,140,.35)}
+/* 19 · Prompt Builder */
+.pb-ctl{gap:16px;padding:20px 24px}
+.pb-ctl .seg button{min-height:46px;font-size:19px}
+.pb-ctl .swatches button{width:46px;height:46px}
+.pb-chips{display:flex;flex-wrap:wrap;gap:8px}
+.pb-chips button{padding:9px 16px;border-radius:999px;border:1.5px solid rgba(90,140,255,.3);background:#060E24;color:#AEBEE4;font:700 18px var(--f-head);cursor:pointer;transition:all .25s var(--ease)}
+.pb-chips button.on{color:#fff;border-color:rgba(34,229,255,.7);background:rgba(34,229,255,.16)}
+.pb-wf{--ac:#22E5FF;--bg:#0A1430;--pn:#13224A;--ln:#2A3C70;flex:1;min-height:0;display:flex;flex-direction:column;gap:12px;padding:16px;border-radius:16px;background:var(--bg);border:1px solid rgba(120,160,255,.2);overflow:hidden;transition:background .4s}
+.pb-wf.light{--bg:#F4F6FB;--pn:#FFFFFF;--ln:#D5DCEA;box-shadow:inset 0 0 0 1px #E2E8F0}
+.pb-wf.glass{--bg:linear-gradient(135deg,#4338CA,#9333EA 55%,#DB2777);--pn:rgba(255,255,255,.16);--ln:rgba(255,255,255,.45)}
+.pb-wf.glass>div,.pb-wf.glass .cd,.pb-wf.glass .sb,.pb-wf.glass .mn{backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3)}
+.pb-wf>div{flex:none;animation:fbIn .45s var(--ease)}
+.pb-wf .ln{display:block;height:10px;border-radius:5px;background:var(--ln)}
+.pb-wf .btn{display:block;width:110px;height:34px;border-radius:9px;background:var(--ac);box-shadow:0 0 16px color-mix(in srgb,var(--ac) 45%,transparent)}
+.pb-wf .img{border-radius:12px;background:linear-gradient(135deg,color-mix(in srgb,var(--ac) 70%,transparent),color-mix(in srgb,var(--ac) 20%,transparent))}
+.w-nav{display:flex;align-items:center;gap:20px;padding:10px 14px;border-radius:12px;background:var(--pn)}
+.w-nav .wlg{width:34px;height:34px;border-radius:9px;background:var(--ac)}
+.w-nav span{flex:1;display:flex;gap:14px}.w-nav span .ln{width:70px!important}
+.w-nav .btn{width:90px;height:30px}
+.w-split{flex:1!important;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;border-radius:12px;background:var(--pn)}
+.w-split>div:first-child{display:flex;flex-direction:column;justify-content:center;gap:14px}
+.w-split .ln:first-child{height:22px}
+.w-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pb-wf.grid .w-grid:not(.sm){flex:1;min-height:0}
+.w-grid .cd{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:12px;background:var(--pn);min-height:44px}
+.w-grid .cd .img{flex:1;min-height:60px}
+.w-side{flex:1!important;min-height:0;display:grid;grid-template-columns:200px 1fr;gap:12px}
+.w-side .sb,.w-side .mn{display:flex;flex-direction:column;gap:14px;padding:16px;border-radius:12px;background:var(--pn)}
+.w-side .mn .w-grid{flex:1;grid-template-columns:1fr 1fr}
+.w-testi{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:12px;background:var(--pn)}
+.w-testi .av{width:34px;height:34px;border-radius:50%;background:var(--ac);flex:none}
+.w-form{display:flex;gap:10px;padding:12px 14px;border-radius:12px;background:var(--pn)}
+.w-form .in{flex:1;height:34px;border-radius:9px;border:2px solid var(--ln)}
+.w-foot{display:flex;justify-content:space-between;gap:20px;padding:12px 14px;border-radius:12px;background:var(--pn)}
+.w-foot .ln{width:22%!important}
+/* 20 · Fix the UI */
+.fx-area{position:relative;flex:1;min-height:0;display:grid;place-items:center}
+.fxc{width:1000px}
+.fxc [data-b]{position:relative;cursor:crosshair;transition:all .5s var(--ease);outline:2px dashed transparent;outline-offset:6px}
+.fxc [data-b]:hover{outline-color:rgba(250,204,21,.45)}
+.fxc [data-b].hit{outline:3px solid #F43F5E;outline-offset:6px}
+.pg-preview.fixed [data-b].hit{outline-color:transparent}
+.fxc .mk{position:absolute;z-index:3;top:-20px;right:-14px;display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:999px;background:#F43F5E;font:700 16px var(--f-head);color:#fff;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.4);animation:fbIn .35s var(--ease);pointer-events:none}
+.fxc .mk b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#fff;color:#F43F5E;font-size:14px}
+.pg-preview.fixed .mk{background:#22C55E}.pg-preview.fixed .mk b{color:#16A34A}
+.fxc-card{display:grid;grid-template-columns:1.1fr 1fr;gap:36px;padding:8px 46px 34px 12px;border-radius:0;background:#141C33;border:1px solid #2A3658;color:#fff}
+.fxc-card .tag{display:inline-block;margin-top:10px;font:800 14px var(--f-mono);letter-spacing:.1em;color:#22E5FF}
+.fxc-card h4{margin:8px 0 6px;font:800 34px var(--f-head)}
+.fxc-card .desc{margin:0 0 18px;font-size:20px;line-height:1.4;color:#3C4766}
+.fxc-card .actions{display:block}
+.fxc-card .actions button{border:0;font:700 18px var(--f-head);cursor:crosshair}
+.fxc-card .b1{padding:16px 26px;border-radius:24px;background:#2563EB;color:#fff}
+.fxc-card .b2{display:block;margin-top:8px;padding:8px 18px;border-radius:2px;background:transparent;color:#9FB0D8;box-shadow:inset 0 0 0 2px #2A3658}
+.fxc-card .features{list-style:none;margin:10px 0 0;padding:0;display:block}
+.fxc-card .features li{display:flex;align-items:center;gap:10px;font-size:19px;color:#DCE4FA}
+.fxc-card .features li:nth-child(1){margin-bottom:2px}.fxc-card .features li:nth-child(2){margin-bottom:22px}.fxc-card .features li:nth-child(3){margin-bottom:8px}
+.fxc-card .features svg{color:#22C55E;font-size:22px}
+.fxc-card .sub{display:flex;gap:10px;margin-top:22px}
+.fxc-card .sub .in{flex:1;display:flex;align-items:center;padding:0 14px;height:48px;border-radius:4px;border:2px solid #2A3658;font:400 17px var(--f-body);color:#7C8DB8;font-style:normal}
+.fxc-card .sub button{border:0;padding:0 20px;border-radius:30px;background:#7C3AED;color:#fff;font:700 17px var(--f-head);cursor:crosshair}
+/* fixed version */
+.pg-preview.fixed .fxc-card{padding:32px;border-radius:12px;box-shadow:0 20px 50px rgba(0,0,0,.35),0 0 0 1px rgba(34,229,255,.25)}
+.pg-preview.fixed .fxc-card .tag{margin-top:0}
+.pg-preview.fixed .fxc-card .desc{color:#CBD5E1}
+.pg-preview.fixed .fxc-card .actions{display:flex;align-items:center;gap:12px}
+.pg-preview.fixed .fxc-card .b1,.pg-preview.fixed .fxc-card .b2{display:inline-flex;align-items:center;margin:0;height:50px;padding:0 24px;border-radius:12px}
+.pg-preview.fixed .fxc-card .features{display:grid;gap:12px}
+.pg-preview.fixed .fxc-card .features li{margin:0!important}
+.pg-preview.fixed .fxc-card .sub .in,.pg-preview.fixed .fxc-card .sub button{border-radius:12px}
+.fx-done{position:absolute;top:-62px;right:0;display:flex;align-items:center;gap:10px;padding:10px 22px;border-radius:999px;background:rgba(34,197,94,.16);border:1.5px solid rgba(34,197,94,.6);font:700 20px var(--f-head);color:#4ADE80;opacity:0;transform:translateY(-8px);transition:all .5s var(--ease);pointer-events:none}
+.pg-preview.fixed .fx-done{opacity:1;transform:none}
+.pg-preview.fixed .fxc .mk{display:none}
+.fx-cnt{font:700 24px var(--f-head);color:var(--soft)}
+.fx-cnt b{font:800 44px var(--f-mono);color:#F43F5E;margin-right:6px}
+.fx-list{display:flex;flex-direction:column;gap:10px}
+.fx-it{display:flex;align-items:center;gap:16px;padding:12px 16px;border-radius:14px;background:#060E24;border:1.5px solid rgba(90,140,255,.2);transition:all .3s var(--ease)}
+.fx-it>b{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:50%;background:#1A2550;font:800 20px var(--f-mono);color:#7C8DB8}
+.fx-it strong{display:block;font:700 21px var(--f-head);color:#7C8DB8}
+.fx-it small{display:block;font-size:17px;line-height:1.3;color:#5D6C94}
+.fx-it.on{border-color:rgba(34,197,94,.55);background:rgba(34,197,94,.08)}
+.fx-it.on>b{background:#22C55E;color:#fff;font-size:22px}
+.fx-it.on strong{color:#fff}.fx-it.on small{color:#B9C6E8}
+.fx-btns{display:flex;gap:12px}
+.fx-btns .act{flex:1}
+.act.ghost{background:transparent;border-color:rgba(140,160,255,.35)}
+.s00-h{font-size:110px;line-height:1}
+.s00-g{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;margin-top:56px;height:500px}
+.s00-c{position:relative;display:flex;flex-direction:column;gap:18px;padding:30px 28px}
+.s00-c .no{position:absolute;top:18px;right:24px;font:900 54px/1 var(--f-head);color:rgba(255,255,255,.1)}
+.s00-c h3{margin:6px 0 0;font:800 36px/1.1 var(--f-head);color:#fff}
+.s00-c .dl{font-size:23px;gap:14px}
+.s00-c .dl li::before{width:18px;height:18px}
+.s00-c em{margin-top:auto;font:600 19px var(--f-mono);font-style:normal;color:#8FA0C8}
+.s00-ft{display:flex;align-items:center;gap:18px;margin:56px auto 0;padding:18px 34px;border-radius:999px;border:2px solid rgba(250,204,21,.4);background:rgba(250,204,21,.06);font-size:27px;color:#E4E9FA}
+.s00-ft svg{font-size:34px;color:#FACC15}
+.s00-ft b{color:#FDE68A}
 </style>
 </head>
 <body>
@@ -1498,6 +1648,19 @@ body.idle{cursor:none}
 
 <section class="slide img" data-src="slides/01.png" data-name="Mastering UI for Vibe Coding"></section>
 <section class="slide img" data-src="slides/02.png" data-name="Meet Your Trainer"></section>
+<section class="slide cs s00" data-name="Class Agenda">
+  <header class="cs-head"><b class="cs-num">00</b><i class="cs-line"></i></header>
+  <h1 class="cs-h1 s00-h a"><span class="w">Class</span> <span class="ga">Agenda</span></h1>
+  <p class="cs-sub gs a">From the basics to a full AI-assisted UI workflow — step by step.</p>
+  <div class="s00-g">
+    <div class="bx c s00-c a"><b class="no">01</b><span class="it"><i data-ic="layers"></i></span><h3>Foundations</h3><ul class="dl"><li>CSS Box Model</li><li>Padding &amp; Margin</li><li>Colors &amp; Typography</li></ul><em>Slides 03–06</em></div>
+    <div class="bx v s00-c a"><b class="no">02</b><span class="it v"><i data-ic="box"></i></span><h3>Components</h3><ul class="dl v"><li>Button &amp; States</li><li>Navigation &amp; Forms</li><li>Common UI &amp; Modals</li></ul><em>Slides 07–12</em></div>
+    <div class="bx p s00-c a"><b class="no">03</b><span class="it p"><i data-ic="grid"></i></span><h3>Layout</h3><ul class="dl p"><li>Flexbox &amp; Grid</li><li>Layout Patterns</li><li>Page Structure</li></ul><em>Slides 13–15</em></div>
+    <div class="bx c s00-c a"><b class="no">04</b><span class="it"><i data-ic="phone"></i></span><h3>Responsive</h3><ul class="dl"><li>Breakpoints</li><li>Mobile Navigation</li><li>Fluid Layouts</li></ul><em>Slide 16</em></div>
+    <div class="bx v s00-c a"><b class="no">05</b><span class="it v"><i data-ic="sparkle"></i></span><h3>AI Workflow</h3><ul class="dl v"><li>Essential Pages</li><li>Inspiration → Prompt</li><li>Debugging Challenge</li></ul><em>Slides 17–20</em></div>
+  </div>
+  <div class="s00-ft a"><i data-ic="zap"></i>Every topic = <b>concept slide</b> + <b>live playground</b> + <b>AI prompt</b> you can copy.</div>
+</section>
 <section class="slide cs s03" data-name="Why UI Mastery Matters">
   <header class="cs-head"><b class="cs-num">03</b><i class="cs-line"></i></header>
   <h1 class="cs-h1 s03-h a"><span class="w">Why UI Mastery</span><br><span class="ga">Matters?</span></h1>
@@ -1725,8 +1888,31 @@ body.idle{cursor:none}
 </section>
 <section class="slide pg" data-pg="p11a" data-n="11" data-l="A" data-title="Card &amp; Badge" data-sub="Build a product card and badges — adjust spacing, corners and shadow."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
 <section class="slide pg" data-pg="p11b" data-n="11" data-l="B" data-title="Alert, Tabs &amp; Tooltip" data-sub="Important messages, switchable content and quick help."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
-<section class="slide cs s12" data-name="Layout Components">
+<section class="slide cs s13" data-name="Modals, Loading &amp; Notifications">
   <header class="cs-head"><b class="cs-num">12</b><i class="cs-line"></i></header>
+  <h1 class="cs-h1 s13-h a"><span class="w">Modals,</span> <span class="gc">Loading</span> <span class="w">&amp;</span> <span class="gv">Notifications</span></h1>
+  <p class="cs-sub gs a">Interface components to show messages, progress and get user attention.</p>
+  <div class="s13-g">
+    <div class="bx c s13-c a"><div class="bh"><span class="it"><i data-ic="window"></i></span><div><h3>Modals</h3><p>Show important messages<br>without leaving the page.</p></div></div>
+      <div class="s13-md"><span class="x"><i data-ic="x"></i></span><div class="tr"><i data-ic="trash"></i></div><b>Delete Item?</b><p>Are you sure you want to<br>delete this item?</p><div class="bt"><span>Cancel</span><span class="d">Delete</span></div></div>
+      <ul class="dl"><li>Use for confirmation or important action</li><li>Keep message short and clear</li><li>Provide clear action buttons</li></ul></div>
+    <div class="bx v s13-c a"><div class="bh"><span class="it v"><i data-ic="loader"></i></span><div><h3>Loading States</h3><p>Show progress and keep<br>users informed.</p></div></div>
+      <div class="s13-ld"><i class="sp" style="display:block"></i><b>Loading...</b><p>Please wait a moment.</p><div class="pr"><i></i>70%</div></div>
+      <ul class="dl v"><li>Use for data loading or processing</li><li>Show clear progress (spinner or bar)</li><li>Keep a short and friendly message</li><li>Lazy load images below the fold</li></ul></div>
+    <div class="bx p s13-c a"><div class="bh"><span class="it p"><i data-ic="bell"></i></span><div><h3>Notifications</h3><p>Show system messages<br>and user feedback.</p></div></div>
+      <div class="s13-nt">
+        <div class="ok"><span class="fi"><i data-ic="check"></i></span><div><b>Success</b><small>Your changes have been saved.</small></div><span class="x"><i data-ic="x"></i></span></div>
+        <div class="er"><span class="fi"><b style="font:900 32px var(--f-head);color:#fff">!</b></span><div><b>Error</b><small>Something went wrong. Please try again.</small></div><span class="x"><i data-ic="x"></i></span></div>
+        <div class="wn"><span class="fi"><i data-ic="warn"></i></span><div><b>Warning</b><small>Please check your information.</small></div><span class="x"><i data-ic="x"></i></span></div>
+        <div class="inf"><span class="fi"><b style="font:900 32px Georgia,serif;color:#fff">i</b></span><div><b>Information</b><small>New updates are available.</small></div><span class="x"><i data-ic="x"></i></span></div>
+      </div>
+      <ul class="dl p"><li>Use for success, error, warning or info</li><li>Keep the message short and clear</li><li>Use consistent color and icon</li></ul></div>
+  </div>
+</section>
+<section class="slide pg" data-pg="p13a" data-n="12" data-l="A" data-title="Modal &amp; Notification" data-sub="Click a trash icon to open the modal. Fire toasts from the left panel."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
+<section class="slide pg" data-pg="p13b" data-n="12" data-l="B" data-title="Loading, Skeleton &amp; Lazy Load" data-sub="Spinner, progress bar, skeleton and lazy load — tell users something is happening."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
+<section class="slide cs s12" data-name="Layout Components">
+  <header class="cs-head"><b class="cs-num">13</b><i class="cs-line"></i></header>
   <h1 class="cs-h1 s12-h a"><span class="w">Layout</span> <span class="ga">Components</span></h1>
   <p class="cs-sub gs a">Use layout components to organize content and create a clear structure.</p>
   <div class="s12-g">
@@ -1747,33 +1933,26 @@ body.idle{cursor:none}
       <ul class="dl"><li>Use divider to separate sections</li><li>Use consistent spacing between elements</li></ul></div>
   </div>
 </section>
-<section class="slide pg" data-pg="p12a" data-n="12" data-l="A" data-title="Flexbox" data-sub="Align items in a single row or column — perfect for navbars &amp; toolbars."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
-<section class="slide pg" data-pg="p12b" data-n="12" data-l="B" data-title="Grid &amp; Container" data-sub="Grid handles rows + columns. A container controls the maximum content width."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
-<section class="slide cs s13" data-name="Modals, Loading &amp; Notifications">
-  <header class="cs-head"><b class="cs-num">13</b><i class="cs-line"></i></header>
-  <h1 class="cs-h1 s13-h a"><span class="w">Modals,</span> <span class="gc">Loading</span> <span class="w">&amp;</span> <span class="gv">Notifications</span></h1>
-  <p class="cs-sub gs a">Interface components to show messages, progress and get user attention.</p>
-  <div class="s13-g">
-    <div class="bx c s13-c a"><div class="bh"><span class="it"><i data-ic="window"></i></span><div><h3>Modals</h3><p>Show important messages<br>without leaving the page.</p></div></div>
-      <div class="s13-md"><span class="x"><i data-ic="x"></i></span><div class="tr"><i data-ic="trash"></i></div><b>Delete Item?</b><p>Are you sure you want to<br>delete this item?</p><div class="bt"><span>Cancel</span><span class="d">Delete</span></div></div>
-      <ul class="dl"><li>Use for confirmation or important action</li><li>Keep message short and clear</li><li>Provide clear action buttons</li></ul></div>
-    <div class="bx v s13-c a"><div class="bh"><span class="it v"><i data-ic="loader"></i></span><div><h3>Loading States</h3><p>Show progress and keep<br>users informed.</p></div></div>
-      <div class="s13-ld"><i class="sp" style="display:block"></i><b>Loading...</b><p>Please wait a moment.</p><div class="pr"><i></i>70%</div></div>
-      <ul class="dl v"><li>Use for data loading or processing</li><li>Show clear progress (spinner or bar)</li><li>Keep a short and friendly message</li></ul></div>
-    <div class="bx p s13-c a"><div class="bh"><span class="it p"><i data-ic="bell"></i></span><div><h3>Notifications</h3><p>Show system messages<br>and user feedback.</p></div></div>
-      <div class="s13-nt">
-        <div class="ok"><span class="fi"><i data-ic="check"></i></span><div><b>Success</b><small>Your changes have been saved.</small></div><span class="x"><i data-ic="x"></i></span></div>
-        <div class="er"><span class="fi"><b style="font:900 32px var(--f-head);color:#fff">!</b></span><div><b>Error</b><small>Something went wrong. Please try again.</small></div><span class="x"><i data-ic="x"></i></span></div>
-        <div class="wn"><span class="fi"><i data-ic="warn"></i></span><div><b>Warning</b><small>Please check your information.</small></div><span class="x"><i data-ic="x"></i></span></div>
-        <div class="inf"><span class="fi"><b style="font:900 32px Georgia,serif;color:#fff">i</b></span><div><b>Information</b><small>New updates are available.</small></div><span class="x"><i data-ic="x"></i></span></div>
-      </div>
-      <ul class="dl p"><li>Use for success, error, warning or info</li><li>Keep the message short and clear</li><li>Use consistent color and icon</li></ul></div>
+<section class="slide pg" data-pg="p12a" data-n="13" data-l="A" data-title="Flexbox" data-sub="Align items in a single row or column — perfect for navbars &amp; toolbars."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
+<section class="slide pg" data-pg="p12b" data-n="13" data-l="B" data-title="Grid &amp; Container" data-sub="Grid handles rows + columns. A container controls the maximum content width."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
+<section class="slide cs s16" data-name="Layout Patterns">
+  <header class="cs-head"><b class="cs-num">14</b><i class="cs-line"></i></header>
+  <h1 class="cs-h1 s16-h a"><span class="w">Layout Patterns:</span> <span class="gc">Grid,</span> <span class="gb">Rows</span> <span class="gv">&amp; Columns</span></h1>
+  <p class="cs-sub gs a">Use grid, rows and columns to organize your content in a clean and consistent layout.</p>
+  <div class="s16-g">
+    <div class="bx c s16-c a"><div class="bh"><b class="nt">1</b><div><h3>Grid Layout</h3><p>Use grid to create multiple columns with equal spacing.</p></div></div>
+      <div class="s16-gr" data-tpl="gcards"></div><span class="s16-chip">Grid: 4 Columns</span></div>
+    <div class="bx v s16-c a"><div class="bh"><b class="nt v">2</b><div><h3>Row Layout</h3><p>Use rows to stack sections vertically.</p></div></div>
+      <div class="s16-rw" data-tpl="rows"></div></div>
+    <div class="bx p s16-c a"><div class="bh"><b class="nt p">3</b><div><h3>Column Layout</h3><p>Use columns to divide content side by side.</p></div></div>
+      <div class="s16-cl"><div class="sd"><span class="av"><i data-ic="user"></i></span><i class="ph-l"></i><i class="ph-l"></i><i class="ph-l"></i><i class="ph-l"></i></div>
+        <div class="mn"><span class="ph-img" data-tpl="mtn"></span><i class="ph-l"></i><i class="ph-l"></i><i class="ph-l"></i><div class="two"><div><span class="ph-img" data-tpl="mtn"></span><i class="ph-l"></i><i class="ph-l" style="width:70%"></i></div><div><span class="ph-img" data-tpl="mtn"></span><i class="ph-l"></i><i class="ph-l" style="width:70%"></i></div></div></div></div>
+      <div class="s16-lb"><div><b>Column 1</b>Sidebar / Menu</div><div><b>Column 2</b>Main Content</div></div></div>
   </div>
 </section>
-<section class="slide pg" data-pg="p13a" data-n="13" data-l="A" data-title="Modal &amp; Notification" data-sub="Click a trash icon to open the modal. Fire toasts from the left panel."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
-<section class="slide pg" data-pg="p13b" data-n="13" data-l="B" data-title="Loading &amp; Skeleton" data-sub="Spinner, progress bar and skeleton loading — tell users something is happening."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
+<section class="slide pg" data-pg="p16a" data-n="14" data-l="A" data-title="Layout Pattern Picker" data-sub="Real page patterns built from grid &amp; flexbox — pick one, then check it on mobile."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
 <section class="slide cs s14" data-name="Page Layout Structure">
-  <header class="cs-head"><b class="cs-num">14</b><i class="cs-line"></i></header>
+  <header class="cs-head"><b class="cs-num">15</b><i class="cs-line"></i></header>
   <h1 class="cs-h1 s14-h a"><span class="w">Page</span> <span class="ga">Layout Structure</span></h1>
   <p class="cs-sub gs a">Common layout structure used in modern websites.</p>
   <div class="s14-g">
@@ -1806,9 +1985,9 @@ body.idle{cursor:none}
     </div>
   </div>
 </section>
-<section class="slide pg" data-pg="p14a" data-n="14" data-l="A" data-title="Page Layout Structure" data-sub="Hover or click each part. Toggle sections on and off."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
+<section class="slide pg" data-pg="p14a" data-n="15" data-l="A" data-title="Page Layout Structure" data-sub="Hover or click each part. Toggle sections on and off."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
 <section class="slide cs s15" data-name="Responsive Breakpoint + Navigation">
-  <header class="cs-head"><b class="cs-num">15</b><i class="cs-line"></i></header>
+  <header class="cs-head"><b class="cs-num">16</b><i class="cs-line"></i></header>
   <h1 class="cs-h1 s15-h a"><span class="w">Responsive</span> <span class="gc">Breakpoint</span> <span class="w">+</span> <span class="gv">Navigation</span></h1>
   <p class="cs-sub gs a">Make your website look good and work well on all devices.</p>
   <div class="s15-g">
@@ -1830,23 +2009,7 @@ body.idle{cursor:none}
       </div></div>
   </div>
 </section>
-<section class="slide pg" data-pg="p15a" data-n="15" data-l="A" data-title="Responsive Breakpoint" data-sub="Drag the handle or pick a device — watch the layout &amp; navbar adapt."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
-<section class="slide cs s16" data-name="Layout Patterns">
-  <header class="cs-head"><b class="cs-num">16</b><i class="cs-line"></i></header>
-  <h1 class="cs-h1 s16-h a"><span class="w">Layout Patterns:</span> <span class="gc">Grid,</span> <span class="gb">Rows</span> <span class="gv">&amp; Columns</span></h1>
-  <p class="cs-sub gs a">Use grid, rows and columns to organize your content in a clean and consistent layout.</p>
-  <div class="s16-g">
-    <div class="bx c s16-c a"><div class="bh"><b class="nt">1</b><div><h3>Grid Layout</h3><p>Use grid to create multiple columns with equal spacing.</p></div></div>
-      <div class="s16-gr" data-tpl="gcards"></div><span class="s16-chip">Grid: 4 Columns</span></div>
-    <div class="bx v s16-c a"><div class="bh"><b class="nt v">2</b><div><h3>Row Layout</h3><p>Use rows to stack sections vertically.</p></div></div>
-      <div class="s16-rw" data-tpl="rows"></div></div>
-    <div class="bx p s16-c a"><div class="bh"><b class="nt p">3</b><div><h3>Column Layout</h3><p>Use columns to divide content side by side.</p></div></div>
-      <div class="s16-cl"><div class="sd"><span class="av"><i data-ic="user"></i></span><i class="ph-l"></i><i class="ph-l"></i><i class="ph-l"></i><i class="ph-l"></i></div>
-        <div class="mn"><span class="ph-img" data-tpl="mtn"></span><i class="ph-l"></i><i class="ph-l"></i><i class="ph-l"></i><div class="two"><div><span class="ph-img" data-tpl="mtn"></span><i class="ph-l"></i><i class="ph-l" style="width:70%"></i></div><div><span class="ph-img" data-tpl="mtn"></span><i class="ph-l"></i><i class="ph-l" style="width:70%"></i></div></div></div></div>
-      <div class="s16-lb"><div><b>Column 1</b>Sidebar / Menu</div><div><b>Column 2</b>Main Content</div></div></div>
-  </div>
-</section>
-<section class="slide pg" data-pg="p16a" data-n="16" data-l="A" data-title="Grid, Rows &amp; Columns" data-sub="The three most common layout patterns — switch and compare."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
+<section class="slide pg" data-pg="p15a" data-n="16" data-l="A" data-title="Responsive Breakpoint" data-sub="Drag the handle or pick a device — watch the layout &amp; navbar adapt."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
 <section class="slide cs s17" data-name="Essential Pages for SaaS">
   <header class="cs-head"><b class="cs-num">17</b><i class="cs-line"></i></header>
   <div class="cs-tr a"><span class="ti"><i data-ic="appgrid"></i></span><i class="vr"></i><div><h1 class="cs-h1"><span class="w">Essential Pages</span> <span class="gc">for</span> <span class="gv">SaaS</span></h1><p class="cs-sub">The most common pages in a SaaS application.</p></div></div>
@@ -1889,7 +2052,23 @@ body.idle{cursor:none}
     <div class="bx c s19-c a"><div class="bh"><b class="nt">1</b><div><h3>UI Reference</h3><p>Find a design you like.</p></div></div><div class="ds" data-tpl="dash"></div></div>
     <span class="chev a"><i data-ic="chevRight"></i></span>
     <div class="bx v s19-c a"><div class="bh"><b class="nt v">2</b><div><h3>AI Prompt</h3><p>Describe the UI clearly.</p></div></div>
-      <div class="s19-pr"><div class="pt"><i></i><i></i><i></i></div><pre>Create a <em>modern SaaS dashboard</em>
+      <div class="s19-pr"><div class="pt"><i></i><i></i><i></i></div><pre class="bm-only">Buat <em>SaaS dashboard yang moden</em>
+seperti <em>gambar rujukan.</em>
+
+Sertakan:
+– <em>Sidebar navigation di kiri</em>
+  <em>dengan icon dan label</em>
+– <em>Search bar di atas</em> dan <em>avatar user</em>
+– <em>Stat cards</em> untuk metrik utama
+– <em>Line chart</em> untuk project overview
+– <em>Senarai recent activity</em>
+– <em>Section team members</em>
+
+Guna style yang bersih dan moden:
+sidebar gelap, content area cerah,
+card bucu bulat dan <u>color scheme</u>
+<u>ungu-biru</u>. Pastikan responsive
+dan nampak profesional.</pre><pre class="en-only">Create a <em>modern SaaS dashboard</em>
 similar to the <em>reference image.</em>
 
 Include:
@@ -1910,6 +2089,7 @@ and professional.</pre></div></div>
     <div class="bx p s19-c a"><div class="bh"><b class="nt p">3</b><div><h3>Generated UI</h3><p>Get a similar UI using AI.</p></div></div><div class="ds" data-tpl="dash"></div></div>
   </div>
 </section>
+<section class="slide pg" data-pg="p19a" data-n="19" data-l="A" data-title="Prompt Builder" data-sub="Pick the options — get a clear, complete prompt for your AI coding tool."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
 <section class="slide cs s20" data-name="UI Debugging &amp; Mini Challenge">
   <header class="cs-head"><b class="cs-num">20</b><i class="cs-line"></i></header>
   <div class="cs-tr a"><span class="ti"><i data-ic="tools"></i></span><i class="vr"></i><div><h1 class="cs-h1"><span class="w">UI Debugging &amp;</span> <span class="ga">Mini Challenge</span></h1><p class="cs-sub">Learn to identify and fix UI problems with AI.</p></div></div>
@@ -1928,6 +2108,7 @@ and professional.</pre></div></div>
       <div class="s20-ft"><span class="fi" style="color:#0B1530;background:#22D3EE"><i data-ic="check"></i></span><p>Verify the fixed UI on different screen sizes and make sure everything looks good.</p></div></div>
   </div>
 </section>
+<section class="slide pg" data-pg="p20a" data-n="20" data-l="A" data-title="Fix the UI" data-sub="Mini challenge: this card has 5 UI bugs. Click each one you can spot."><div class="pg-body"><aside class="pg-ctrl"></aside><div class="pg-main"><div class="panel pg-preview"></div></div></div></section>
 <section class="slide img" data-src="slides/21.png" data-name="Q&amp;A Session"></section>
 <section class="slide img" data-src="slides/22.png" data-name="Thank You"></section>
 
@@ -2108,10 +2289,48 @@ function BoxSides({label,value,max=120,color='#22E5FF',tag='PADDING',onChange=()
   w.set=v=>{const same=v.t===v.r&&v.r===v.b&&v.b===v.l;if(!same&&linked){linked=false;link.set(false,false)}for(const k in st){st[k]=v[k];steps[k].set(v[k],false)}};
   w.append(g,link);return w;
 }
+/* AI prompts follow the deck language; technical terms stay English */
+const isBM=()=>document.documentElement.lang==='ms';
+const AI_BM={
+  'Update my UI':'Kemas kini UI saya',
+  'I have 3 cards in a row. Change the inner spacing (padding) of each card':'Saya ada 3 card dalam satu row. Ubah ruang dalam (padding) setiap card',
+  'I have 3 cards in a row. Change the space between the cards (margin)':'Saya ada 3 card dalam satu row. Ubah jarak antara card (margin)',
+  'Update the brand colors and typography of my page':'Kemas kini warna brand dan typography page saya',
+  'Style my card and the glowing call-to-action button':'Style card saya dan CTA button yang ada glow',
+  'Style my button with clear hover, active, focus and disabled states':'Style button saya dengan state hover, active, focus dan disabled yang jelas',
+  'Add clear feedback states (loading, success, error) to my save button':'Tambah state maklum balas yang jelas (loading, success, error) pada button simpan saya',
+  'Style the active link in my top navigation bar':'Style link active dalam navbar atas saya',
+  'Build a mobile drawer menu (hamburger) and a collapsible dashboard sidebar':'Bina drawer menu mobile (hamburger) dan sidebar dashboard yang boleh collapse',
+  'Style my form inputs with a clear focus ring':'Style input form saya dengan focus ring yang jelas',
+  'Style my product card and its badges':'Style product card saya dan badge-nya',
+  'Lay out my navbar with flexbox':'Susun navbar saya guna flexbox',
+  'Add a loading spinner, a progress bar and a shimmer skeleton loader':'Tambah loading spinner, progress bar dan skeleton loader dengan shimmer',
+  'Build my landing page using this semantic HTML structure':'Bina landing page saya guna struktur HTML semantic ini',
+  'Make my landing page responsive: feature cards and navbar must adapt per breakpoint':'Jadikan landing page saya responsive: feature card dan navbar mesti berubah ikut breakpoint',
+  'Fix these UI issues in my pricing card':'Betulkan isu UI ini dalam pricing card saya'};
 function Code(file='style.css',opt={}){
   const editable=/\.css$/.test(file);
-  const w=el('div','panel code-panel'+(editable?' editable':''),`<div class="code-bar"><i></i><i></i><i></i><span>${file}</span>${editable?`<em class="code-hint">${ic('edit')} Click to edit</em><button type="button" class="code-rev">${ic('reset')} Undo edits</button>`:''}</div><pre class="code"></pre>`);
-  const pre=$('pre',w);let prev={},last=null,dirty=false,tmr;
+  const w=el('div','panel code-panel'+(editable?' editable':''),`<div class="code-bar"><i></i><i></i><i></i><button type="button" class="ctab on" data-t="code">${file}</button><button type="button" class="ctab" data-t="ai">${ic('sparkle')} AI Prompt</button>${editable?`<em class="code-hint">${ic('edit')} Click to edit</em><button type="button" class="code-rev">${ic('reset')} Undo edits</button>`:''}<button type="button" class="code-copy">${ic('file')} Copy prompt</button></div><pre class="code"></pre><div class="ai-pr"></div>`);
+  const pre=$('pre',w),aiBox=$('.ai-pr',w);let prev={},last=null,dirty=false,tmr,custom=null,aiOn=false;
+  /* ---- AI Prompt tab: turns the current CSS into a prompt for the AI coding tool ---- */
+  function autoPrompt(){
+    const lines=[];
+    (last||[]).forEach(b=>{if(!b.sel)return;const ps=b.rows?b.rows.flat():b.props;lines.push(`• ${b.sel} → ${ps.map(([k,v])=>`${k}: ${v}`).join('; ')}`)});
+    const en=opt.ai||'Update my UI',bm=isBM(),lead=bm?(AI_BM[en]||en):en;
+    if(!lines.length)return bm?`${lead}. Guna code ini:\n\n${pre.innerText.trim()}`:`${lead}. Use this code:\n\n${pre.innerText.trim()}`;
+    return bm?`${lead}. Guna style ini dengan tepat:\n\n${lines.join('\n')}\n\nKekalkan yang lain seperti sedia ada.`
+      :`${lead}. Apply these exact styles:\n\n${lines.join('\n')}\n\nKeep everything else the same.`;
+  }
+  function drawAI(){aiBox.textContent=typeof custom==='function'?custom():(custom||autoPrompt())}
+  document.addEventListener('deck-lang',()=>{if(aiOn)drawAI()});
+  function tab(t){aiOn=t==='ai';w.classList.toggle('ai',aiOn);$$('.ctab',w).forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+    if(aiOn){aiBox.style.minHeight=pre.offsetHeight+'px';drawAI()}}
+  $$('.ctab',w).forEach(b=>b.onclick=()=>tab(b.dataset.t));
+  $('.code-copy',w).onclick=e=>{const t=aiBox.textContent,b=e.currentTarget;
+    const done=()=>{b.classList.add('ok');b.lastChild.textContent=' Copied!';setTimeout(()=>{b.classList.remove('ok');b.lastChild.textContent=' Copy prompt'},1400)};
+    if(navigator.clipboard&&isSecureContext)navigator.clipboard.writeText(t).then(done,()=>{fallback();done()});else{fallback();done()}
+    function fallback(){const ta=el('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0';document.body.append(ta);ta.select();try{document.execCommand('copy')}catch(_){}ta.remove()}};
+  w.prompt=p=>{custom=p;if(aiOn)drawAI()};
   /* blocks: [{sel, props:[[k,v],...], hl:bool} | {c:'comment'} | {raw:'html'}] */
   function draw(blocks){
     const now={};let h='';
@@ -2131,7 +2350,7 @@ function Code(file='style.css',opt={}){
     });
     pre.innerHTML=h.replace(/\n$/,'');prev=now;
   }
-  w.set=blocks=>{last=blocks;if(!dirty)draw(blocks)};
+  w.set=blocks=>{last=blocks;if(!dirty)draw(blocks);if(aiOn)drawAI()};
   w.html=h=>{pre.innerHTML=h};
   if(!editable)return w;
   /* ---- manual editing: typed CSS is applied live to the preview ---- */
@@ -2208,7 +2427,7 @@ PG.p5a=sec=>{
   function fit(){const cs=getComputedStyle(pv),avail=pv.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
     stack.style.transform='';const k=Math.min(1,avail/stack.scrollHeight);stack.style.transform=k<1?`scale(${k})`:''}
   function sync(){const cs=getComputedStyle(first);setZones(first,{t:Math.round(parseFloat(cs.paddingTop)),r:Math.round(parseFloat(cs.paddingRight)),b:Math.round(parseFloat(cs.paddingBottom)),l:Math.round(parseFloat(cs.paddingLeft))});clearTimeout(fit.t);fit.t=setTimeout(fit,450)}
-  const code=Code('style.css',{map:[['.card','.bx-card']],onApply:()=>{clearTimeout(sync.t);sync.t=setTimeout(()=>{sync();const cs=getComputedStyle(first);pad={t:+parseFloat(cs.paddingTop),r:+parseFloat(cs.paddingRight),b:+parseFloat(cs.paddingBottom),l:+parseFloat(cs.paddingLeft)};for(const k in pad)pad[k]=Math.min(100,Math.round(pad[k]));sides.set(pad)},460)}});
+  const code=Code('style.css',{ai:'I have 3 cards in a row. Change the inner spacing (padding) of each card',map:[['.card','.bx-card']],onApply:()=>{clearTimeout(sync.t);sync.t=setTimeout(()=>{sync();const cs=getComputedStyle(first);pad={t:+parseFloat(cs.paddingTop),r:+parseFloat(cs.paddingRight),b:+parseFloat(cs.paddingBottom),l:+parseFloat(cs.paddingLeft)};for(const k in pad)pad[k]=Math.min(100,Math.round(pad[k]));sides.set(pad)},460)}});
   function render(){
     cards.forEach(c=>c.style.padding=`${pad.t}px ${pad.r}px ${pad.b}px ${pad.l}px`);
     setZones(first,pad);clearTimeout(fit.t);fit.t=setTimeout(fit,450);
@@ -2229,7 +2448,7 @@ PG.p5b=sec=>{
   function fit(){const cs=getComputedStyle(pv),avail=pv.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
     stack.style.transform='';const k=Math.min(1,avail/stack.scrollHeight);stack.style.transform=k<1?`scale(${k})`:''}
   const tags=v=>{setZones(wrap0,v);$$('.bx-tag',wrap0).forEach(t=>t.style.setProperty('--tc','#F472B6'))};
-  const code=Code('style.css',{map:[['.card','.bx-card']],onApply:()=>{clearTimeout(tags.t);tags.t=setTimeout(()=>{const cs=getComputedStyle(first);
+  const code=Code('style.css',{ai:'I have 3 cards in a row. Change the space between the cards (margin)',map:[['.card','.bx-card']],onApply:()=>{clearTimeout(tags.t);tags.t=setTimeout(()=>{const cs=getComputedStyle(first);
     mg={t:parseFloat(cs.marginTop),r:parseFloat(cs.marginRight),b:parseFloat(cs.marginBottom),l:parseFloat(cs.marginLeft)};for(const k in mg)mg[k]=Math.max(0,Math.min(40,Math.round(mg[k])));
     tags(mg);sides.set(mg);fit()},460)}});
   function render(){
@@ -2259,7 +2478,7 @@ PG.p6a=sec=>{
   function fit(){const cs=getComputedStyle(card),avail=card.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
     stack.style.transform='';stack.style.width='';const k=Math.min(1,avail/stack.scrollHeight);stack.style.transform=k<1?`scale(${k})`:'';stack.style.width=k<1?100/k+'%':''}
   /* hand-edited CSS → read the real values back into the controls */
-  const code=Code('style.css',{map:[[':root','.ty-card'],...Object.entries(SEL).map(([k,v])=>[v,'.ty-'+k])],props:{'--primary':'--pri','--accent':'--acc'},onApply:()=>{clearTimeout(fit.r);fit.r=setTimeout(()=>{
+  const code=Code('style.css',{ai:'Update the brand colors and typography of my page',map:[[':root','.ty-card'],...Object.entries(SEL).map(([k,v])=>[v,'.ty-'+k])],props:{'--primary':'--pri','--accent':'--acc'},onApply:()=>{clearTimeout(fit.r);fit.r=setTimeout(()=>{
     for(const k in st.t){const cs=getComputedStyle($('.ty-'+k,pv)),fs=parseFloat(cs.fontSize);st.t[k]=[Math.round(fs),+cs.fontWeight,Math.round(parseFloat(cs.lineHeight)/fs*20)/20||st.t[k][2]]}
     sync();fit()},420)}});
   function meta(){$$('.ty-r',pv).forEach(r=>{const [fs,fw,lh]=st.t[r.dataset.k];r.classList.toggle('on',r.dataset.k===st.sel);$('small',r).textContent=`${fs}px · ${fw} · ${lh}`})}
@@ -2288,7 +2507,7 @@ PG.p6a=sec=>{
 PG.p6b=sec=>{
   const pv=$('.pg-preview',sec),ctrl=$('.pg-ctrl',sec),main=$('.pg-main',sec);
   pv.innerHTML=`<div class="pv-label">Preview</div><div class="sh-surface dark"><div class="sh-card"><div class="sh-ic">${ic('layers')}</div><h4>Card Example</h4><p>Shadow adds depth and makes the design look modern.</p></div><div class="sh-col"><button class="sh-btn" type="button">${ic('zap')} Glowing Button</button><span class="sh-cap">Outer glow = box-shadow with no offset</span></div></div>`;
-  const surf=$('.sh-surface',pv),card=$('.sh-card',pv),btn=$('.sh-btn',pv),code=Code('style.css',{map:[['.card','.sh-card'],['.btn-glow','.sh-btn']]});
+  const surf=$('.sh-surface',pv),card=$('.sh-card',pv),btn=$('.sh-btn',pv),code=Code('style.css',{ai:'Style my card and the glowing call-to-action button',map:[['.card','.sh-card'],['.btn-glow','.sh-btn']]});
   const st={r:16,bw:1,blur:30,glow:24,gc:'#22E5FF',bg:'dark'};
   function render(){
     const light=st.bg==='light',bc=light?'#CBD5E1':'rgba(148,163,184,.35)',y=Math.round(st.blur*.4),op=light?.18:.55;
@@ -2321,7 +2540,7 @@ PG.p7a=sec=>{
   SC.live=SC.hover;
   const SIZE={S:[20,12,22],M:[26,18,34],L:[32,24,46]};
   pv.innerHTML=`<div class="pv-label">Preview · Real Button</div><div class="bt-stage"><button class="dbtn" type="button"></button></div><div class="bt-info"><b></b><span class="bt-desc"></span><span class="bt-count">Clicks: 0</span></div><div class="bt-row"></div>`;
-  const btn=$('.dbtn',pv),row=$('.bt-row',pv),code=Code('style.css',{map:[[/^\.btn(-[\w-]+)?/,'.bt-stage .dbtn']]});
+  const btn=$('.dbtn',pv),row=$('.bt-row',pv),code=Code('style.css',{ai:'Style my button with clear hover, active, focus and disabled states',map:[[/^\.btn(-[\w-]+)?/,'.bt-stage .dbtn']]});
   const st={v:'primary',s:'live',r:14,z:'L'};let clicks=0;
   btn.onclick=()=>{clicks++;$('.bt-count',pv).textContent='Clicks: '+clicks};
   Object.keys(V).forEach(k=>{const b=el('button','dbtn v-'+k,`${ic(V[k][0])}${k[0].toUpperCase()+k.slice(1)}`);b.type='button';b.dataset.v=k;b.onclick=()=>{varSeg.set(k)};row.append(b)});
@@ -2359,7 +2578,7 @@ PG.p8a=sec=>{
   const CLS={loading:'spinner',success:'alert alert-success',error:'alert alert-error',empty:'empty-state',info:'alert alert-info'};
   pv.innerHTML=`<div class="pv-label">Preview · Profile Form</div><div class="st-card"><div class="st-top"><div class="st-av">CM</div><div><b>Coach Mikhail</b><span>coach@vibecoding.my</span></div><button class="st-save" type="button">Save</button></div>
   <div class="st-fields"><div class="st-f"><label>Full name</label><div>Mikhail Aiman</div></div><div class="st-f"><label>Phone</label><div>012-345 6789</div></div></div><div class="st-fb"></div></div>`;
-  const fbBox=$('.st-fb',pv),save=$('.st-save',pv),code=Code('component.html');let timer;
+  const fbBox=$('.st-fb',pv),save=$('.st-save',pv),code=Code('component.html',{ai:'Add clear feedback states (loading, success, error) to my save button'});let timer;
   function show(s){
     const [c,icon,t,d,b]=FB[s];
     fbBox.innerHTML=`<div class="fb ${c}">${icon}<div><b>${t}</b><span>${d}</span></div>${b?`<button class="fb-btn" type="button">${b}</button>`:''}</div>`;
@@ -2389,7 +2608,7 @@ PG.p9a=sec=>{
   pv.innerHTML=`<div class="pv-label">Preview · Desktop Website</div><div class="br"><div class="br-bar"><i></i><i></i><i></i><div class="br-url"></div></div>
   <header class="nv-head s-underline"><div class="nv-logo"><span>◆</span>Brand</div><nav class="nv-links">${Object.keys(PAGES).map(p=>`<a data-p="${p}">${p}</a>`).join('')}</nav><div class="nv-search">${ic('search')} Search products…</div><div class="nv-icons"><span class="nv-bell">${ic('bell')}<i></i></span><span class="nv-av">AM</span></div></header>
   <div class="nv-crumb"></div><div class="nv-wrap"></div></div>`;
-  const head=$('.nv-head',pv),crumb=$('.nv-crumb',pv),wrap=$('.nv-wrap',pv),url=$('.br-url',pv),code=Code('style.css',{map:[['.nav a.active','.nv-links a.on'],['.nav a','.nv-links a'],['.nav','.nv-links']]});
+  const head=$('.nv-head',pv),crumb=$('.nv-crumb',pv),wrap=$('.nv-wrap',pv),url=$('.br-url',pv),code=Code('style.css',{ai:'Style the active link in my top navigation bar',map:[['.nav a.active','.nv-links a.on'],['.nav a','.nv-links a'],['.nav','.nv-links']]});
   const st={page:'Products',trail:PAGES.Products[0],style:'underline',ac:'#22E5FF'};
   const CSS={underline:[['color',null],['border-bottom','3px solid {ac}']],pill:[['color',null],['background','{ac}29'],['border-radius','999px']],glow:[['box-shadow','0 0 22px {ac}'],['outline','1.5px solid {ac}']]};
   function page(trail){
@@ -2426,7 +2645,7 @@ PG.p9b=sec=>{
    <div class="ph-ov"></div><aside class="ph-drawer"><div class="ph-dh">Menu<button type="button">${ic('x')}</button></div>${DR.map(([i,t],k)=>`<a class="${k?'':'on'}">${ic(i)}${t}</a>`).join('')}</aside></div>
   <div class="dash"><aside class="sb"><div class="sb-logo"><span>◆</span><b class="lbl">Admin</b></div><div class="sb-sec">MENU</div>${SB.map(([i,t],k)=>`<a class="${k?'':'on'}" data-t="${t}">${ic(i)}<span class="lbl">${t}</span></a>`).join('')}<div class="sb-sec">ACCOUNT</div><a data-t="Settings">${ic('settings')}<span class="lbl">Settings</span></a><a data-t="Logout">${ic('logout')}<span class="lbl">Logout</span></a><button class="sb-col" type="button">${ic('chevsLeft')}<span class="lbl">Collapse</span></button></aside>
    <div class="db-main"><h4>Dashboard</h4><div class="db-stats"><div><span>Revenue</span><b>RM 48k</b></div><div><span>Orders</span><b>1,248</b></div><div><span>Customers</span><b>860</b></div></div><div class="db-chart">${[40,65,50,80,62,90,74].map(h=>`<i style="height:${h}%"></i>`).join('')}</div></div></div></div>`;
-  const phone=$('.phone',pv),dash=$('.dash',pv),code=Code('style.css',{map:[['.drawer.open','.phone.open .ph-drawer'],['.drawer','.ph-drawer'],['.sidebar','.sb']]});
+  const phone=$('.phone',pv),dash=$('.dash',pv),code=Code('style.css',{ai:'Build a mobile drawer menu (hamburger) and a collapsible dashboard sidebar',map:[['.drawer.open','.phone.open .ph-drawer'],['.drawer','.ph-drawer'],['.sidebar','.sb']]});
   const st={open:false,side:'right',sb:'expanded'};
   function render(){
     phone.classList.toggle('open',st.open);phone.classList.toggle('left',st.side==='left');dash.classList.toggle('collapsed',st.sb==='collapsed');
@@ -2466,7 +2685,7 @@ PG.p10a=sec=>{
   </div>
   <div class="fm-msg"><label class="lb">Message</label><textarea maxlength="250" placeholder="Write your message here…"></textarea>
     <div class="fm-foot"><span class="fm-cnt">0 / 250</span><span class="fm-note"></span><button type="submit" class="fm-submit">${ic('check')} Submit</button></div></div></form>`;
-  const fm=$('.fm',pv),code=Code('style.css',{map:[['.input:focus','.fm-in:focus-within'],['.input','.fm-in'],[':root','.fm']]});
+  const fm=$('.fm',pv),code=Code('style.css',{ai:'Style my form inputs with a clear focus ring',map:[['.input:focus','.fm-in:focus-within'],['.input','.fm-in'],[':root','.fm']]});
   const pw=$('input[type=password]',fm),eye=$('.fm-eye',fm);
   eye.onclick=()=>{const show=pw.type==='password';pw.type=show?'text':'password';eye.innerHTML=ic(show?'eyeOff':'eye')};
   const dd=$('.fm-dd',fm);
@@ -2516,7 +2735,7 @@ PG.p11a=sec=>{
   pv.innerHTML=`<div class="pv-label">Preview · Product Card &amp; Badges</div><div class="cu">
   <div class="pc"><div class="pc-img">${ic('laptop')}<span class="bdg pc-bd">New</span></div><div class="pc-body"><h4>MacBook Pro 16"</h4><div class="pc-meta">M3 Pro • 18GB • 1TB</div><div class="pc-row"><b>RM 8,999</b><span>★ 4.9</span></div><button type="button" class="pc-btn">${ic('cart')} Add to Cart</button></div></div>
   <div class="bd-panel"><h5>Your badge</h5><div class="bd-big"><span class="bdg my-bd">New</span></div><h5>Badge colours = meaning</h5><div class="bd-gal">${GAL.map(([t,c])=>`<span class="bdg${c==='#EAB308'?' dark':''}" style="--bc:${c}">${t}</span>`).join('')}</div></div></div>`;
-  const card=$('.pc',pv),img=$('.pc-img',pv),bds=[$('.pc-bd',pv),$('.my-bd',pv)],code=Code('style.css',{map:[['.card','.pc'],['.badge','.pc-bd, .my-bd']]});
+  const card=$('.pc',pv),img=$('.pc-img',pv),bds=[$('.pc-bd',pv),$('.my-bd',pv)],code=Code('style.css',{ai:'Style my product card and its badges',map:[['.card','.pc'],['.badge','.pc-bd, .my-bd']]});
   const SH={none:'none',soft:'0 8px 24px rgba(0,0,0,.35)',strong:'0 24px 60px rgba(0,0,0,.65)',glow:'0 0 34px rgba(34,229,255,.45)'};
   const BR={pill:'999px',rounded:'8px',square:'0'};
   const st={p:20,r:20,sh:'soft',txt:'New',bc:'#3B82F6',shape:'pill'};
@@ -2573,7 +2792,7 @@ PG.p12a=sec=>{
   const pv=$('.pg-preview',sec),ctrl=$('.pg-ctrl',sec),main=$('.pg-main',sec);
   pv.innerHTML=`<div class="pv-label">Preview · Navbar (flex container)</div><div class="fx-wrap"><div class="fx-axis"><span>main axis <b class="ma">→</b></span><span>cross axis <i class="ca">↓</i></span></div>
   <div class="fx"><div class="fx-i logo">◆ Brand</div><div class="fx-i">Home</div><div class="fx-i">Services</div><div class="fx-i">Pricing</div><div class="fx-i cta">Sign In</div></div></div>`;
-  const fx=$('.fx',pv),code=Code('style.css',{map:[['.navbar','.fx']]});
+  const fx=$('.fx',pv),code=Code('style.css',{ai:'Lay out my navbar with flexbox',map:[['.navbar','.fx']]});
   const st={dir:'row',jc:'space-between',ai:'center',gap:16};
   function render(){
     Object.assign(fx.style,{flexDirection:st.dir,justifyContent:st.jc,alignItems:st.ai,gap:st.gap+'px'});
@@ -2601,6 +2820,8 @@ PG.p12b=sec=>{
     while(grid.children.length<st.items){const n=grid.children.length;const d=el('div','gc-it','Item '+(n+1));d.style.setProperty('--c',COL[n%6]);grid.append(d)}
     while(grid.children.length>st.items)grid.lastChild.remove();
     code.set([{sel:'.container',inline:1,props:[['max-width',st.mw+'px'],['margin','0 auto']]},{sel:'.grid',rows:[[['display','grid'],['grid-template-columns',`repeat(${st.cols}, 1fr)`]],[['gap',px(st.gap)]]]}]);
+    code.prompt(()=>isBM()?`Buat container di tengah dengan max-width ${st.mw}px. Di dalamnya, letak grid ${st.items} card dalam ${st.cols} column dengan gap ${st.gap}px. Guna CSS grid (grid-template-columns: repeat(${st.cols}, 1fr)).`
+      :`Create a centered container with max-width ${st.mw}px. Inside it, place a grid of ${st.items} cards in ${st.cols} column${st.cols>1?'s':''} with a ${st.gap}px gap. Use CSS grid (grid-template-columns: repeat(${st.cols}, 1fr)).`);
   }
   const box=el('div','panel ctl-box');
   box.append(
@@ -2654,15 +2875,26 @@ PG.p13b=sec=>{
   pv.innerHTML=`<div class="pv-label">Preview · Loading States</div><div class="lg">
   <div class="lg-card"><h5>Spinner &amp; Progress</h5><div class="lg-spin"><span class="spin"></span><p>Loading… please wait</p><div class="dots"><i></i><i></i><i></i></div></div>
    <div><div class="pb-top"><span>Uploading design.fig</span><b class="pct">70%</b></div><div class="pb"><i></i></div></div></div>
-  <div class="lg-card shim"><h5>Skeleton Loading <span class="lg-pill">LOADING…</span></h5><div class="sk-list"></div></div></div>`;
-  const spin=$('.lg-spin .spin',pv),bar=$('.pb i',pv),skc=$('.lg-card.shim',pv),sk=$('.sk-list',pv),pill=$('.lg-pill',pv),code=Code('style.css',{map:[['.spinner','.lg-spin .spin'],['.progress-bar','.pb i'],['.skeleton','.sk']]});
-  const st={sz:80,spd:1,pr:70,shim:true};let t1,t2;
+  <div class="lg-card shim"><h5>Skeleton <span class="lg-pill">LOADING…</span></h5><div class="sk-list"></div></div>
+  <div class="lg-card lz"><h5>Lazy Load <span class="lg-pill lz-pill"></span></h5><p class="lz-what">Images load only when they scroll into view — faster first load, less data.</p><div class="lz-feed"></div><small class="lz-hint">${ic('chevDown')} Scroll the list</small></div></div>`;
+  const spin=$('.lg-spin .spin',pv),bar=$('.pb i',pv),skc=$('.lg-card.shim',pv),sk=$('.sk-list',pv),pill=$('.lg-pill',pv),code=Code('style.css',{ai:'Add a loading spinner, a progress bar and a shimmer skeleton loader',map:[['.spinner','.lg-spin .spin'],['.progress-bar','.pb i'],['.skeleton','.sk']]});
+  const st={sz:80,spd:1,pr:70,shim:true,lazy:true};let t1,t2,io;const lzT=new Set();
+  const LZ=['#3B82F6','#A855F7','#EC4899','#22C55E','#F59E0B','#22E5FF','#6366F1','#F43F5E'],feed=$('.lz-feed',pv),lzPill=$('.lz-pill',pv);
+  function lzCount(){const n=$$('.lz-img.on',feed).length;lzPill.textContent=`${n} / ${LZ.length} loaded`;lzPill.classList.toggle('ok',n===LZ.length)}
+  function lzShow(im){if(im.dataset.q)return;im.dataset.q=1;const t=setTimeout(()=>{im.classList.add('on');lzCount()},450);lzT.add(t)}
+  function lazyInit(){
+    lzT.forEach(clearTimeout);lzT.clear();io&&io.disconnect();feed.scrollTop=0;
+    feed.innerHTML=LZ.map((c,i)=>`<div class="lz-img" style="--c:${c}"><span class="ph">${ic('image')}</span><b>photo-${i+1}.jpg</b></div>`).join('');lzCount();
+    if(!st.lazy){$$('.lz-img',feed).forEach(lzShow);return}
+    io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){lzShow(e.target);io.unobserve(e.target)}}),{root:feed,threshold:.35});
+    $$('.lz-img',feed).forEach(im=>io.observe(im));
+  }
   function skeleton(){sk.innerHTML=`<div class="sk sk-ban"></div>`+PEOPLE.map(()=>`<div class="sk-row"><div class="sk sk-av"></div><div class="sk-lines"><div class="sk sk-l" style="width:60%"></div><div class="sk sk-l" style="width:85%"></div></div></div>`).join('');pill.textContent='LOADING…';pill.classList.remove('ok')}
   function real(){sk.innerHTML=`<div class="sk-ban real">October Sales Report<span>RM 48,250 · +12% vs last month</span></div>`+PEOPLE.map(([i,n,r,c,tm])=>`<div class="sk-row real"><div class="sk-av" style="--c:${c}">${i}</div><div><b>${n}</b><br><span>${r}</span></div><span class="tm">${tm} ago</span></div>`).join('');pill.textContent='LOADED ✓';pill.classList.add('ok')}
   function load(){clearTimeout(t1);skeleton();t1=setTimeout(real,2200)}
   function render(){
     spin.style.setProperty('--sz',st.sz+'px');spin.style.setProperty('--spd',st.spd+'s');bar.style.width=st.pr+'%';$('.pct',pv).textContent=Math.round(st.pr)+'%';skc.classList.toggle('shim',st.shim);
-    code.set([{sel:'.spinner',inline:1,props:[['width',st.sz+'px'],['animation',`spin ${st.spd.toFixed(1)}s linear infinite`]]},{sel:'.progress-bar',inline:1,props:[['width',Math.round(st.pr)+'%']]},{sel:'.skeleton',inline:1,props:[['animation',st.shim?'shimmer 1.4s infinite':'none']]}]);
+    code.set([{sel:'.spinner',inline:1,props:[['width',st.sz+'px'],['animation',`spin ${st.spd.toFixed(1)}s linear infinite`]]},{sel:'.progress-bar',inline:1,props:[['width',Math.round(st.pr)+'%']]},{sel:'.skeleton',inline:1,props:[['animation',st.shim?'shimmer 1.4s infinite':'none']]},{raw:`<span class="c">/* index.html */</span> &lt;<span class="t">img</span> <span class="p">src</span>=<span class="v">"photo.jpg"</span>${st.lazy?` <span class="p">loading</span>=<span class="v f">"lazy"</span>`:''}&gt;`}]);
   }
   const box=el('div','panel ctl-box');box.style.gap='18px';
   const prR=Range({label:'Progress',value:st.pr,min:0,max:100,unit:'%',onChange:v=>{st.pr=v;render()}});
@@ -2673,9 +2905,10 @@ PG.p13b=sec=>{
     Range({label:'Spinner size',value:st.sz,min:32,max:140,onChange:v=>{st.sz=v;render()}}),
     Range({label:'Spinner speed',value:st.spd,min:.4,max:2.5,step:.1,unit:'s',fmt:v=>v.toFixed(1)+'s',onChange:v=>{st.spd=v;render()}}),
     prR,auto,
-    Toggle({label:'Shimmer effect',value:true,onChange:v=>{st.shim=v;render()}}),ld);
-  ctrl.append(box);main.append(code);skeleton();render();
-  return ()=>{clearTimeout(t1);clearInterval(t2)};
+    Toggle({label:'Shimmer effect',value:true,onChange:v=>{st.shim=v;render()}}),ld,
+    Toggle({label:'Lazy load images',value:true,onChange:v=>{st.lazy=v;lazyInit();render()}}));
+  ctrl.append(box);main.append(code);skeleton();render();lazyInit();
+  return ()=>{clearTimeout(t1);clearInterval(t2);lzT.forEach(clearTimeout);io&&io.disconnect()};
 };
 
 /* ---------- 14 · Page layout ---------- */
@@ -2690,7 +2923,7 @@ PG.p14a=sec=>{
     ['bot','Footer Bottom','div class="footer-bottom"','#22C55E',`<div class="wf-bot"><span>© 2026 Brand. All rights reserved.</span><span>Privacy · Terms</span></div>`]
   ];
   pv.innerHTML=`<div class="pv-label">Preview · Website Wireframe</div><div class="pl"><div class="wf">${S.map(([k,n,tag,c,h],i)=>`<div class="wf-s" data-k="${k}" style="--c:${c}"><span class="wf-n">${i+1}</span><span class="wf-tag">&lt;${tag.split(' ')[0]}&gt;</span>${h}</div>`).join('')}</div></div>`;
-  const code=Code('index.html');$('.pl',pv).append(code);
+  const code=Code('index.html',{ai:'Build my landing page using this semantic HTML structure'});$('.pl',pv).append(code);
   const on={};S.forEach(s=>on[s[0]]=true);let hv=null;
   function render(){
     $$('.wf-s',pv).forEach(s=>{s.classList.toggle('off',!on[s.dataset.k]);s.classList.toggle('on',hv===s.dataset.k)});
@@ -2725,7 +2958,7 @@ PG.p15a=sec=>{
    <section class="rs-hero"><div><h2>High Quality Printing Solutions</h2><p>Banners, stickers, shirts, packaging and more.</p><span class="rs-cta">Get Started →</span></div><div class="rs-img">${ic('printer')}</div></section>
    <div class="rs-feat">${FEAT.map(([i,t,d])=>`<div>${ic(i)}${t}<span>${d}</span></div>`).join('')}</div>
   </div></div><div class="rs-handle" title="Drag to resize"></div></div>`;
-  const area=$('.rs-area',pv),frame=$('.rs-frame',pv),site=$('.rs-site',pv),handle=$('.rs-handle',pv),code=Code('style.css',{map:[['.cards','.rs-feat'],['.nav-links','.rs-links']],syncOn:'.rs-handle'});$('pre',code).style.fontSize='18px';
+  const area=$('.rs-area',pv),frame=$('.rs-frame',pv),site=$('.rs-site',pv),handle=$('.rs-handle',pv),code=Code('style.css',{ai:'Make my landing page responsive: feature cards and navbar must adapt per breakpoint',map:[['.cards','.rs-feat'],['.nav-links','.rs-links']],syncOn:'.rs-handle'});$('pre',code).style.fontSize='18px';
   let w=1280,lastBp='';
   const bpOf=w=>w>=1280?'xl':w>=1024?'lg':w>=768?'md':'sm';
   function maxVis(){return area.clientWidth-34}
@@ -2764,33 +2997,155 @@ PG.p15a=sec=>{
 PG.p16a=sec=>{
   const pv=$('.pg-preview',sec),ctrl=$('.pg-ctrl',sec),main=$('.pg-main',sec);
   const COL=['#3B82F6','#22E5FF','#A855F7','#EC4899','#22C55E','#F59E0B','#6366F1','#14B8A6'];
-  const RT={'1:4':'1fr 4fr','1:3':'1fr 3fr','1:2':'1fr 2fr','1:1':'1fr 1fr'};
-  pv.innerHTML=`<div class="pv-label">Preview · Layout Pattern</div><div class="lp"></div>`;
-  const lp=$('.lp',pv),code=Code('style.css',{map:[['.gallery','.lp-grid'],['.stack','.lp-rows'],['.layout','.lp-cols']]});
-  const st={pat:'grid',cols:4,rows:3,ratio:'1:3',side:'left',gap:20};
+  const PAT={
+    gallery:['Card Gallery','Products, blog posts, portfolio — many items of the same type.'],
+    sidebar:['Sidebar + Main','Dashboards, admin panels, settings and docs.'],
+    split:['Split 50/50','Hero sections, feature highlights, sign-up pages.'],
+    stack:['Stacked Sections','Landing pages — one section after another, top to bottom.']};
+  pv.innerHTML=`<div class="pv-label">Preview · <span class="pk-name"></span></div><div class="pk-use">${ic('bulb')}<span class="pk-w">When to use:</span> <span class="pk-d"></span></div><div class="pk-area"><div class="pk-frame"></div></div>`;
+  const frame=$('.pk-frame',pv),code=Code('style.css',{map:[['.gallery','.pk-gal'],['.layout','.pk-sb'],['.hero','.pk-split'],['.page','.pk-stack']]});
+  const st={pat:'gallery',dev:'desk',gap:20};
+  const L=w=>`<div class="lp-l" style="width:${w}%"></div>`;
+  const MQ=(sel,m)=>({raw:`<span class="a">@media</span> (<span class="p">max-width</span>: <span class="v">768px</span>) { <span class="s">${sel}</span> { <span class="p">grid-template-columns</span>: <span class="v${m?' f':''}">1fr</span>; } }`});
   function render(){
-    let h='';
-    if(st.pat==='grid'){h=`<div class="lp-grid" style="grid-template-columns:repeat(${st.cols},1fr);gap:${st.gap}px">${COL.map(c=>`<div class="lp-card"><div class="lp-img" style="--c:${c}"></div><div class="lp-l" style="width:80%"></div><div class="lp-l" style="width:55%"></div></div>`).join('')}</div>`;
-      code.set([{sel:'.gallery',rows:[[['display','grid'],['grid-template-columns',`repeat(${st.cols}, 1fr)`]],[['gap',px(st.gap)]]]}]);}
-    if(st.pat==='rows'){h=`<div class="lp-rows" style="gap:${st.gap}px">${COL.slice(0,st.rows).map((c,i)=>`<div class="lp-row"><div class="lp-img" style="--c:${c}"></div><div class="tx"><b>Row ${i+1}</b><div class="lp-l" style="width:70%"></div><div class="lp-l" style="width:45%"></div></div></div>`).join('')}</div>`;
-      code.set([{sel:'.stack',rows:[[['display','flex'],['flex-direction','column']],[['gap',px(st.gap)]]]}]);}
-    if(st.pat==='cols'){const tpl=st.side==='left'?RT[st.ratio]:RT[st.ratio].split(' ').reverse().join(' ');
-      const side=`<div class="lp-side"><span class="lp-lab">COLUMN · SIDEBAR</span><div class="av"></div>${[['grid','Dashboard'],['folder','Projects'],['calendar','Calendar'],['users','Team'],['settings','Settings']].map(([i,t])=>`<a>${ic(i)}${t}</a>`).join('')}</div>`;
-      const mn=`<div class="lp-main"><span class="lp-lab">COLUMN · MAIN CONTENT</span><b>Welcome back 👋</b><div class="lp-l" style="width:70%"></div><div class="lp-l" style="width:50%"></div><div class="blocks"><i></i><i></i><i></i><i></i></div></div>`;
-      h=`<div class="lp-cols" style="grid-template-columns:${tpl};gap:${st.gap}px">${st.side==='left'?side+mn:mn+side}</div>`;
-      code.set([{sel:'.layout',rows:[[['display','grid'],['grid-template-columns',tpl.replace(/fr/g,'fr')]],[['gap',px(st.gap)]]]}]);}
-    lp.innerHTML=h;
-    gG.classList.toggle('hide',st.pat!=='grid');gR.classList.toggle('hide',st.pat!=='rows');gC.classList.toggle('hide',st.pat!=='cols');
+    const m=st.dev==='mob',g=st.gap+'px';let h='',blocks=[],pr='',prb='';
+    frame.classList.toggle('m',m);$('.pk-name',pv).textContent=PAT[st.pat][0];$('.pk-d',pv).textContent=PAT[st.pat][1];
+    if(st.pat==='gallery'){
+      h=`<div class="pk-gal" style="gap:${g}">${COL.map(c=>`<div class="lp-card"><div class="lp-img" style="--c:${c}"></div>${L(80)}${L(50)}</div>`).join('')}</div>`;
+      blocks=[{sel:'.gallery',rows:[[['display','grid'],['gap',px(st.gap)]],[['grid-template-columns','repeat(auto-fit, minmax(220px, 1fr))']]]},{c:'auto-fit = columns drop by themselves on small screens'}];
+      prb=`Buat card gallery responsive dengan 8 product card. Guna CSS grid repeat(auto-fit, minmax(220px, 1fr)) dan gap ${st.gap}px, supaya jadi 4 column di desktop dan 1 column di mobile tanpa media query.`;
+      pr=`Create a responsive card gallery of 8 product cards. Use CSS grid with repeat(auto-fit, minmax(220px, 1fr)) and a ${st.gap}px gap, so it shows 4 columns on desktop and 1 column on mobile without media queries.`;
+    }
+    if(st.pat==='sidebar'){
+      const side=`<div class="lp-side"><div class="av"></div>${[['grid','Dashboard'],['folder','Projects'],['calendar','Calendar'],['users','Team']].map(([i,t])=>`<a>${ic(i)}<span>${t}</span></a>`).join('')}</div>`;
+      h=`<div class="pk-sb" style="gap:${g}">${side}<div class="lp-main"><b>Welcome back 👋</b>${L(70)}${L(50)}<div class="blocks"><i></i><i></i><i></i><i></i></div></div></div>`;
+      blocks=[{sel:'.layout',rows:[[['display','grid'],['gap',px(st.gap)]],[['grid-template-columns','260px 1fr']]]},MQ('.layout',m)];
+      prb=`Buat layout dashboard dengan sidebar 260px di kiri dan main content di kanan, guna CSS grid dengan gap ${st.gap}px. Bawah 768px, susun menegak: sidebar jadi menu mendatar di atas.`;
+      pr=`Create a dashboard layout with a 260px sidebar on the left and the main content on the right, using CSS grid with a ${st.gap}px gap. On screens under 768px, stack them: the sidebar becomes a horizontal menu at the top.`;
+    }
+    if(st.pat==='split'){
+      h=`<div class="pk-split" style="gap:${g}"><div class="tx"><small>NEW · 2026</small><b>Grow Your Business</b>${L(90)}${L(70)}<span class="cta">Get Started</span></div><div class="lp-img" style="--c:#7C3AED"></div></div>`;
+      blocks=[{sel:'.hero',rows:[[['display','grid'],['gap',px(st.gap)]],[['grid-template-columns','1fr 1fr'],['align-items','center']]]},MQ('.hero',m)];
+      prb=`Buat hero section split 50/50: headline, teks ringkas dan button "Get Started" di kiri, gambar di kanan. Guna CSS grid (1fr 1fr) dengan gap ${st.gap}px, center secara menegak. Di mobile (bawah 768px), letak teks di atas gambar.`;
+      pr=`Create a hero section split 50/50: headline, short text and a "Get Started" button on the left, an image on the right. Use CSS grid (1fr 1fr) with a ${st.gap}px gap, vertically centered. On mobile (under 768px), stack the text above the image.`;
+    }
+    if(st.pat==='stack'){
+      h=`<div class="pk-stack" style="gap:${g}"><div class="sec s1"><b>Hero</b>${L(60)}</div><div class="sec s2"><b>Features</b><div class="row"><i></i><i></i><i></i></div></div><div class="sec s3"><b>Testimonials</b>${L(70)}</div><div class="sec s4"><b>Call to Action</b><span class="cta">Sign Up</span></div></div>`;
+      blocks=[{sel:'.page',rows:[[['display','flex'],['flex-direction','column']],[['gap',px(st.gap)]]]}];
+      prb=`Buat landing page dengan section full-width disusun atas ke bawah: Hero, Features (3 card), Testimonials dan Call to Action. Guna flex-direction: column dengan jarak ${st.gap}px antara section. Kekalkan spacing dan max-width yang sama untuk setiap section.`;
+      pr=`Create a landing page made of full-width sections stacked top to bottom: Hero, Features (3 cards), Testimonials and a Call to Action. Use flex-direction: column with ${st.gap}px between sections. Keep the same spacing and max-width for every section.`;
+    }
+    frame.innerHTML=h;code.set(blocks);code.prompt(()=>isBM()?prb:pr);
   }
   const box=el('div','panel ctl-box');
-  const gG=el('div','grp'),gR=el('div','grp'),gC=el('div','grp');
-  gG.append(StepCtl('Columns',{value:st.cols,min:1,max:6,unit:'',onChange:v=>{st.cols=v;render()}}));
-  gR.append(StepCtl('Rows',{value:st.rows,min:1,max:4,unit:'',onChange:v=>{st.rows=v;render()}}));
-  gC.append(Seg({label:'Sidebar : Main ratio',cols:4,value:st.ratio,options:Object.keys(RT),onChange:v=>{st.ratio=v;render()}}),
-    Seg({label:'Sidebar position',value:st.side,options:[['left','Left'],['right','Right']],onChange:v=>{st.side=v;render()}}));
-  box.append(Seg({label:'Pattern',value:st.pat,options:[['grid','▦ Grid'],['rows','☰ Rows'],['cols','◫ Columns']],onChange:v=>{st.pat=v;render()}}),gG,gR,gC,
+  box.append(Seg({label:'Pattern',cols:2,value:st.pat,options:Object.entries(PAT).map(([k,v])=>[k,v[0]]),onChange:v=>{st.pat=v;render()}}),
+    Seg({label:'Screen',value:st.dev,options:[['desk',ic('monitor')+' Desktop'],['mob',ic('phone')+' Mobile']],onChange:v=>{st.dev=v;render()}}),
     Range({label:'gap',value:st.gap,min:0,max:40,onChange:v=>{st.gap=v;render()}}));
-  ctrl.append(box,Tip('<b>Grid</b> = gallery/products. <b>Rows</b> = stacked sections. <b>Columns</b> = sidebar + content.'));
+  ctrl.append(box,Tip('Pick the <b>pattern</b> first, then the details. Switch to <b>Mobile</b> — every pattern collapses to 1 column.'));
+  main.append(code);render();
+};
+
+/* ---------- 19 · Prompt Builder ---------- */
+PG.p19a=sec=>{
+  const pv=$('.pg-preview',sec),ctrl=$('.pg-ctrl',sec),main=$('.pg-main',sec);
+  const PAGE={landing:'landing page',dash:'admin dashboard',login:'login page',pricing:'pricing page'};
+  const STYLE={neon:['dark neon','dark navy background with glowing cyan and purple accents'],light:['minimal light','clean white background, soft shadows and plenty of whitespace'],glass:['glassmorphism','frosted glass cards with blur over a colorful gradient background']};
+  const LAY={split:'a split 50/50 hero (text left, image right)',grid:'a 3-column card grid',side:'a left sidebar with the main content on the right'};
+  const COMP=[['nav','Navbar'],['cards','Cards'],['form','Form'],['testi','Testimonials'],['footer','Footer']];
+  const COLORS={'#22E5FF':'cyan','#A855F7':'purple','#EC4899':'pink','#22C55E':'green','#F59E0B':'amber'};
+  const st={page:'landing',style:'neon',lay:'split',ac:'#22E5FF',comp:{nav:1,cards:1,form:0,testi:0,footer:1},mob:true};
+  pv.innerHTML=`<div class="pv-label">Preview · Wireframe</div><div class="pb-wf"></div>`;
+  const wf=$('.pb-wf',pv),code=Code('prompt.md',{});
+  const PAGE_BM={landing:'landing page',dash:'admin dashboard',login:'page login',pricing:'page pricing'};
+  const STYLE_BM={neon:['dark neon','background navy gelap dengan aksen cyan dan ungu yang glow'],light:['minimal light','background putih bersih, shadow lembut dan banyak ruang kosong'],glass:['glassmorphism','card kaca frosted dengan blur atas background gradient berwarna']};
+  const LAY_BM={split:'hero split 50/50 (teks kiri, gambar kanan)',grid:'card grid 3 column',side:'sidebar di kiri dengan main content di kanan'};
+  const COLORS_BM={'#22E5FF':'cyan','#A855F7':'ungu','#EC4899':'pink','#22C55E':'hijau','#F59E0B':'amber'};
+  function buildBM(){
+    const c=COMP.filter(([k])=>st.comp[k]).map(([,t])=>t.toLowerCase());
+    const list=c.length>1?c.slice(0,-1).join(', ')+' dan '+c.at(-1):(c[0]||'');
+    return `Bina ${PAGE_BM[st.page]} dengan style ${STYLE_BM[st.style][0]}: ${STYLE_BM[st.style][1]}.\n`+
+      `Layout: guna ${LAY_BM[st.lay]}.\n`+
+      `Warna utama: ${COLORS_BM[st.ac]} (${st.ac}) untuk button, link dan highlight.\n`+
+      (list?`Sertakan: ${list}.\n`:'')+
+      `Guna spacing yang konsisten (skala 8px), bucu bulat 16px dan hover state yang jelas pada button.\n`+
+      (st.mob?`Pastikan responsive sepenuhnya: mobile-first, jadi 1 column bawah 768px dan navbar bertukar jadi hamburger menu.`:`Desktop sahaja buat masa ini (lebar minimum 1280px).`);
+  }
+  function build(){
+    const c=COMP.filter(([k])=>st.comp[k]).map(([,t])=>t.toLowerCase());
+    const list=c.length>1?c.slice(0,-1).join(', ')+' and '+c.at(-1):(c[0]||'');
+    return `Build a ${PAGE[st.page]} in a ${STYLE[st.style][0]} style: ${STYLE[st.style][1]}.\n`+
+      `Layout: use ${LAY[st.lay]}.\n`+
+      `Primary color: ${COLORS[st.ac]} (${st.ac}) for buttons, links and highlights.\n`+
+      (list?`Include: ${list}.\n`:'')+
+      `Use consistent spacing (8px scale), rounded corners of 16px and clear hover states on buttons.\n`+
+      (st.mob?`Make it fully responsive: mobile-first, collapse to 1 column under 768px and turn the navbar into a hamburger menu.`:`Desktop only for now (min width 1280px).`);
+  }
+  function render(){
+    wf.className='pb-wf '+st.style+' '+st.lay;wf.style.setProperty('--ac',st.ac);
+    const L=w=>`<i class="ln" style="width:${w}%"></i>`;
+    let body='';
+    if(st.lay==='split')body=`<div class="w-split"><div>${L(80)}${L(60)}<b class="btn"></b></div><div class="img"></div></div>`;
+    if(st.lay==='grid')body=`<div class="w-grid">${'<div class="cd"><div class="img"></div>'+L(70)+'</div>'.repeat(3)}</div>`;
+    if(st.lay==='side')body=`<div class="w-side"><div class="sb">${L(80)}${L(60)}${L(70)}${L(50)}</div><div class="mn">${L(50)}<div class="w-grid"><div class="cd"></div><div class="cd"></div></div></div></div>`;
+    wf.innerHTML=(st.comp.nav?`<div class="w-nav"><b class="wlg"></b><span>${L(100)}${L(100)}${L(100)}</span><b class="btn"></b></div>`:'')+body+
+      (st.comp.cards&&st.lay!=='grid'?`<div class="w-grid sm">${'<div class="cd">'+L(60)+'</div>'.repeat(3)}</div>`:'')+
+      (st.comp.testi?`<div class="w-testi"><i class="av"></i>${L(55)}</div>`:'')+
+      (st.comp.form?`<div class="w-form"><i class="in"></i><b class="btn"></b></div>`:'')+
+      (st.comp.footer?`<div class="w-foot">${L(30)}${L(20)}</div>`:'');
+    code.prompt(()=>isBM()?buildBM():build());
+    code.set([{c:'Prompt checklist'},{raw:`<span class="p">page</span>:       <span class="v">${PAGE[st.page]}</span>`},{raw:`<span class="p">style</span>:      <span class="v">${STYLE[st.style][0]}</span>`},{raw:`<span class="p">layout</span>:     <span class="v">${LAY[st.lay].split(' (')[0]}</span>`},{raw:`<span class="p">color</span>:      <span class="v">${st.ac}</span>`},{raw:`<span class="p">responsive</span>: <span class="v">${st.mob?'yes':'no'}</span>`}]);
+  }
+  const box=el('div','panel ctl-box pb-ctl');
+  const chips=ctl('Components'),cw=el('div','pb-chips');chips.append(cw);
+  COMP.forEach(([k,t])=>{const b=el('button',null,t);b.type='button';b.classList.toggle('on',!!st.comp[k]);b.onclick=()=>{st.comp[k]=!st.comp[k];b.classList.toggle('on',!!st.comp[k]);render()};cw.append(b)});
+  box.append(Seg({label:'Page type',cols:4,value:st.page,options:[['landing','Landing'],['dash','Dashboard'],['login','Login'],['pricing','Pricing']],onChange:v=>{st.page=v;render()}}),
+    Seg({label:'Style',cols:3,value:st.style,options:[['neon','Dark Neon'],['light','Minimal'],['glass','Glass']],onChange:v=>{st.style=v;render()}}),
+    Seg({label:'Layout',cols:3,value:st.lay,options:[['split','Split'],['grid','Card Grid'],['side','Sidebar']],onChange:v=>{st.lay=v;render()}}),
+    Swatches({label:'Primary color',colors:Object.keys(COLORS),value:st.ac,onChange:v=>{st.ac=v;render()}}),
+    chips,Toggle({label:'Responsive (mobile-first)',value:st.mob,onChange:v=>{st.mob=v;render()}}));
+  ctrl.append(box);
+  main.append(code);render();
+  requestAnimationFrame(()=>$('.ctab[data-t="ai"]',code).click());
+};
+
+/* ---------- 20 · Fix the UI (mini challenge) ---------- */
+PG.p20a=sec=>{
+  const pv=$('.pg-preview',sec),ctrl=$('.pg-ctrl',sec),main=$('.pg-main',sec);
+  const BUGS=[
+    ['Uneven padding','The card padding is different on every side.','.card { padding: 32px; }','Use the same padding on all sides of the card (32px)','Guna padding yang sama di semua sisi card (32px)'],
+    ['Low contrast text','Grey text on a dark card is hard to read.','.desc { color: #CBD5E1; }','Make the description text readable with strong contrast (#CBD5E1 on dark)','Jadikan teks penerangan mudah dibaca dengan kontras tinggi (#CBD5E1 atas gelap)'],
+    ['Buttons not aligned','The two buttons have different heights and sit on different lines.','.actions { display: flex; align-items: center; }','Align the two buttons on one row with the same height','Susun dua button dalam satu row dengan tinggi yang sama'],
+    ['Inconsistent gap','The feature list has random spacing between items.','.features { display: grid; gap: 12px; }','Use an even 12px gap between the feature items','Guna gap 12px yang sekata antara item feature'],
+    ['Mixed border radius','Card, input and button all use different corner radius.','--radius: 12px; /* card, input, button */','Use one border radius (12px) for the card, input and button','Guna satu border radius (12px) untuk card, input dan button']];
+  pv.innerHTML=`<div class="pv-label">Preview · Find 5 UI bugs — click on them</div><div class="fx-area"><div class="fxc">
+    <div class="fxc-card" data-b="0"><div class="fl"><span class="tag">PRO PLAN</span><h4>Launch your website</h4>
+      <p class="desc" data-b="1">Everything you need to build, launch and grow your online business.</p>
+      <div class="actions" data-b="2"><button type="button" class="b1">Get Started</button><button type="button" class="b2">Learn more</button></div></div><div class="fr">
+      <ul class="features" data-b="3"><li>${ic('check')} Unlimited pages</li><li>${ic('check')} Custom domain</li><li>${ic('check')} 24/7 support</li><li>${ic('check')} Free SSL</li></ul>
+      <div class="sub" data-b="4"><i class="in">you@email.com</i><button type="button">Subscribe</button></div></div></div></div>
+    <div class="fx-done">${ic('checkCircle')} All bugs fixed — clean UI!</div></div>`;
+  const area=$('.fx-area',pv),code=Code('style.css',{ai:'Fix these UI issues in my pricing card'});
+  const found=new Set();let fixed=false;
+  const list=el('div','fx-list');
+  function render(){
+    pv.classList.toggle('fixed',fixed);
+    $$('[data-b]',pv).forEach(n=>{const i=+n.dataset.b;n.classList.toggle('hit',found.has(i));let m=$(':scope>.mk',n);
+      if(found.has(i)&&!m){m=el('span','mk',`<b>${i+1}</b>${BUGS[i][0]}`);n.append(m)}if(!found.has(i)&&m)m.remove()});
+    list.innerHTML=BUGS.map((b,i)=>`<div class="fx-it${found.has(i)?' on':''}"><b>${found.has(i)?ic('check'):i+1}</b><div><strong>${found.has(i)?b[0]:'???'}</strong><small>${found.has(i)?b[1]:'Not found yet'}</small></div></div>`).join('');
+    cnt.innerHTML=`<b>${found.size}</b> / 5 found`;
+    const ok=[...found].sort();
+    code.set(ok.length?ok.map(i=>({raw:`${esc(BUGS[i][2].replace(/\s*\/\*.*\*\/$/,'')).replace(/^([^{]+)\{/,'<span class="s">$1</span>{')}  <span class="c">/* ${i+1}. ${BUGS[i][0]} */</span>`})):[{c:'Find a bug to see the fix'}]);
+    code.prompt(()=>isBM()?(ok.length?`Betulkan isu UI ini dalam pricing card saya:\n\n${ok.map(i=>`${i+1}. ${BUGS[i][4]}.`).join('\n')}\n\nKekalkan content dan warna yang sama.`:'Cari sekurang-kurangnya satu bug dulu, kemudian copy prompt.')
+      :(ok.length?`Fix these UI issues in my pricing card:\n\n${ok.map(i=>`${i+1}. ${BUGS[i][3]}.`).join('\n')}\n\nKeep the content and colors the same.`:'Find at least one bug first, then copy the prompt.'));
+  }
+  pv.addEventListener('click',e=>{const n=e.target.closest('[data-b]');if(!n||fixed)return;e.stopPropagation();found.add(+n.dataset.b);render()});
+  const cnt=el('div','fx-cnt');
+  const btns=el('div','fx-btns');
+  const bFix=el('button','act',`${ic('sparkle')} Fix all`);bFix.type='button';bFix.onclick=()=>{BUGS.forEach((_,i)=>found.add(i));fixed=true;render()};
+  const bRe=el('button','act ghost',`${ic('reset')} Try again`);bRe.type='button';bRe.onclick=()=>{found.clear();fixed=false;render()};
+  btns.append(bFix,bRe);
+  const box=el('div','panel ctl-box');box.append(cnt,list,btns);
+  ctrl.append(box);
   main.append(code);render();
 };
 
@@ -2925,6 +3280,60 @@ addEventListener('mousemove',wake);addEventListener('pointerdown',wake);wake();
 
 go((parseInt(location.hash.slice(1))||1)-1);
 addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1));if(n&&n-1!==cur)go(n-1)});
+
+/* ============ LANGUAGE · EN / BM ============ */
+/* BM is a dictionary keyed by the English text node (whitespace-collapsed). Technical terms stay English. */
+const BM={"Class":"Agenda","From the basics to a full AI-assisted UI workflow — step by step.":"Dari asas hingga workflow UI penuh dibantu AI — langkah demi langkah.","Foundations":"Asas","Slides 03–06":"Slaid 03–06","Slides 07–12":"Slaid 07–12","Slides 13–15":"Slaid 13–15","Slides 17–20":"Slaid 17–20","Slide 16":"Slaid 16","Common UI & Modals":"UI Lazim & Modals","Page Structure":"Struktur Halaman","Essential Pages":"Page Penting","Inspiration → Prompt":"Inspirasi → Prompt","Debugging Challenge":"Cabaran Debugging","Every topic =":"Setiap topik =","concept slide":"slaid konsep","you can copy.":"yang boleh anda salin.","Why UI Mastery":"Kenapa Kemahiran UI","Matters?":"Penting?","AI can generate UI. Can you control it?":"AI boleh jana UI. Boleh anda kawalnya?","Before":"Sebelum","After":"Selepas","Better Prompts":"Prompt Lebih Baik","Know what to ask":"Tahu apa nak diminta","and how to describe it":"dan cara menerangkannya","Better Interfaces":"Interface Lebih Baik","Get clean, modern":"Dapatkan UI yang bersih, moden","and professional UI":"dan profesional","Less Debugging":"Kurang Debugging","Fewer design issues":"Kurang isu design","and faster fixes":"dan pembaikan lebih pantas","Faster Development":"Bina Lebih Pantas","Turn ideas into real":"Jadikan idea","interfaces quickly":"interface sebenar, cepat","Understanding the":"Memahami","Every element in a web page":"Setiap element dalam web page","occupies space.":"mengambil ruang.","The actual content (text, image, etc.).":"Content sebenar (teks, imej, dll.).","Inner spacing around the content.":"Ruang dalam di sekeliling content.","The border around the padding.":"Border di sekeliling padding.","Outer spacing outside the border.":"Ruang luar di luar border.","Text, Image, etc.":"Teks, Imej, dll.","Padding is inside the element. Margin is outside the element.":"Padding berada di dalam element. Margin berada di luar element.","Inner spacing (inside the element)":"Ruang dalam (di dalam element)","Adds space inside the element":"Tambah ruang di dalam element","Pushes the content away from the border":"Tolak content jauh dari border","Affects the element's internal layout":"Menjejaskan layout dalaman element","Outer spacing (outside the element)":"Ruang luar (di luar element)","Adds space outside the element":"Tambah ruang di luar element","Pushes the element away from other elements":"Tolak element jauh dari element lain","Does not affect the element's internal content":"Tidak menjejaskan content dalaman element","Change top, right, bottom, left — watch the space INSIDE each card change.":"Ubah top, right, bottom, left — lihat ruang DALAM setiap card berubah.","Link all sides":"Kaitkan semua sisi","Click to edit":"Klik untuk edit","Undo edits":"Batal edit","Copy prompt":"Salin prompt","Padding = space":"Padding = ruang","INSIDE":"DALAM","the card. Top = guides, bottom = what users actually see.":"card. Atas = panduan, bawah = apa yang pengguna nampak.","Actual Result":"Hasil Sebenar","Margin is the space OUTSIDE the card. Watch neighbouring cards get pushed away.":"Margin ialah ruang di LUAR card. Lihat card berhampiran ditolak jauh.","Margin = space":"Margin = ruang","OUTSIDE":"LUAR","Essentials":"Asas","Key styling elements to make your UI look modern, clean and professional.":"Elemen styling utama untuk menjadikan UI anda moden, kemas dan profesional.","Set the right mood with a consistent color palette.":"Tetapkan mood yang sesuai dengan color palette yang konsisten.","Make your content clear and readable.":"Jadikan content anda jelas dan mudah dibaca.","Define the shape and structure.":"Tentukan bentuk dan struktur.","Create depth and separation.":"Cipta kedalaman dan pemisahan.","Card Example":"Contoh Card","Shadow adds depth and makes the design look modern.":"Shadow menambah kedalaman dan menjadikan design nampak moden.","Add highlight and focus.":"Tambah highlight dan fokus.","Pick H1–H4, P1 or P2, then tune its size, weight & line height.":"Pilih H1–H4, P1 atau P2, kemudian laraskan size, weight & line height.","Text element":"Element teks","Shape, depth and highlight — three things that make a UI look modern.":"Bentuk, kedalaman dan highlight — tiga perkara yang menjadikan UI nampak moden.","Outer glow = box-shadow with no offset":"Outer glow = box-shadow tanpa offset","Different states and styles for different purposes.":"State dan style berbeza untuk tujuan berbeza.","Visual feedback for user interaction.":"Maklum balas visual untuk interaksi pengguna.","Normal state":"State biasa","Mouse over":"Tetikus di atas","Being clicked":"Sedang diklik","Keyboard focus":"Focus papan kekunci","Not clickable":"Tidak boleh diklik","Different styles for different actions.":"Style berbeza untuk tindakan berbeza.","Main action (e.g. Save).":"Tindakan utama (cth. Save).","Less emphasis (e.g. Cancel).":"Penekanan kurang (cth. Cancel).","For alternative actions.":"Untuk tindakan alternatif.","Minimal style.":"Style minimal.","Destructive action (e.g. Delete).":"Tindakan memusnahkan (cth. Delete).","Positive action (e.g. Confirmed).":"Tindakan positif (cth. Confirmed).","A real button — hover, click or press Tab. Or force a specific state.":"Button sebenar — hover, klik atau tekan Tab. Atau paksa state tertentu.","One screen =":"Satu skrin =","one Primary":"satu Primary","button. Use Danger for destructive actions (delete).":"button. Guna Danger untuk tindakan memusnahkan (delete).","Preview · Real Button":"Preview · Button Sebenar","Try it — hover, click, or press":"Cuba — hover, klik, atau tekan","Clicks: 0":"Klik: 0","Give clear feedback to users for better experience.":"Beri maklum balas jelas kepada pengguna untuk pengalaman lebih baik.","Show that something is in progress.":"Tunjuk bahawa sesuatu sedang berjalan.","Confirm successful actions.":"Sahkan tindakan yang berjaya.","Success!":"Berjaya!","Your changes have been saved.":"Perubahan anda telah disimpan.","Inform users when something goes wrong.":"Maklumkan pengguna apabila sesuatu tidak kena.","Something":"Sesuatu","went wrong.":"telah tersilap.","Please try again later.":"Sila cuba lagi nanti.","Show when there is no data.":"Papar apabila tiada data.","No data found":"Tiada data ditemui","Get started by adding your first item.":"Mulakan dengan menambah item pertama anda.","Information":"Maklumat","Give important information to users.":"Beri maklumat penting kepada pengguna.","Just a heads up!":"Sekadar makluman!","Your session will expire in 5 minutes.":"Sesi anda akan tamat dalam 5 minit.","Every user action needs clear feedback.":"Setiap tindakan pengguna perlukan maklum balas jelas.","Choose state":"Pilih state","Simulate: save succeeds":"Simulasi: simpan berjaya","Simulate: save fails":"Simulasi: simpan gagal","Users":"Pengguna","can’t read your system’s mind":"tidak boleh baca fikiran sistem anda",". Always show: in progress, success, or failure.":". Sentiasa tunjuk: sedang berjalan, berjaya, atau gagal.","Heads up!":"Makluman!","Key navigation parts for desktop and mobile.":"Bahagian navigation utama untuk desktop dan mobile.","Top section of the website.":"Section teratas website.","User actions (notification, profile)":"Tindakan pengguna (notification, profil)","Main navigation links (desktop).":"Link navigation utama (desktop).","Main menu links":"Link menu utama","Show current page (active)":"Tunjuk halaman semasa (active)","Keep it clear and simple":"Pastikan jelas dan ringkas","Compact navigation for mobile.":"Navigation padat untuk mobile.","Logo (smaller)":"Logo (lebih kecil)","Hamburger menu (opens menu)":"Hamburger menu (buka menu)","Navigation for dashboard or web app.":"Navigation untuk dashboard atau web app.","Vertical navigation":"Navigation menegak","Group by sections":"Kumpulkan mengikut section","Show active state":"Tunjuk active state","Use icons and clear labels":"Guna icon dan label yang jelas","Show user's current location in the site.":"Tunjuk lokasi semasa pengguna dalam laman.","Show navigation path":"Tunjuk laluan navigation","Help users understand where they are":"Bantu pengguna faham di mana mereka berada","Keep it short and clear":"Ringkas dan jelas","Header, navbar & breadcrumb — click a link and watch the active state move.":"Header, navbar & breadcrumb — klik link dan lihat active state bergerak.","Active link style":"Gaya active link","Accent colour":"Warna accent","Show breadcrumb":"Tunjuk breadcrumb","Show search bar":"Tunjuk search bar","Click the menu & breadcrumb in the preview. The":"Klik menu & breadcrumb dalam preview. Maksud","= “you are here”.":"= “anda di sini”.","Preview · Desktop Website":"Preview · Website Desktop","The hamburger opens a drawer on mobile. Sidebars power dashboards & web apps.":"Hamburger membuka drawer pada mobile. Sidebar menggerakkan dashboard & web app.","Open / Close Mobile Menu":"Buka / Tutup Mobile Menu","Drawer slides in from":"Drawer menyelit masuk dari","Expanded":"Dikembangkan","Collapsed":"Dikecilkan","On mobile the":"Pada mobile,","hides the menu. A":"menyembunyikan menu. Sebuah","sidebar = more room for content.":"sidebar = lebih ruang untuk content.","Essential form elements for user input and interaction.":"Elemen form penting untuk input dan interaksi pengguna.","Capture text, email, password and more.":"Tangkap teks, email, password dan lain-lain.","Let users choose from a list of options.":"Biar pengguna pilih daripada senarai pilihan.","For single or multiple choices.":"Untuk pilihan tunggal atau berbilang.","On/off control for settings and preferences.":"Kawalan on/off untuk tetapan dan keutamaan.","For longer text input.":"Untuk input teks yang lebih panjang.","Every control works — type, select, check, toggle and upload.":"Setiap kawalan berfungsi — taip, pilih, tick, toggle dan upload.","Input height":"Tinggi input","Preview · Sign-up Form":"Preview · Form Pendaftaran","Account category":"Kategori akaun","Upload file":"Upload fail","Click to upload":"Klik untuk upload","or drag & drop":"atau drag & drop","PNG, JPG or PDF · max 5MB":"PNG, JPG atau PDF · maks 5MB","Essential components to build modern and consistent interfaces.":"Component penting untuk bina interface yang moden dan konsisten.","Container for content.":"Container untuk content.","Group related content":"Kumpulkan content yang berkaitan","Keep clean and simple":"Kekalkan kemas dan ringkas","Add image, title, description and action":"Tambah imej, tajuk, penerangan dan action","Show important messages.":"Tunjuk mesej penting.","Use consistent color and icon":"Guna warna dan icon yang konsisten","Keep message short and clear":"Pastikan mesej ringkas dan jelas","Allow dismiss if needed":"Benarkan dismiss jika perlu","Small label for status or category.":"Label kecil untuk status atau kategori.","Use for status, category or label":"Guna untuk status, kategori atau label","Keep it short (1–2 words)":"Ringkas (1–2 patah perkataan)","Use consistent color meaning":"Guna makna warna yang konsisten","Switch between different content sections.":"Tukar antara section content yang berbeza.","Use for related content":"Guna untuk content berkaitan","Highlight active tab":"Serlahkan active tab","Keep labels clear and short":"Pastikan label jelas dan ringkas","Show additional information on hover or focus.":"Tunjuk maklumat tambahan semasa hover atau focus.","Use for extra information":"Guna untuk maklumat tambahan","Show on hover or focus":"Tunjuk semasa hover atau focus","Keep the message short":"Pastikan mesej ringkas","Useful for form fields and icons":"Berguna untuk form field dan icon","Build a product card and badges — adjust spacing, corners and shadow.":"Bina product card dan badge — laraskan jarak, bucu dan shadow.","None":"Tiada","Soft":"Lembut","Strong":"Kuat","Badge text":"Teks badge","Badge colour":"Warna badge","Badge shape":"Bentuk badge","Rounded":"Bulat","Square":"Petak","Your badge":"Badge anda","Badge colours = meaning":"Warna badge = makna","Important messages, switchable content and quick help.":"Mesej penting, content boleh tukar dan bantuan pantas.","Alert style":"Gaya alert","Tab style":"Gaya tab","Tooltip position":"Kedudukan tooltip","Always show tooltip":"Sentiasa tunjuk tooltip","Use colours":"Guna warna","consistently":"secara konsisten",": blue = info, green = success, yellow = warning, red = error.":": biru = info, hijau = berjaya, kuning = amaran, merah = ralat.","Restore alerts":"Pulihkan alert","Interface components to show messages, progress and get user attention.":"Interface component untuk tunjuk mesej, progress dan tarik perhatian pengguna.","Show important messages":"Tunjuk mesej penting","without leaving the page.":"tanpa meninggalkan page.","Use for confirmation or important action":"Guna untuk pengesahan atau action penting","Provide clear action buttons":"Sediakan action button yang jelas","Show progress and keep":"Tunjuk progress dan pastikan","users informed.":"pengguna sentiasa dimaklumkan.","Use for data loading or processing":"Guna untuk loading atau pemprosesan data","Show clear progress (spinner or bar)":"Tunjuk progress yang jelas (spinner atau bar)","Keep a short and friendly message":"Kekalkan mesej yang ringkas dan mesra","Show system messages":"Tunjuk mesej sistem","and user feedback.":"dan maklum balas pengguna.","Use for success, error, warning or info":"Guna untuk berjaya, ralat, amaran atau info","Keep the message short and clear":"Pastikan mesej ringkas dan jelas","Click a trash icon to open the modal. Fire toasts from the left panel.":"Klik icon tong sampah untuk buka modal. Cetuskan toast dari panel kiri.","Open Delete Modal":"Buka Delete Modal","Fire a toast":"Cetuskan toast","Toast position":"Kedudukan toast","Top right":"Atas kanan","Top center":"Atas tengah","Bottom right":"Bawah kanan","Bottom center":"Bawah tengah","Modal backdrop blur":"Blur backdrop modal","Spinner, progress bar and skeleton loading — tell users something is happening.":"Spinner, progress bar dan skeleton loading — beritahu pengguna sesuatu sedang berlaku.","Spinner size":"Saiz spinner","Spinner speed":"Kelajuan spinner","Shimmer effect":"Kesan shimmer","Load data (show skeleton)":"Load data (tunjuk skeleton)","Use layout components to organize content and create a clear structure.":"Guna layout component untuk susun content dan bina struktur yang jelas.","Wrap content with a consistent width and spacing.":"Bungkus content dengan lebar dan jarak yang konsisten.","Keep consistent max width":"Kekalkan max width yang konsisten","Add proper padding and margin":"Tambah padding dan margin yang sesuai","Create responsive layouts with rows and columns.":"Bina layout responsive dengan rows dan columns.","Use for complex layouts":"Guna untuk layout kompleks","Set number of rows and columns":"Tetapkan bilangan rows dan columns","Align and distribute items in a single row or column.":"Jajar dan agihkan item dalam satu row atau column.","Align items (left, center, right)":"Jajar item (kiri, tengah, kanan)","Use for navigation and toolbars":"Guna untuk navigation dan toolbar","Large section for key content such as hero, features or CTA.":"Section besar untuk content utama seperti hero, features atau CTA.","Use clear structure (text, image, CTA)":"Guna struktur yang jelas (teks, imej, CTA)","Keep proper spacing":"Kekalkan jarak yang sesuai","Create visual separation and maintain consistent spacing.":"Wujudkan pemisahan visual dan kekalkan jarak yang konsisten.","Spacing (Margin / Padding)":"Jarak (Margin / Padding)","Use divider to separate sections":"Guna divider untuk asingkan section","Use consistent spacing between elements":"Guna jarak yang konsisten antara elemen","Align items in a single row or column — perfect for navbars & toolbars.":"Jajar item dalam satu row atau column — sesuai untuk navbar & toolbar.","(main axis)":"(paksi utama)","(cross axis)":"(paksi silang)","Navbar classic:":"Navbar klasik:","Grid handles rows + columns. A container controls the maximum content width.":"Grid mengendalikan rows + columns. Container mengawal lebar content maksimum.","together. Container keeps content from stretching too wide on big screens.":"bersama. Container menghalang content daripada terlalu melebar pada skrin besar.","Use grid, rows and columns to organize your content in a clean and consistent layout.":"Gunakan grid, rows dan columns untuk menyusun content anda dalam layout yang kemas dan konsisten.","Use grid to create multiple columns with equal spacing.":"Gunakan grid untuk cipta beberapa columns dengan jarak yang sama.","Use rows to stack sections vertically.":"Gunakan rows untuk susun sections secara menegak.","Use columns to divide content side by side.":"Gunakan columns untuk bahagikan content bersebelahan.","Real page patterns built from grid & flexbox — pick one, then check it on mobile.":"Pattern page sebenar dibina daripada grid & flexbox — pilih satu, kemudian semak pada mobile.","Screen":"Skrin","Pick the":"Pilih","first, then the details. Switch to":"dahulu, kemudian butiran. Tukar ke","— every pattern collapses to 1 column.":"— setiap pattern menjadi 1 column.","When to use:":"Bila guna:","Products, blog posts, portfolio — many items of the same type.":"Produk, blog post, portfolio — banyak item yang sama jenis.","Common layout structure used in modern websites.":"Struktur layout biasa yang digunakan dalam website moden.","Optional section for announcement,":"Section pilihan untuk pengumuman,","contact info or promotions.":"maklumat hubungan atau promosi.","and user actions.":"dan tindakan pengguna.","Main banner with headline, visual":"Banner utama dengan headline, visual","and call-to-action (CTA).":"dan call-to-action (CTA).","Page content such as features,":"Content page seperti features,","products, articles or sections.":"produk, artikel atau sections.","Links, contact information,":"Pautan, maklumat hubungan,","social media and other details.":"media sosial dan butiran lain.","Copyright notice, privacy policy":"Notis hak cipta, dasar privasi","and terms of service.":"dan terma perkhidmatan.","Hover or click each part. Toggle sections on and off.":"Hover atau klik setiap bahagian. Hidupkan dan matikan sections.","Almost every website follows this order:":"Hampir setiap website mengikut susunan ini:","Make your website look good and work well on all devices.":"Pastikan website anda nampak cantik dan berfungsi dengan baik pada semua peranti.","Design different layouts based on screen size.":"Reka layout berbeza berdasarkan saiz skrin.","Full navigation":"Navigation penuh","Multi-column layout":"Layout multi-column","More content":"Lebih banyak content","Adjusted spacing":"Spacing diselaraskan","Balanced layout":"Layout seimbang","Simplified navigation":"Navigation dipermudah","Stacked sections":"Sections bertindan","Optimized spacing":"Spacing dioptimumkan","Single column":"Satu column","Larger touch area":"Kawasan sentuh lebih besar","Navigation adapts based on screen size.":"Navigation menyesuaikan diri mengikut saiz skrin.","Show full menu items":"Papar semua item menu","Can include search, cart and user icon":"Boleh termasuk search, cart dan icon pengguna","Suitable for wide screen":"Sesuai untuk skrin lebar","Use hamburger menu (☰)":"Guna hamburger menu (☰)","Keep only important icons":"Kekalkan icon penting sahaja","Clean and simple navigation":"Navigation yang kemas dan ringkas","Drag the handle or pick a device — watch the layout & navbar adapt.":"Seret handle atau pilih device — lihat layout & navbar menyesuaikan diri.","Breakpoint / device":"Breakpoint / peranti","Screen width":"Lebar skrin","Below":"Di bawah","the navbar turns into a hamburger. Columns go":"navbar bertukar menjadi hamburger. Columns menjadi","for":"untuk","The most common pages in a SaaS application.":"Page paling biasa dalam aplikasi SaaS.","Introduce your product and attract users.":"Perkenalkan produk anda dan tarik pengguna.","Let users create an account and sign in.":"Benarkan pengguna cipta akaun dan log masuk.","Show an overview and user activity.":"Papar ringkasan dan aktiviti pengguna.","Manage users, data and system.":"Urus pengguna, data dan sistem.","Let users manage their account and preferences.":"Benarkan pengguna urus akaun dan keutamaan mereka.","Show pricing plans and let users subscribe.":"Papar pelan harga dan benarkan pengguna melanggan.","Note:":"Nota:","Not all SaaS applications require all of these pages. It depends on the product's features and target users.":"Tak semua SaaS perlukan semua page ini — ikut features produk & sasaran pengguna.","How to Find":"Cara Mencari","UI Inspiration":"Inspirasi UI","Find references before you start building.":"Cari rujukan sebelum anda mula membina.","Discover UI styles and create moodboards.":"Terokai gaya UI dan cipta moodboard.","Get ideas for color schemes, layouts and overall UI direction.":"Dapatkan idea untuk color scheme, layout dan hala tuju UI keseluruhan.","Explore high-quality UI designs and components.":"Terokai reka bentuk UI dan components berkualiti tinggi.","Find creative UI concepts and modern design patterns.":"Cari konsep UI kreatif dan design pattern moden.","Brainstorm UI ideas and get design suggestions.":"Cetus idea UI dan dapatkan cadangan design.","Get layout ideas, variations and detailed prompts for your UI.":"Dapatkan idea layout, variasi dan prompt terperinci untuk UI anda.","From":"Dari","to":"ke","Turn visual inspiration into precise AI instructions.":"Tukar inspirasi visual jadi arahan AI yang tepat.","Find a design you like.":"Cari design yang anda suka.","Describe the UI clearly.":"Terangkan UI dengan jelas.","Get a similar UI using AI.":"Hasilkan UI yang serupa menggunakan AI.","Pick the options — get a clear, complete prompt for your AI coding tool.":"Pilih pilihan — dapatkan prompt yang jelas dan lengkap untuk AI coding tool anda.","Page type":"Jenis page","Style":"Gaya","Learn to identify and fix UI problems with AI.":"Belajar kenal pasti dan baiki masalah UI dengan AI.","Inspect":"Periksa","Look at the UI and check what's wrong.":"Lihat UI dan semak apa yang tidak kena.","Use browser inspect tools to check the layout, spacing and element structure.":"Guna browser inspect tools untuk semak layout, spacing dan struktur element.","Identify":"Kenal pasti","Find the exact problem.":"Cari masalah yang tepat.","Misaligned cards":"Card tidak sejajar","Inconsistent spacing":"Spacing tidak konsisten","Identify the issues such as alignment, spacing, overflow or responsive behaviour.":"Kenal pasti isu seperti alignment, spacing, overflow atau gelagat responsive.","Fix":"Baiki","Ask AI to fix the problem.":"Minta AI baiki masalah itu.","Proper alignment":"Alignment yang betul","Consistent spacing":"Spacing yang konsisten","Same design style":"Gaya design yang sama","Verify":"Sahkan","Check the result and make sure it works properly.":"Semak hasilnya dan pastikan ia berfungsi dengan baik.","Verify the fixed UI on different screen sizes and make sure everything looks good.":"Sahkan UI yang telah dibaiki pada saiz skrin berbeza dan pastikan semuanya nampak elok.","Fix the UI":"Baiki UI","Mini challenge: this card has 5 UI bugs. Click each one you can spot.":"Mini challenge: card ini ada 5 bug UI. Klik setiap satu yang anda nampak.","/ 5 found":"/ 5 dijumpai","Not found yet":"Belum dijumpai","Fix all":"Betulkan semua","Try again":"Cuba lagi","Preview · Find 5 UI bugs — click on them":"Preview · Cari 5 bug UI — klik padanya","All bugs fixed — clean UI!":"Semua bug dibetulkan — UI kemas!","Reset playground":"Tetapkan semula playground","Show password":"Tunjuk kata laluan","Write your message here…":"Tulis mesej anda di sini…","Dismiss":"Tutup","Drag to resize":"Seret untuk ubah saiz","Copied!":" Disalin!","Normal state, ready to be clicked":"State biasa, sedia untuk diklik","Mouse over — brighter + glow":"Tetikus di atas — lebih terang + glow","Being clicked — shrinks & darkens":"Sedang diklik — mengecil & lebih gelap","Keyboard focus (Tab) — clear visible ring":"Focus papan kekunci (Tab) — ring yang jelas","Not clickable — faded out":"Tak boleh diklik — pudar","Saving…":"Menyimpan…","Something went wrong":"Ada masalah berlaku","Connection failed. Please try again.":"Sambungan gagal. Sila cuba lagi.","Try Again":"Cuba Lagi","No data yet":"Belum ada data","+ Add Item":"+ Tambah Item","Please fill in your name & email.":"Sila isi nama & email anda.","Dashboards, admin panels, settings and docs.":"Dashboard, panel admin, tetapan dan dokumentasi.","Hero sections, feature highlights, sign-up pages.":"Hero section, sorotan ciri, page daftar.","Landing pages — one section after another, top to bottom.":"Landing page — section demi section, atas ke bawah.","Uneven padding":"Padding tak sekata","The card padding is different on every side.":"Padding card berbeza di setiap sisi.","Low contrast text":"Teks kontras rendah","Grey text on a dark card is hard to read.":"Teks kelabu atas card gelap susah dibaca.","Buttons not aligned":"Button tak sejajar","The two buttons have different heights and sit on different lines.":"Dua button tinggi berbeza dan duduk di baris berlainan.","Inconsistent gap":"Gap tak konsisten","The feature list has random spacing between items.":"Senarai ciri ada jarak rawak antara item.","Mixed border radius":"Border radius bercampur","Card, input and button all use different corner radius.":"Card, input dan button guna radius bucu yang berbeza.","Images load only when they scroll into view — faster first load, less data.":"Gambar hanya dimuat bila di-scroll masuk paparan — load pertama lebih laju, data lebih jimat.","Scroll the list":"Scroll senarai","Lazy load images":"Lazy load gambar","Lazy load images below the fold":"Lazy load gambar bawah skrin","Spinner, progress bar, skeleton and lazy load — tell users something is happening.":"Spinner, progress bar, skeleton dan lazy load — beritahu user sesuatu sedang berlaku.","Agenda":"Kelas","Give me modern SaaS dashboard UI ideas for a project management tool.":"Beri saya idea UI SaaS dashboard yang moden untuk tool pengurusan projek.","Fix the layout issues in this dashboard. Align the cards properly, improve spacing and make it responsive for mobile. Keep the same design style and colors.":"Betulkan isu layout dalam dashboard ini. Susun card dengan betul, baiki spacing dan jadikan responsive untuk mobile. Kekalkan style design dan warna yang sama."};
+const BM_RX=[[/^(\d+) \/ (\d+) loaded$/,'$1 / $2 dimuat'],[/^(\d+)(m|h) ago$/,'$1$2 lalu']];
+const I18N_SKIP='pre,.ai-pr,script,style,.code-bar .ctab:first-of-type,#langSw';
+const ORIG=new WeakMap(),SET=new WeakMap();
+let lang='en';try{lang=localStorage.getItem('deck-lang')==='bm'?'bm':'en'}catch(e){}
+function bmOf(raw){
+  const k=raw.replace(/\s+/g,' ').trim();if(!k)return null;
+  if(Object.prototype.hasOwnProperty.call(BM,k))return BM[k];
+  for(const [rx,to] of BM_RX)if(rx.test(k))return k.replace(rx,to);
+  return null;
+}
+function trNode(n){
+  if(!n.parentElement||n.parentElement.closest(I18N_SKIP))return;
+  if(SET.has(n)&&SET.get(n)!==n.nodeValue){ORIG.delete(n);SET.delete(n)}  /* app changed the text itself */
+  const raw=ORIG.has(n)?ORIG.get(n):n.nodeValue;
+  if(lang==='bm'){
+    const t=bmOf(raw);if(t==null)return;
+    const m=raw.match(/^(\s*)[\s\S]*?(\s*)$/),v=m[1]+t+m[2];
+    ORIG.set(n,raw);if(n.nodeValue!==v)n.nodeValue=v;SET.set(n,v);
+  }else if(ORIG.has(n)){n.nodeValue=raw;ORIG.delete(n);SET.delete(n)}
+}
+function trAttr(e){
+  if(!e.hasAttribute('placeholder'))return;
+  if(!e.dataset.enPh)e.dataset.enPh=e.getAttribute('placeholder');
+  const t=lang==='bm'&&bmOf(e.dataset.enPh);e.setAttribute('placeholder',t||e.dataset.enPh);
+}
+function trTree(root){
+  if(root.nodeType===3){trNode(root);return}
+  if(root.nodeType!==1)return;
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while((n=w.nextNode()))trNode(n);
+  if(root.matches('[placeholder]'))trAttr(root);root.querySelectorAll('[placeholder]').forEach(trAttr);
+}
+new MutationObserver(ms=>{
+  if(lang!=='bm')return;
+  for(const m of ms){
+    if(m.type==='characterData'){if(SET.get(m.target)!==m.target.nodeValue)trNode(m.target)}
+    else m.addedNodes.forEach(trTree);
+  }
+}).observe(document.body,{subtree:true,childList:true,characterData:true});
+const langSw=el('div','lang-sw',`<button type="button" data-l="en">EN</button><button type="button" data-l="bm">BM</button>`);langSw.id='langSw';
+document.body.append(langSw);
+function setLang(l){
+  lang=l;try{localStorage.setItem('deck-lang',l)}catch(e){}
+  document.documentElement.lang=l==='bm'?'ms':'en';
+  $$('button',langSw).forEach(b=>b.classList.toggle('on',b.dataset.l===l));
+  trTree(document.body);
+  document.dispatchEvent(new Event('deck-lang'));
+}
+$$('button',langSw).forEach(b=>b.onclick=e=>{e.stopPropagation();setLang(b.dataset.l);b.blur()});
+addEventListener('keydown',e=>{if((e.key==='l'||e.key==='L')&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)&&!e.target.isContentEditable)setLang(lang==='bm'?'en':'bm')});
+setLang(lang);
 </script>
 </body>
 </html>
