@@ -1,2 +1,9 @@
-videos/
+# Projek video (media besar, tak masuk git)
+courses/ui-mastery/videos/
+courses/github-power-skills/video/
+tutorials/*/video/
+short-videos/*/video*/
+
+# Versi lama & tool luar
+_archive/
 OpenMontage/

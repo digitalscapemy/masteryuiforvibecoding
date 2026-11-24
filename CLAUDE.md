@@ -1,59 +1,79 @@
 # masteryui — peta projek
 
-Folder ni pegang 2 kelas + beberapa video sampingan. Sebelum edit, pastikan edit **sumber** (bukan salinan / export / folder `old`).
+Folder ni pegang 2 kelas, 1 tutorial dan beberapa video pendek. Setiap projek duduk dalam foldernya sendiri: skrip/slide di atas, projek video dalam `video/` (atau `videos/`). Sebelum edit, pastikan edit **sumber** (bukan salinan / export / `_archive`).
 
-## 1. Kelas GitHub Power Skills for Vibe Coders (AKTIF)
+```
+index.html, login.html, slides/, Dockerfile, deploy/   deck kelas UI + deploy (kekal di root)
+courses/ui-mastery/          kelas Mastering UI for Vibe Coding
+courses/github-power-skills/ kelas GitHub Power Skills for Vibe Coders
+tutorials/wsl-docker/        tutorial WSL + Docker
+short-videos/                stiker-material, skrill-microstock, vibe-fbads, remotion-wow
+drafts/                      draf kelas Cloudflare (sedang ditulis)
+_archive/                    versi lama (ignored) — jangan edit, rujukan sahaja
+OpenMontage/                 repo luar (ignored)
+```
+
+Semua VO: ElevenLabs voice "Mikhail" (`6olOdhsgLdwwt9DbIIyp`), model `eleven_v4`.
+
+## 1. Kelas GitHub Power Skills for Vibe Coders (AKTIF) — `courses/github-power-skills/`
 
 | Apa | Sumber (edit sini) | Nota |
 |---|---|---|
-| Slide | `drafts/github-slide-XX.html` | 19 slide, susunan dalam `SLIDES` di `drafts/github-deck.html` |
-| Deck (tayang) | `drafts/github-deck.html` | preview: launch config `drafts` → http://localhost:8765/github-deck.html |
-| Shared CSS/JS slide | `drafts/assets/` (`base.css`, `base.js`, `dock.css`, `slide-no.js`) | |
-| Content asal | `drafts/github-slide-content.md`, `drafts/github-asas-draft.md` | rujukan, bukan sumber terkini |
-| VO (skrip) | `video-scripts/github-ecourse-vo.md` | klip c1–c39; ID ElevenLabs dalam `videos/github-power-skills/.vo-ids.txt` |
-| VO (audio) | `videos/github-power-skills/assets/vo/cNN.mp3` | |
-| Video | `videos/github-power-skills/` (HyperFrames) | |
+| Slide | `slides/github-slide-XX.html` | 19 slide, susunan dalam `SLIDES` di `slides/github-deck.html` |
+| Deck (tayang) | `slides/github-deck.html` | preview: launch config `drafts` → http://localhost:8765/github-deck.html |
+| Shared CSS/JS slide | `slides/assets/` (`base.css`, `base.js`, `dock.css`, `slide-no.js`) | lepas edit: `python tools/inline.py` dari `slides/` |
+| VO (skrip) | `github-ecourse-vo.md` | klip c1–c39 (tiada c36); ID ElevenLabs dalam `video/.vo-ids.txt` |
+| VO (audio) | `video/assets/vo/cNN.mp3` | lepas tukar: `python -I tools/timing.py` |
+| Video | `video/` (HyperFrames) | |
 
-**Video dibina DARI slide drafts.** `tools/build.py` baca `../../drafts` dan tulis `compositions/*.html`. Jadi:
-1. Edit slide dalam `drafts/` (jangan edit `compositions/` terus, ia akan ditimpa).
-2. `cd videos/github-power-skills && python -I tools/build.py`
-3. `python -I tools/export.py <no>` untuk render semula lesson tu sahaja (mis. `09`).
+**Video dibina DARI slide.** `video/tools/build.py` baca `../slides` dan tulis `compositions/*.html`. Jadi:
+1. Edit slide dalam `slides/` (jangan edit `compositions/` terus, ia akan ditimpa).
+2. `cd courses/github-power-skills/video && python -I tools/build.py`
+3. `python -I tools/export.py --render <no>` untuk render semula lesson tu sahaja (mis. `09`).
 
 Peta scene → klip VO → masa: `tools/scenes.json`, `tools/layout.txt`. Peta lesson → scene: `tools/lessons.json`.
 Timing VO masuk ikut `cues/<scene>.js`. Scene terminal `t1`–`t6` dan `end` dibuat tangan dalam `cues/*.html`.
-Export akhir: `export/NN-*.mp4` + `.png` + `youtube.txt`. `export-old/` = versi lama, jangan guna.
+Export akhir: `video/export/NN-*.mp4` + `.png` + `youtube.txt`.
 
 Gaya VO: BM, istilah teknikal English, "saya" / "Awak", tulis "file" bukan "fail", tiada caption.
 
-## 2. Kelas Mastering UI for Vibe Coding (SIAP, Nov 2–4)
+## 2. Kelas Mastering UI for Vibe Coding (SIAP, Nov 2–4) — `courses/ui-mastery/`
 
 | Apa | Sumber |
 |---|---|
-| Deck kelas | `index.html` (satu file besar) + gambar `slides/01–22.png` |
-| Thumbnail | `thumbnails/NN-*.png` |
-| Skrip video | `video-scripts/DRAFT-skrip-video.md` (rujukan) dan `videos/NN-*/VO.md` (sumber per video) |
-| Video | `videos/01-welcome` … `videos/20-ui-debugging`, guna helper `videos/_kit/` (`build.py`, `kit.js`, `index.tpl`) |
+| Deck kelas | `index.html` di root (satu file besar) + gambar `slides/01, 02, 21, 22.png` |
+| Thumbnail | `courses/ui-mastery/thumbnails/NN-*.png` |
+| Skrip video | `courses/ui-mastery/DRAFT-skrip-video.md` (rujukan) dan `videos/NN-*/VO.md` (sumber per video) |
+| Video | `courses/ui-mastery/videos/01-welcome` … `20-ui-debugging`, helper `videos/_kit/` (`build.py`, `kit.js`, `index.tpl`, `AGENT-BRIEF.md`) |
 | Deploy | `Dockerfile` + `deploy/` (nginx, password `DECK_PASSWORD`), hanya `index.html`, `login.html`, `slides/` |
 
-## 3. Video sampingan
+Video ambil slide terus dari root `index.html`: dalam folder video, `python -I ../_kit/build.py` (video 05: `python -I build.py`). Jangan tukar `data-name` section tanpa kemas `video.json`.
+Gaya VO: "Coach" + "Awak"; jangan guna "elemen", "lega", "bekas"; jangan sebut tab "AI Prompt"; nombor ditulis dalam perkataan.
+
+## 3. Tutorial WSL + Docker — `tutorials/wsl-docker/`
+
+| Video | Build (dalam `video/`) | Skrip / VO |
+|---|---|---|
+| WSL + Docker | `python -I build.py` → `export/WSL-Docker-VO.mp4` (`vo/vNN.mp3`) | `wsl-docker-vo.md` |
+| Sambungan Docker | `python -I build.py sambungan_cfg.py` → `export/Sambungan-Docker-VO.mp4` (`vo/sNN.mp3`) | `sambungan-docker-vo.md` |
+| Intro WSL | `video/intro/` (HyperFrames, launch config `wsl-intro`), guna `v01b.mp3` | sedang dibuat |
+
+`export/WSL-Docker-Full-VO.mp4` = dua video di atas digabung. Sumber rakaman: `Downloads/WSL Dockers.mp4`.
+Versi VO yang dipakai: `v08b`, `v13b` (`v08`, `v13` lama dalam `_archive/`). `v01` dalam video penuh, `v01b` dalam intro.
+
+## 4. Video pendek — `short-videos/`
 
 | Video | Folder | Skrip / VO | Status |
 |---|---|---|---|
-| WSL + Docker | `videos/wsl-docker/` (`build.py`, `vo/vNN.mp3`) | `video-scripts/wsl-docker-vo.md` | export ada |
-| Sambungan Docker | `videos/wsl-docker/` (`python -I build.py sambungan_cfg.py`, `vo/sNN.mp3`) | `video-scripts/sambungan-docker-vo.md` | export ada |
-| Intro WSL | `videos/wsl-docker/intro/` (HyperFrames, launch config `wsl-intro`) | guna `v01b.mp3` | sedang dibuat |
-| Stiker material | `videos/stiker-material/` (v2), `stiker-material-asal/` (asal) | `video-scripts/stiker-material-v2.md` | siap |
-| Skrill microstock | `videos/skrill-microstock/` | `video-scripts/paypal-skrill-multi-email.md` | |
-| FB ads Vibe Coding Fighter | `videos/vibe-fbads/`, `vibe-fbads-square/` | | |
-| Remotion test | `videos/remotion-wow/` | | eksperimen |
-
-Versi VO yang dipakai dalam build WSL: `v08b`, `v13b` (bukan `v08`, `v13`). `v01` dalam video penuh, `v01b` dalam intro.
+| Stiker material | `stiker-material/video/` (v2, VO ElevenLabs), `video-asal/` (suara asal) | `stiker-material/stiker-material-v2.md` | siap |
+| Skrill microstock | `skrill-microstock/video/` (`scripts/build.py`, satu `assets/vo/vo.wav`) | `skrill-microstock/paypal-skrill-multi-email.md`, logo dalam `plan-assets/` | siap |
+| FB ads Vibe Coding Fighter | `vibe-fbads/video/` (render terbaru `v3-60fps`), `video-square/` (belum render) | talking-head, tiada VO ElevenLabs | |
+| Remotion test | `remotion-wow/video/` | | eksperimen |
 
 ## Jangan edit
-- `drafts/old/`, `export-old/`, `renders/`, `export/` (hasil render), `OpenMontage/` (repo luar, ignored).
-- `videos/` dan `OpenMontage/` di-gitignore; `drafts/` dan kebanyakan `video-scripts/` belum di-commit.
+- `_archive/`, `renders/`, `export/` (hasil render), `OpenMontage/` (repo luar).
+- Folder `video/`, `videos/`, `_archive/`, `OpenMontage/` di-gitignore; skrip, slide dan thumbnail masuk git.
 
 ## Isu diketahui
-- Nama file export ikut kedudukan dalam `lessons.json` (01, 02…), bukan medan `no`. Jadi lesson `no: "00"` jadi `01-Welcome-...mp4`. Ini normal. Untuk render semula satu lesson: `python -I tools/export.py --render 09` (tanpa `--render` dia skip kalau file dah ada).
-- `videos/_kit/AGENT-BRIEF.md` masih rujuk folder lama `C:\Projects\Landing Page\vbui\` (sekarang `masteryui`).
-- Python `http.server` (preview drafts) boleh bagi slide lama dari cache browser; reload dengan `?v=` kalau edit tak nampak.
+- Nama file export ikut kedudukan dalam `lessons.json` (01, 02…) + `file[3:]`, bukan medan `no`. Jadi lesson `no: "00"` jadi `01-Welcome-...mp4`. Ini normal. Tanpa `--render`, export skip lesson yang file dia dah ada.
+- Python `http.server` (preview slide) boleh bagi slide lama dari cache browser; reload dengan `?v=` kalau edit tak nampak.

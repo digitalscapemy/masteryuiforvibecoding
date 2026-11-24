@@ -1,10 +1,10 @@
 """Make every slide self-contained, so it opens anywhere (server, file://, file preview).
 
-Shared files live in drafts/assets/. In a slide, reference them normally:
+Shared files live in slides/assets/. In a slide, reference them normally:
   <link rel="stylesheet" href="assets/dock.css">
   <script src="assets/slide-no.js"></script>
   <img src="assets/repo-public.png">
-Run:  python tools/inline.py      (from the drafts folder)
+Run:  python tools/inline.py      (from the slides folder)
 Each reference is replaced by the file's content, tagged with data-src, so running
 the script again after editing an asset refreshes every slide.
 """

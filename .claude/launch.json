@@ -4,13 +4,13 @@
     {
       "name": "drafts",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "drafts"],
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "courses/github-power-skills/slides"],
       "port": 8765
     },
     {
       "name": "wsl-intro",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["--yes", "hyperframes@0.9.41", "preview", "videos/wsl-docker/intro", "--port", "3012", "--foreground", "--open=false"],
+      "runtimeArgs": ["--yes", "hyperframes@0.9.41", "preview", "tutorials/wsl-docker/video/intro", "--port", "3012", "--foreground", "--open=false"],
       "port": 3012
     }
   ]
