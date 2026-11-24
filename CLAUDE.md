@@ -9,6 +9,7 @@ courses/github-power-skills/ kelas GitHub Power Skills for Vibe Coders
 tutorials/wsl-docker/        tutorial WSL + Docker
 short-videos/                stiker-material, skrill-microstock, vibe-fbads, remotion-wow
 courses/cloudflare/          kelas Cloudflare for Vibe Coders (DRAF, baru content)
+courses/hosting-tools/       video hosting tools (Netlify…Dokploy) untuk kelas beginner (DRAF: content + 32 slide)
 _archive/                    versi lama (ignored) — jangan edit, rujukan sahaja
 OpenMontage/                 repo luar (ignored)
 ```
@@ -64,6 +65,10 @@ Versi VO yang dipakai: `v08b`, `v13b` (`v08`, `v13` lama dalam `_archive/`). `v0
 ## 4. Kelas Cloudflare for Vibe Coders (DRAF) — `courses/cloudflare/`
 
 Baru ada `slide-content.md` (10 slide: tajuk, teks, idea visual, prompt AI). Bila mula buat slide, ikut susunan kelas GitHub: `slides/`, `vo.md`, `video/`.
+
+## 4b. Hosting Tools for Vibe Coders (DRAF) — `courses/hosting-tools/`
+
+Fakta & harga: `slide-content.md`. Slide **dijana**: edit teks dalam `slides/tools/data.py` (atau susun atur dalam `slides/tools/build.py`), kemudian `python -I tools/build.py` dari `slides/`. Jangan edit `hosting-slide-*.html` terus, ia akan ditimpa. Deck: launch config `hosting-slides` → http://localhost:8766/hosting-deck.html. Setiap tool 4 slide: `N` apa, `NA` pros & cons, `NB` framework + scale, `NC` kos + resources.
 
 ## 5. Video pendek — `short-videos/`
 

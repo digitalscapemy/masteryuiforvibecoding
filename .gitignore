@@ -7,3 +7,4 @@ short-videos/*/video*/
 # Versi lama & tool luar
 _archive/
 OpenMontage/
+__pycache__/
