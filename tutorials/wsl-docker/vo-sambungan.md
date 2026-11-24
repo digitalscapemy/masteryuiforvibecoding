@@ -1,6 +1,6 @@
 # Video · Sambungan: Buka Docker Desktop Kali Pertama
 
-Sumber: `Downloads/Sambungan Docker.mp4` (0:40, 1920×1080). Sambungan kepada video WSL + Docker ([wsl-docker-vo.md](wsl-docker-vo.md)).
+Sumber: `Downloads/Sambungan Docker.mp4` (0:40, 1920×1080). Sambungan kepada video WSL + Docker ([vo.md](vo.md)).
 VO: voice "Mikhail" (ElevenLabs, eleven_v4), sama macam video sebelum ni. "saya" / "anda", tulis "Docker" (bukan "Dockers"), tiada em dash.
 
 ## Apa yang salah dalam VO asal

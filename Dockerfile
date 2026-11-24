@@ -7,6 +7,6 @@ RUN sed -i 's/\r$//' /docker-entrypoint.d/30-deck-auth.sh /etc/nginx/deck.conf.t
  && chmod +x /docker-entrypoint.d/30-deck-auth.sh \
  && rm -f /etc/nginx/conf.d/default.conf
 
-COPY index.html login.html /usr/share/nginx/html/
-COPY slides /usr/share/nginx/html/slides
+COPY courses/ui-mastery/deck/index.html courses/ui-mastery/deck/login.html /usr/share/nginx/html/
+COPY courses/ui-mastery/deck/slides /usr/share/nginx/html/slides
 EXPOSE 80
