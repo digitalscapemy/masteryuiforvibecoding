@@ -64,7 +64,14 @@ Versi VO yang dipakai: `v08b`, `v13b` (`v08`, `v13` lama dalam `_archive/`). `v0
 
 ## 4. Kelas Cloudflare for Vibe Coders (DRAF) — `courses/cloudflare/`
 
-Baru ada `slide-content.md` (10 slide: tajuk, teks, idea visual, prompt AI). Bila mula buat slide, ikut susunan kelas GitHub: `slides/`, `vo.md`, `video/`.
+| Apa | Sumber (edit sini) | Nota |
+|---|---|---|
+| Content | `slide-content.md` (v4.1, fakta disemak 25 Nov 2026) | 4 part: Domain & DNS, Proxy & SSL, Security, R2 + bonus Email Routing. Fokus: Cloudflare di DEPAN app (VPS + EasyPanel), bukan host app di Cloudflare |
+| Slide | `slides/cf-slide-XX.html` | 18 slide (01–09 + A–D), susunan dalam `SLIDES` di `slides/cf-deck.html`. Setiap slide layout lain-lain |
+| Deck (tayang) | `slides/cf-deck.html` | launch config `cloudflare-slides` → http://localhost:8767/cf-deck.html |
+| Shared CSS/JS | `slides/assets/` (`base.css` tema hitam-oren, `dock.css`, `cf.js` ikon + butang PRO, `base.js`, `slide-no.js`) | lepas edit: `python -I tools/inline.py` dari `slides/` |
+
+Contoh tetap sepanjang kelas (sama dengan Super Stack): domain `sitiscakes.com`, IP `203.0.113.10`, Exabytes, VPS + EasyPanel. Butang **PRO** kanan atas = nota developer pro. Belum ada `vo.md` dan `video/`.
 
 ## 4b. Hosting Tools for Vibe Coders (DRAF) — `courses/hosting-tools/`
 

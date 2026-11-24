@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en" data-slide="04">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nameservers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<style data-src="assets/base.css">
+/* Shared look for the Cloudflare series slides (black, white glass, orange accents).
+   Same frame as the GitHub Power Skills deck, recoloured: --or replaces the GitHub green. */
+:root{
+  --bg:#000;--text:#fff;--body:#E8E8EC;--soft:#B9B9C2;--line:rgba(255,255,255,.78);
+  --or:#F6821F;--or-soft:#FFB25E;--or-glow:rgba(246,130,31,.55);--or-dim:rgba(246,130,31,.12);
+  --red:#F0373C;--red-glow:rgba(240,55,60,.55);
+  --ease:cubic-bezier(.2,.8,.2,1);--pop:cubic-bezier(.3,1.5,.5,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center;
+  background:radial-gradient(1000px 600px at 70% 58%,rgba(246,130,31,.06),transparent 70%),
+             radial-gradient(900px 560px at 30% 40%,rgba(255,255,255,.035),transparent 70%),var(--bg)}
+.abs{position:absolute}
+code,.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+/* header: the slide number is added by slide-no.js */
+.label{position:absolute;left:72px;top:40px;display:flex;align-items:center;gap:26px;font-size:30px;font-weight:700;letter-spacing:-.015em}
+.label span{animation:fadeRight .7s .25s var(--ease) both}
+.label .part{color:var(--or-soft);font-weight:800}
+.title{position:absolute;left:72px;top:104px;margin:0;font-size:80px;line-height:96px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;padding-bottom:6px}
+.title > span{display:inline-block;animation:rise .9s .35s var(--ease) both}
+.title em{font-style:normal;color:var(--or)}
+.bar{position:absolute;left:74px;top:208px;width:200px;height:12px;border-radius:6px;background:var(--or);
+  box-shadow:0 0 18px var(--or-glow);transform-origin:left;animation:growX .8s .8s var(--ease) both}
+.hook{position:absolute;left:74px;top:238px;width:1776px;margin:0;font-size:34px;line-height:46px;white-space:nowrap;font-weight:500;color:var(--body);letter-spacing:-.02em;
+  animation:fadeUp .8s 1s var(--ease) both}
+.hook b{color:#fff}
+
+/* glass card */
+.glass{border-radius:32px;background:linear-gradient(160deg,rgba(255,255,255,.08),rgba(255,255,255,.02) 45%,rgba(0,0,0,.4));
+  border:2.5px solid var(--line);box-shadow:0 0 24px rgba(255,255,255,.18),inset 0 0 30px rgba(255,255,255,.05)}
+.glass.o{border-color:var(--or);box-shadow:0 0 26px var(--or-glow),inset 0 0 30px rgba(246,130,31,.08)}
+.glass.r{border-color:var(--red);box-shadow:0 0 26px var(--red-glow),inset 0 0 30px rgba(240,55,60,.08)}
+.glass.dim{border-color:rgba(255,255,255,.28);box-shadow:none}
+.ibox{flex:none;width:88px;height:88px;border-radius:22px;display:grid;place-items:center;
+  background:linear-gradient(150deg,#232327,#060607);border:2px solid rgba(255,255,255,.55);
+  box-shadow:0 0 14px rgba(255,255,255,.16),inset 0 1px 0 rgba(255,255,255,.12)}
+.ibox.o{border-color:var(--or);box-shadow:0 0 16px var(--or-glow)}
+.ibox svg,.ico{width:46px;height:46px;stroke:#fff;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.ibox.o svg{stroke:var(--or)}
+svg *{transform-box:fill-box}
+.chip{display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;font-size:22px;font-weight:800;letter-spacing:-.01em;
+  background:#0b0b0c;border:2px solid rgba(255,255,255,.5)}
+.chip.o{border-color:var(--or);color:var(--or-soft);background:var(--or-dim)}
+.chip.r{border-color:var(--red);color:#ff9a9d;background:rgba(240,55,60,.1)}
+
+/* interactive buttons */
+.btn{font:700 26px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:14px;
+  padding:16px 28px;border-radius:999px;background:#0b0b0c;border:2.5px solid rgba(255,255,255,.85);
+  box-shadow:0 0 16px rgba(255,255,255,.22);transition:transform .2s var(--ease),box-shadow .2s,background .2s,border-color .2s,color .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 0 28px rgba(255,255,255,.4)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn.o{border-color:var(--or);box-shadow:0 0 18px var(--or-glow)}
+.btn.o:hover{box-shadow:0 0 34px var(--or)}
+.btn.r{border-color:var(--red);box-shadow:0 0 18px var(--red-glow)}
+.btn.on{background:var(--or);border-color:var(--or);color:#160800}
+.btn svg{width:28px;height:28px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.tap-hint{font-size:22px;font-weight:600;color:var(--soft);display:inline-flex;align-items:center;gap:10px}
+.tap-hint::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--or);box-shadow:0 0 10px var(--or);animation:blip 1.4s ease-in-out infinite}
+@keyframes blip{50%{opacity:.3;transform:scale(.7)}}
+
+/* toggle switch */
+.sw{flex:none;position:relative;width:84px;height:46px;border-radius:23px;background:#2a2a2f;border:2px solid rgba(255,255,255,.35);transition:background .3s,border-color .3s,box-shadow .3s}
+.sw::after{content:"";position:absolute;left:4px;top:4px;width:34px;height:34px;border-radius:50%;background:#cfcfd6;transition:transform .35s var(--pop),background .3s}
+.on > .sw,.on .sw,.sw.on{background:var(--or);border-color:var(--or);box-shadow:0 0 16px var(--or-glow)}
+.on > .sw::after,.on .sw::after,.sw.on::after{transform:translateX(38px);background:#fff}
+
+/* PRO note: a small button top-right that opens the developer note */
+.pro{position:absolute;right:72px;top:38px;z-index:30;animation:fadeIn .6s 1.4s both}
+.pro > button{font:900 20px/1 Inter,system-ui,sans-serif;letter-spacing:.12em;color:var(--or-soft);cursor:pointer;
+  padding:12px 18px 12px 16px;border-radius:14px;background:#0b0b0c;border:2px solid rgba(246,130,31,.7);display:flex;align-items:center;gap:10px;
+  transition:background .2s,color .2s,box-shadow .2s}
+.pro > button::before{content:"</>";font:800 18px/1 'JetBrains Mono',monospace;letter-spacing:0}
+.pro > button:hover{box-shadow:0 0 20px var(--or-glow)}
+.pro.open > button{background:var(--or);color:#160800}
+.pro .note{position:absolute;right:0;top:62px;width:760px;padding:28px 32px;border-radius:24px;background:rgba(10,10,12,.97);
+  border:2px solid var(--or);box-shadow:0 0 40px rgba(246,130,31,.35),0 30px 60px rgba(0,0,0,.8);
+  font-size:24px;line-height:34px;font-weight:500;color:var(--body);opacity:0;transform:translateY(-10px);pointer-events:none;transition:opacity .25s,transform .25s var(--ease)}
+.pro.open .note{opacity:1;transform:none;pointer-events:auto}
+.pro .note small{display:block;font-size:17px;font-weight:900;letter-spacing:.14em;color:var(--or-soft);margin-bottom:10px}
+.pro .note p{margin:0 0 10px}.pro .note p:last-child{margin:0}
+.pro .note b{color:#fff}
+.pro .note code{font-size:21px;color:var(--or-soft)}
+
+/* keyframes */
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes fadeLeft{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{50%{transform:translateY(-10px)}}
+@keyframes glowPulse{50%{filter:drop-shadow(0 0 26px var(--or))}}
+.in{animation:fadeUp .7s var(--ease) both}
+.in-card{animation:cardIn .9s var(--ease) both}
+.in-pop{animation:pop .6s var(--pop) both}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition:none!important}
+}
+</style>
+<style data-src="assets/dock.css">
+/* Bottom bar shared by the topic slides: [>_] AI Prompt: "…" [Copy]  |  [cloud] Remember: …
+   Markup:
+   <div class="dock" style="top:912px">
+     <div class="d-term"><svg viewBox="0 0 60 40"><path d="M6 6l16 14L6 34"/><path class="cur" d="M30 34h24"/></svg></div>
+     <p class="d-prompt" id="pr"><b>AI Prompt:</b> “…”</p>
+     <button class="d-copy" data-copy="#pr q">Copy</button>
+     <div class="d-sep"></div>
+     <div class="d-rem"><svg viewBox="0 0 64 40"><use href="#cf"/></svg><p><b>Remember:</b><br>…</p></div>
+   </div>
+   The cloud symbol comes from assets/cloud.svg via <script src="assets/cloud.js">. Set --dock-at to shift its entrance. */
+.dock{position:absolute;left:52px;width:1816px;height:132px;border-radius:44px;display:flex;align-items:center;
+  border:2.5px solid rgba(255,255,255,.85);background:linear-gradient(90deg,rgba(246,130,31,.08),rgba(255,255,255,.02) 55%,rgba(255,255,255,.05));
+  box-shadow:0 0 24px rgba(255,255,255,.24),inset 0 0 26px rgba(255,255,255,.05);
+  animation:dockIn 1s var(--dock-at,2.4s) cubic-bezier(.2,.8,.2,1) both}
+.d-term{flex:none;margin-left:40px;width:92px;height:68px;border-radius:14px;border:4px solid #F6821F;
+  box-shadow:0 0 16px rgba(246,130,31,.55);display:grid;place-items:center}
+.d-term svg{width:56px;height:36px;stroke:#F6821F;fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.d-term .cur{animation:dockCaret 1s steps(1) infinite}
+.d-prompt{flex:1;margin:0 0 0 26px;font-size:25px;line-height:33px;font-weight:500;color:#E8E8EC;letter-spacing:-.02em;
+  clip-path:inset(0 100% 0 0);animation:dockReveal 1.4s calc(var(--dock-at,2.4s) + .4s) cubic-bezier(.5,0,.3,1) forwards}
+.d-prompt b{color:#FFB25E;font-weight:800}
+.d-copy{flex:none;margin-left:20px;font:800 20px/1 Inter,system-ui,sans-serif;color:#FFB25E;cursor:pointer;padding:12px 18px;border-radius:999px;
+  background:#0b0b0c;border:2px solid rgba(246,130,31,.7);transition:background .2s,color .2s;animation:dockFade .7s calc(var(--dock-at,2.4s) + 1s) both}
+.d-copy:hover,.d-copy.on{background:#F6821F;color:#160800}
+.d-sep{flex:none;width:2px;height:84px;background:rgba(255,255,255,.7);margin:0 28px}
+.d-rem{flex:none;display:flex;align-items:center;gap:22px;margin-right:44px;
+  animation:dockFade .7s calc(var(--dock-at,2.4s) + .6s) cubic-bezier(.2,.8,.2,1) both}
+.d-rem svg{flex:none;width:84px;height:54px;fill:#F6821F;filter:drop-shadow(0 0 10px rgba(246,130,31,.5));
+  animation:dockGlow 3s calc(var(--dock-at,2.4s) + 1.2s) ease-in-out infinite}
+.d-rem p{margin:0;font-size:29px;line-height:36px;font-weight:500;letter-spacing:-.025em;white-space:nowrap}
+.d-rem p b{font-weight:800}
+@keyframes dockIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes dockFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes dockReveal{to{clip-path:inset(0 0 0 0)}}
+@keyframes dockCaret{50%{opacity:0}}
+@keyframes dockGlow{50%{filter:drop-shadow(0 0 22px rgba(246,130,31,.9))}}
+@media (prefers-reduced-motion:reduce){
+  .dock,.d-prompt,.d-rem,.d-rem svg,.d-term .cur,.d-copy{animation:none!important;clip-path:none!important}
+}
+</style>
+<style>
+/* LAYOUT: "the internet" on the left, a switch in the middle, two phonebooks stacked on the right */
+.net{position:absolute;left:74px;top:360px;width:330px;height:470px;padding:30px;text-align:center;animation:cardIn .9s 1.1s var(--ease) both}
+.net .globe{width:150px;height:150px;margin:10px auto 0;stroke:#fff;fill:none;stroke-width:1.6;animation:spin 30s linear infinite}
+.net h3{margin:20px 0 6px;font-size:32px;font-weight:900}
+.net p{margin:0;font-size:22px;line-height:30px;color:var(--soft);font-weight:500}
+.net code{display:block;margin-top:18px;padding:10px;border-radius:12px;background:#0b0b0c;border:2px solid rgba(255,255,255,.25);font-size:19px;color:var(--or-soft)}
+
+.ask{position:absolute;left:430px;top:420px;width:420px;height:340px}
+.ask svg{position:absolute;inset:0;width:420px;height:340px;overflow:visible}
+.ask .ln{fill:none;stroke-width:6;stroke-linecap:round;transition:opacity .5s,stroke .5s}
+.ask .to-ex{stroke:#fff;opacity:1}.ask .to-cf{stroke:var(--or);opacity:.12}
+.moved .ask .to-ex{opacity:.12}.moved .ask .to-cf{opacity:1;filter:drop-shadow(0 0 10px var(--or))}
+.ask .dash{stroke-dasharray:14 14;animation:flow 1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-28}}
+.switch{position:absolute;left:470px;top:540px;width:340px;padding:18px 20px;border-radius:24px;display:flex;align-items:center;gap:16px;cursor:pointer;
+  background:#0b0b0c;border:2.5px solid rgba(255,255,255,.8);color:#fff;font:800 24px Inter,sans-serif;box-shadow:0 0 22px rgba(255,255,255,.2);animation:pop .7s 1.8s var(--pop) both}
+.switch small{display:block;font-size:17px;font-weight:700;color:var(--soft);letter-spacing:.06em;text-transform:uppercase}
+.moved .switch{border-color:var(--or);box-shadow:0 0 30px var(--or-glow)}
+
+.book{position:absolute;left:880px;width:970px;height:262px;padding:22px 30px;display:flex;gap:30px;transition:opacity .5s,filter .5s,border-color .5s,box-shadow .5s;animation:cardIn .9s var(--ease) both}
+.book.ex{top:326px;animation-delay:1.3s}.book.cf{top:618px;animation-delay:1.5s}
+.book .spine{flex:none;width:150px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:24px;font-weight:900;
+  background:linear-gradient(160deg,#2a2a2f,#0a0a0b);border:2px solid rgba(255,255,255,.4)}
+.book.cf .spine svg{width:90px;height:56px;fill:var(--or)}
+.book.ex .spine i{font-style:normal;font-size:54px}
+.recs{flex:1;display:flex;flex-direction:column;gap:8px;font:700 21px 'JetBrains Mono',monospace}
+.recs .tabs{display:flex;gap:10px;margin-bottom:4px;font-family:Inter,sans-serif}
+.recs .tabs span{padding:6px 14px;border-radius:10px;font-size:18px;font-weight:900;letter-spacing:.06em;background:#151517;border:1.5px solid rgba(255,255,255,.25)}
+.recs .tabs .w{border-color:rgba(255,255,255,.6)}.recs .tabs .m{border-color:var(--or);color:var(--or-soft)}
+.recs .r{display:grid;grid-template-columns:96px 120px 1fr;gap:12px;padding:6px 12px;border-radius:10px;background:rgba(255,255,255,.035)}
+.recs .r b{color:var(--or-soft)}
+.recs .r.m b{color:#ffcf9a}
+.recs .r span:last-child{color:var(--body);font-weight:500}
+.book .tag{position:absolute;right:24px;top:20px}
+.book.ex .tag.live,.moved .book.ex .tag.old{display:inline-flex}.book.ex .tag.old,.moved .book.ex .tag.live{display:none}
+.book.cf .tag.live{display:none}.moved .book.cf .tag.live{display:inline-flex}.moved .book.cf .tag.ign{display:none}
+.moved .book.ex{opacity:.35;filter:grayscale(1)}
+.book.cf{opacity:.55}
+.moved .book.cf{opacity:1;border-color:var(--or);box-shadow:0 0 30px var(--or-glow)}
+.wait{position:absolute;left:74px;top:850px;display:none}
+.ttl{position:absolute;left:440px;top:776px;width:420px;text-align:center;font-size:22px;font-weight:700;color:var(--soft);animation:fadeIn .6s 2.2s both}
+.ttl b{color:var(--or-soft)}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Part 1 · Domain &amp; DNS</b></span></div>
+  <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
+    <p>"Propagation" is really caching. Resolvers keep old answers until the <b>TTL</b> runs out, and a nameserver change waits on the TLD's TTL.</p>
+    <p>Check what the internet sees: <code>dig sitiscakes.com NS +short</code> or <code>nslookup</code>.</p>
+    <p>A CNAME cannot sit on the root in standard DNS. Cloudflare allows it through <b>CNAME flattening</b>.</p></div></div>
+  <h1 class="title"><span>Nameservers: <em>who holds the phonebook</em></span></h1>
+  <div class="bar"></div>
+  <p class="hook">You added an A record. Nothing happens. The internet <b>still reads the Exabytes phonebook.</b></p>
+
+  <div class="net glass">
+    <svg class="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20M4.5 6.5h15M4.5 17.5h15"/></svg>
+    <h3>The internet</h3>
+    <p>"Where is sitiscakes.com?"<br>It asks only one book.</p>
+    <code>dig sitiscakes.com NS</code>
+  </div>
+
+  <div class="ask"><svg viewBox="0 0 420 340">
+    <path class="ln to-ex dash" d="M0 160 C150 160 220 40 420 40"/>
+    <path class="ln to-cf dash" d="M0 160 C150 160 220 300 420 300"/></svg></div>
+  <button class="switch" id="sw"><i class="sw" id="swi"></i><span><small>Nameservers point to</small><span id="swt">Exabytes</span></span></button>
+  <div class="ttl">Changes take <b>minutes to 48 hours.</b><br>Don't keep changing things.</div>
+
+  <div class="book glass ex">
+    <div class="spine"><svg class="ico" viewBox="0 0 24 24" style="width:56px;height:56px"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20v3H6.5"/><path d="M9 7h7M9 11h5"/></svg>Exabytes</div>
+    <div class="recs">
+      <div class="tabs"><span class="w">WEB</span><span class="m">EMAIL</span></div>
+      <div class="r"><b>A</b><span>@</span><span>old hosting IP</span></div>
+      <div class="r m"><b>MX</b><span>@</span><span>mail server</span></div>
+      <div class="r m"><b>TXT</b><span>@</span><span>v=spf1 … (email proof)</span></div>
+    </div>
+    <span class="chip tag live">In charge</span><span class="chip tag old">Ignored now</span>
+  </div>
+
+  <div class="book glass cf">
+    <div class="spine"><svg viewBox="0 0 64 40"><use href="#cf"/></svg>Cloudflare</div>
+    <div class="recs">
+      <div class="tabs"><span class="w">WEB · A, CNAME</span><span class="m">EMAIL · MX, TXT</span></div>
+      <div class="r"><b>A</b><span>@</span><span>203.0.113.10</span></div>
+      <div class="r"><b>CNAME</b><span>www</span><span>sitiscakes.com</span></div>
+      <div class="r m"><b>MX/TXT</b><span>@</span><span>copied over, keep them!</span></div>
+    </div>
+    <span class="chip tag ign">Ignored</span><span class="chip o tag live">In charge</span>
+  </div>
+
+  <div class="dock" style="top:912px">
+    <div class="d-term"><svg viewBox="0 0 60 40"><path d="M6 6l16 14L6 34"/><path class="cur" d="M30 34h24"/></svg></div>
+    <p class="d-prompt"><b>AI Prompt:</b> <q id="pr">Here are my DNS records [paste]. Which are for the website, which for email, and what must I keep?</q></p>
+    <button class="d-copy" data-copy="#pr">Copy</button>
+    <div class="d-sep"></div>
+    <div class="d-rem"><svg viewBox="0 0 64 40"><use href="#cf"/></svg><p><b>Remember:</b><br>Records: where. Nameservers: who.</p></div>
+  </div>
+</div>
+<script>
+const stage=document.getElementById('stage'), swi=document.getElementById('swi'), swt=document.getElementById('swt');
+document.getElementById('sw').addEventListener('click',()=>{ const m=stage.classList.toggle('moved'); swi.classList.toggle('on',m); swt.textContent=m?'Cloudflare':'Exabytes'; });
+</script>
+<script data-src="assets/cf.js">
+// Shared helpers for the Cloudflare slides:
+//  - injects the SVG symbols used everywhere (#cf cloud, #shop house, #bot, #user)
+//  - opens / closes the PRO note (top-right)
+//  - [data-go] buttons jump to another slide in the deck
+(function(){
+  var sprite = '<svg width="0" height="0" style="position:absolute" aria-hidden="true">'+
+    '<symbol id="cf" viewBox="0 0 64 40"><path d="M50.5 38H12.5C6.2 38 1 32.9 1 26.6c0-5.6 4-10.3 9.4-11.2C12 8.2 18.4 3 26 3c6.6 0 12.3 3.9 14.8 9.6 1.4-.6 2.9-.9 4.5-.9 6.1 0 11.1 4.6 11.7 10.6 3.9 1.2 6.9 4.9 6.9 9.2C63.9 36.3 58.4 38 50.5 38z"/></symbol>'+
+    '<symbol id="shop" viewBox="0 0 64 64"><path d="M8 28v30h48V28" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linejoin="round"/><path d="M4 28 10 8h44l6 20z" fill="currentColor" opacity=".9"/><path d="M4 28c0 4 3.5 7 7 7s7-3 7-7c0 4 3.5 7 7 7s7-3 7-7c0 4 3.5 7 7 7s7-3 7-7c0 4 3.5 7 7 7s7-3 7-7" fill="none" stroke="#000" stroke-width="2.4"/><rect x="26" y="40" width="12" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="3.4"/><circle cx="32" cy="18" r="5" fill="#000"/></symbol>'+
+    '<symbol id="bot" viewBox="0 0 48 48"><rect x="8" y="14" width="32" height="26" rx="8" fill="none" stroke="currentColor" stroke-width="3.4"/><circle cx="18" cy="27" r="3.6" fill="currentColor"/><circle cx="30" cy="27" r="3.6" fill="currentColor"/><path d="M24 14V6M18 34h12M4 24v8M44 24v8" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="5" r="3" fill="currentColor"/></symbol>'+
+    '<symbol id="user" viewBox="0 0 48 48"><circle cx="24" cy="15" r="9" fill="none" stroke="currentColor" stroke-width="3.4"/><path d="M7 44c1.5-9 8.5-14 17-14s15.5 5 17 14" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/></symbol>'+
+    '<symbol id="lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>'+
+    '<symbol id="server" viewBox="0 0 48 48"><rect x="6" y="6" width="36" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="3.2"/><rect x="6" y="26" width="36" height="14" rx="4" fill="none" stroke="currentColor" stroke-width="3.2"/><circle cx="14" cy="13" r="2.4" fill="currentColor"/><circle cx="14" cy="33" r="2.4" fill="currentColor"/><path d="M24 13h12M24 33h12" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>'+
+    '</svg>';
+  document.body.insertAdjacentHTML('afterbegin', sprite);
+
+  document.querySelectorAll('.pro > button').forEach(function(b){
+    b.addEventListener('click', function(e){ e.stopPropagation(); b.parentElement.classList.toggle('open'); });
+  });
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.pro')) document.querySelectorAll('.pro.open').forEach(function(p){ p.classList.remove('open'); });
+  }, true);
+
+  document.querySelectorAll('[data-go]').forEach(function(b){
+    b.addEventListener('click', function(){
+      if(window.top!==window) parent.postMessage({deck:'goto', slide:b.dataset.go}, '*');
+      else location.href = 'cf-slide-'+b.dataset.go+'.html';
+    });
+  });
+})();
+</script>
+<script data-src="assets/base.js">
+// Shared runtime for every slide: fit the 1920×1080 stage, talk to the deck, copy buttons.
+(function(){
+  var stage = document.getElementById('stage');
+  function fit(){ stage.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+  addEventListener('resize', fit); fit();
+
+  // clicks on buttons/links stay inside the slide; anywhere else advances the deck
+  var INTERACTIVE = 'button,a,input,select,textarea,label,[data-tap]';
+  var inDeck = window.top !== window;
+  addEventListener('click', function(e){
+    if(e.target.closest(INTERACTIVE)) return;
+    if(inDeck) parent.postMessage({deck:'click'}, '*');
+  });
+  addEventListener('keydown', function(e){
+    if(e.target.closest('input,textarea')) return;
+    if(inDeck){ e.preventDefault(); parent.postMessage({deck:'key', key:e.key}, '*'); }
+    else if(e.key==='r' || e.key==='R') location.reload();
+  });
+
+  // [data-copy] buttons copy the text of the element they point to
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var src = document.querySelector(b.getAttribute('data-copy'));
+      var text = src ? src.textContent.trim().replace(/^[“"]|[”"]$/g,'') : '';
+      var done = function(){ var t=b.innerHTML; b.textContent='Copied ✓'; b.classList.add('on'); setTimeout(function(){ b.innerHTML=t; b.classList.remove('on'); },1400); };
+      if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(text).then(done, fallback); } else fallback();
+      function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(_){} ta.remove(); done(); }
+    });
+  });
+})();
+</script>
+<script data-src="assets/slide-no.js">
+// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Shared by every cf-slide-XX.html. The number comes from the file name, so a new
+// slide only needs a script tag pointing at assets/slide-no.js and a .label header.
+(function(){
+  var m = location.pathname.match(/slide-(\d+)([a-z]?)\.html$/i) || (document.documentElement.getAttribute('data-slide')||'').match(/^(\d+)([a-z]?)$/i);
+  if(!m) return;
+  var no = String(parseInt(m[1],10)).padStart(2,'0') + (m[2]||'').toUpperCase();
+  var stage = document.getElementById('stage');
+  if(!stage) return;
+
+  var old = stage.querySelector('.page');
+  if(old) old.remove();
+
+  var css = document.createElement('style');
+  css.textContent =
+    '.label.numbered{gap:22px}'+
+    '.label.numbered::before{display:none}'+
+    '.slide-no{flex:none;height:50px;min-width:72px;padding:0 14px;display:flex;align-items:center;justify-content:center;border-radius:12px;'+
+      'font:800 30px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;'+
+      'background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.6));border:2px solid rgba(255,255,255,.85);'+
+      'box-shadow:0 0 18px rgba(255,255,255,.3),inset 0 0 12px rgba(255,255,255,.1);'+
+      'animation:slideNoIn .7s .1s cubic-bezier(.3,1.5,.5,1) both}'+
+    '.slide-line{position:relative;flex:none;width:520px;height:2px;margin-left:8px;'+
+      'background:linear-gradient(90deg,rgba(255,255,255,.75),rgba(255,255,255,.25) 60%,transparent);'+
+      'transform-origin:left;animation:slideLineIn 1s .5s cubic-bezier(.2,.8,.2,1) both}'+
+    '.slide-line::before{content:"";position:absolute;left:0;top:-3px;width:150px;height:8px;border-radius:8px;'+
+      'background:linear-gradient(90deg,#F6821F,rgba(246,130,31,.35));box-shadow:0 0 14px rgba(246,130,31,.7)}'+
+    '@keyframes slideNoIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}'+
+    '@keyframes slideLineIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}'+
+    '@media (prefers-reduced-motion:reduce){.slide-no,.slide-line{animation:none}}';
+  document.head.appendChild(css);
+
+  var label = stage.querySelector('.label');
+  var b = document.createElement('div');
+  b.className = 'slide-no';
+  b.textContent = no;
+  if(label){
+    label.classList.add('numbered');
+    label.prepend(b);
+    var line = document.createElement('i');
+    line.className = 'slide-line';
+    label.appendChild(line);
+  }else{
+    b.style.cssText = 'position:absolute;right:62px;top:22px;z-index:20';
+    stage.appendChild(b);
+  }
+})();
+</script>
+</body>
+</html>

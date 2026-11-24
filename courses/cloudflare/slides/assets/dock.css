@@ -1,0 +1,39 @@
+/* Bottom bar shared by the topic slides: [>_] AI Prompt: "…" [Copy]  |  [cloud] Remember: …
+   Markup:
+   <div class="dock" style="top:912px">
+     <div class="d-term"><svg viewBox="0 0 60 40"><path d="M6 6l16 14L6 34"/><path class="cur" d="M30 34h24"/></svg></div>
+     <p class="d-prompt" id="pr"><b>AI Prompt:</b> “…”</p>
+     <button class="d-copy" data-copy="#pr q">Copy</button>
+     <div class="d-sep"></div>
+     <div class="d-rem"><svg viewBox="0 0 64 40"><use href="#cf"/></svg><p><b>Remember:</b><br>…</p></div>
+   </div>
+   The cloud symbol comes from assets/cloud.svg via <script src="assets/cloud.js">. Set --dock-at to shift its entrance. */
+.dock{position:absolute;left:52px;width:1816px;height:132px;border-radius:44px;display:flex;align-items:center;
+  border:2.5px solid rgba(255,255,255,.85);background:linear-gradient(90deg,rgba(246,130,31,.08),rgba(255,255,255,.02) 55%,rgba(255,255,255,.05));
+  box-shadow:0 0 24px rgba(255,255,255,.24),inset 0 0 26px rgba(255,255,255,.05);
+  animation:dockIn 1s var(--dock-at,2.4s) cubic-bezier(.2,.8,.2,1) both}
+.d-term{flex:none;margin-left:40px;width:92px;height:68px;border-radius:14px;border:4px solid #F6821F;
+  box-shadow:0 0 16px rgba(246,130,31,.55);display:grid;place-items:center}
+.d-term svg{width:56px;height:36px;stroke:#F6821F;fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.d-term .cur{animation:dockCaret 1s steps(1) infinite}
+.d-prompt{flex:1;margin:0 0 0 26px;font-size:25px;line-height:33px;font-weight:500;color:#E8E8EC;letter-spacing:-.02em;
+  clip-path:inset(0 100% 0 0);animation:dockReveal 1.4s calc(var(--dock-at,2.4s) + .4s) cubic-bezier(.5,0,.3,1) forwards}
+.d-prompt b{color:#FFB25E;font-weight:800}
+.d-copy{flex:none;margin-left:20px;font:800 20px/1 Inter,system-ui,sans-serif;color:#FFB25E;cursor:pointer;padding:12px 18px;border-radius:999px;
+  background:#0b0b0c;border:2px solid rgba(246,130,31,.7);transition:background .2s,color .2s;animation:dockFade .7s calc(var(--dock-at,2.4s) + 1s) both}
+.d-copy:hover,.d-copy.on{background:#F6821F;color:#160800}
+.d-sep{flex:none;width:2px;height:84px;background:rgba(255,255,255,.7);margin:0 28px}
+.d-rem{flex:none;display:flex;align-items:center;gap:22px;margin-right:44px;
+  animation:dockFade .7s calc(var(--dock-at,2.4s) + .6s) cubic-bezier(.2,.8,.2,1) both}
+.d-rem svg{flex:none;width:84px;height:54px;fill:#F6821F;filter:drop-shadow(0 0 10px rgba(246,130,31,.5));
+  animation:dockGlow 3s calc(var(--dock-at,2.4s) + 1.2s) ease-in-out infinite}
+.d-rem p{margin:0;font-size:29px;line-height:36px;font-weight:500;letter-spacing:-.025em;white-space:nowrap}
+.d-rem p b{font-weight:800}
+@keyframes dockIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes dockFade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes dockReveal{to{clip-path:inset(0 0 0 0)}}
+@keyframes dockCaret{50%{opacity:0}}
+@keyframes dockGlow{50%{filter:drop-shadow(0 0 22px rgba(246,130,31,.9))}}
+@media (prefers-reduced-motion:reduce){
+  .dock,.d-prompt,.d-rem,.d-rem svg,.d-term .cur,.d-copy{animation:none!important;clip-path:none!important}
+}
