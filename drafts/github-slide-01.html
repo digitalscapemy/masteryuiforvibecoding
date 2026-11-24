@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en" data-slide="01">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course Agenda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style data-src="assets/base.css">
+/* Shared look for the GitHub series slides (black, white glass, green accents). */
+:root{
+  --bg:#000;--text:#fff;--body:#E8E8EC;--soft:#B9B9C2;--line:rgba(255,255,255,.78);
+  --green:#4BF03C;--green-soft:#9BF56B;--green-glow:rgba(75,240,60,.55);
+  --red:#F0373C;--red-glow:rgba(240,55,60,.55);
+  --ease:cubic-bezier(.2,.8,.2,1);--pop:cubic-bezier(.3,1.5,.5,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center;
+  background:radial-gradient(900px 560px at 66% 54%,rgba(255,255,255,.05),transparent 70%),var(--bg)}
+.abs{position:absolute}
+
+/* header: the slide number is added by slide-no.js */
+.label{position:absolute;left:72px;top:40px;display:flex;align-items:center;gap:26px;font-size:30px;font-weight:700;letter-spacing:-.015em}
+.label span{animation:fadeRight .7s .25s var(--ease) both}
+.title{position:absolute;left:72px;top:104px;margin:0;font-size:84px;line-height:100px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;padding-bottom:6px}
+.title > span{display:inline-block;animation:rise .9s .35s var(--ease) both}
+.title em{font-style:normal;color:var(--green-soft)}
+.bar{position:absolute;left:74px;top:212px;width:200px;height:12px;border-radius:6px;background:#fff;
+  box-shadow:0 0 18px rgba(255,255,255,.45);transform-origin:left;animation:growX .8s .8s var(--ease) both}
+.hook{position:absolute;left:74px;top:236px;margin:0;font-size:38px;line-height:50px;font-weight:500;color:var(--body);letter-spacing:-.02em;
+  animation:fadeUp .8s 1s var(--ease) both}
+.hook b{color:#fff}
+
+/* glass card */
+.glass{border-radius:36px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 45%,rgba(0,0,0,.4));
+  border:2.5px solid var(--line);box-shadow:0 0 24px rgba(255,255,255,.22),inset 0 0 30px rgba(255,255,255,.06)}
+.glass.g{border-color:var(--green);box-shadow:0 0 26px var(--green-glow),inset 0 0 30px rgba(75,240,60,.08)}
+.glass.r{border-color:var(--red);box-shadow:0 0 26px var(--red-glow),inset 0 0 30px rgba(240,55,60,.08)}
+.ibox{flex:none;width:96px;height:96px;border-radius:22px;display:grid;place-items:center;
+  background:linear-gradient(150deg,#232327,#060607);border:2px solid rgba(255,255,255,.55);
+  box-shadow:0 0 14px rgba(255,255,255,.18),inset 0 1px 0 rgba(255,255,255,.12)}
+.ibox svg,.ico{width:50px;height:50px;stroke:#fff;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+svg *{transform-box:fill-box}
+
+/* interactive buttons */
+.btn{font:700 28px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:14px;
+  padding:18px 30px;border-radius:999px;background:#0b0b0c;border:2.5px solid rgba(255,255,255,.85);
+  box-shadow:0 0 16px rgba(255,255,255,.25);transition:transform .2s var(--ease),box-shadow .2s,background .2s,border-color .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 0 28px rgba(255,255,255,.45)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn.g{border-color:var(--green);box-shadow:0 0 18px var(--green-glow)}
+.btn.g:hover{box-shadow:0 0 34px var(--green)}
+.btn.r{border-color:var(--red);box-shadow:0 0 18px var(--red-glow)}
+.btn.on{background:#fff;color:#000}
+.btn svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.tap-hint{font-size:22px;font-weight:600;color:var(--soft);display:inline-flex;align-items:center;gap:10px}
+.tap-hint::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blip 1.4s ease-in-out infinite}
+@keyframes blip{50%{opacity:.3;transform:scale(.7)}}
+
+/* "Ask your AI" prompt card with a copy button */
+.ask{display:flex;align-items:center;gap:26px;padding:22px 26px 22px 28px;border-radius:28px;
+  background:linear-gradient(90deg,rgba(75,240,60,.08),rgba(255,255,255,.02));border:2.5px solid rgba(155,245,107,.75);box-shadow:0 0 20px rgba(75,240,60,.25)}
+.ask .term{flex:none;width:78px;height:60px;border-radius:12px;border:3.5px solid var(--green);display:grid;place-items:center;box-shadow:0 0 12px var(--green-glow)}
+.ask .term svg{width:46px;height:30px;stroke:var(--green);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ask .term .cur{animation:caret 1s steps(1) infinite}
+.ask .q{flex:1}
+.ask .q small{display:block;font-size:20px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green-soft);margin-bottom:6px}
+.ask .q p{margin:0;font-size:30px;line-height:38px;font-weight:600;letter-spacing:-.02em}
+.ask .copy{font-size:22px;padding:14px 22px}
+@keyframes caret{50%{opacity:0}}
+
+/* closing line used on a few slides only */
+.remember{display:flex;align-items:center;gap:22px;font-size:40px;font-weight:500;letter-spacing:-.02em}
+.remember b{font-weight:800}
+.remember svg{width:60px;height:60px;fill:#fff;filter:drop-shadow(0 0 10px rgba(255,255,255,.4))}
+
+/* keyframes */
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.in{animation:fadeUp .7s var(--ease) both}
+.in-card{animation:cardIn .9s var(--ease) both}
+.in-pop{animation:pop .6s var(--pop) both}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition:none!important}
+}
+</style>
+<style>
+.title{font-size:92px;line-height:106px}
+.hook{top:240px}
+.parts{position:absolute;left:74px;top:318px;width:1776px;display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+.part{height:540px;padding:30px 28px;display:flex;flex-direction:column;animation:cardIn .8s var(--ease) both}
+.part:nth-child(1){animation-delay:1s}.part:nth-child(2){animation-delay:1.12s}.part:nth-child(3){animation-delay:1.24s}.part:nth-child(4){animation-delay:1.36s}
+.part .ph{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.part .pn{flex:none;width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--green);color:#041a02;font-size:26px;font-weight:900;box-shadow:0 0 14px var(--green-glow)}
+.part h2{margin:0;font-size:34px;line-height:38px;font-weight:900;letter-spacing:-.025em}
+.part h2 small{display:block;font-size:19px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin-bottom:4px}
+.ls{display:flex;flex-direction:column;gap:8px}
+.l{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;padding:13px 16px;border-radius:16px;
+  background:rgba(255,255,255,.04);border:2px solid transparent;color:#fff;font:700 25px/1.2 Inter,system-ui,sans-serif;letter-spacing:-.015em;
+  transition:background .2s,border-color .2s,transform .2s var(--ease)}
+.l:hover{background:rgba(75,240,60,.1);border-color:var(--green);transform:translateX(6px)}
+.l .no{flex:none;min-width:54px;padding:5px 8px;border-radius:9px;text-align:center;font-size:19px;font-weight:900;background:#1b1c20;border:1.5px solid rgba(255,255,255,.4);color:#fff}
+.l.sub{padding-left:34px;font-size:22px;font-weight:600;color:var(--body);background:none}
+.l.sub .no{min-width:46px;font-size:16px;background:none;color:var(--soft)}
+.l .go{margin-left:auto;font-size:20px;color:var(--green-soft);opacity:0;transition:opacity .2s}
+.l:hover .go{opacity:1}
+
+.end{position:absolute;left:74px;top:892px;width:1776px;display:flex;align-items:center;gap:26px;animation:fadeUp .8s 1.6s var(--ease) both}
+.end .l.final{width:auto;flex:none;padding:18px 26px;font-size:28px;background:rgba(75,240,60,.1);border-color:var(--green);box-shadow:0 0 20px var(--green-glow)}
+.end .arrow{flex:none;width:48px;height:34px;stroke:#fff;fill:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
+.end .next{display:flex;align-items:center;gap:16px;padding:16px 26px;border-radius:18px;border:2.5px dashed rgba(255,255,255,.4);font-size:26px;font-weight:700;color:var(--body)}
+.end .next small{font-size:19px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.end .next b{color:#fff;font-weight:900}
+.end .tip{margin-left:auto}
+.part{height:566px}
+.part .ph{margin-bottom:10px}
+.pd{margin:0 0 16px;font-size:22px;line-height:29px;font-weight:500;color:var(--soft)}
+.ls{gap:6px}
+.l{padding:9px 14px}
+.l.sub{padding-left:30px}
+.end{top:912px}
+.part{padding:26px 26px}
+.part .pn{width:46px;height:46px;font-size:23px}
+.l{font-size:23px;padding:8px 14px}
+.l.sub{font-size:20px}
+.l .no{font-size:17px;min-width:50px}
+.l.sub .no{font-size:15px;min-width:44px}
+.part{height:582px}.end{top:930px}
+.part{height:620px}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="label"><span>GitHub Power Skills for Vibe Coders</span></div>
+  <h1 class="title"><span>Course agenda</span></h1>
+  <div class="bar"></div>
+  <p class="hook">Four parts, from <b>zero</b> to your app <b>live</b>. Tap any lesson to jump to it.</p>
+
+  <div class="parts">
+    <div class="part glass">
+      <div class="ph"><span class="pn">1</span><h2><small>Part one</small>The basics</h2></div>
+      <p class="pd">What GitHub is, and why it matters.</p>
+      <div class="ls">
+        <button class="l" data-go="02"><span class="no">02</span>What is GitHub?<span class="go">↗</span></button>
+        <button class="l" data-go="02a"><span class="no">02A</span>Why you need it<span class="go">↗</span></button>
+      </div>
+    </div>
+    <div class="part glass">
+      <div class="ph"><span class="pn">2</span><h2><small>Part two</small>Save and send</h2></div>
+      <p class="pd">Keep your code safe and in sync.</p>
+      <div class="ls">
+        <button class="l" data-go="03"><span class="no">03</span>Repo<span class="go">↗</span></button>
+        <button class="l sub" data-go="03a"><span class="no">03A</span>Public or private<span class="go">↗</span></button>
+        <button class="l sub" data-go="03b"><span class="no">03B</span>Keep secrets out<span class="go">↗</span></button>
+        <button class="l" data-go="04"><span class="no">04</span>Commit<span class="go">↗</span></button>
+        <button class="l sub" data-go="04a"><span class="no">04A</span>When to commit<span class="go">↗</span></button>
+        <button class="l" data-go="05"><span class="no">05</span>Clone, Push, Pull<span class="go">↗</span></button>
+        <button class="l sub" data-go="05a"><span class="no">05A</span>Daily routine<span class="go">↗</span></button>
+      </div>
+    </div>
+    <div class="part glass">
+      <div class="ph"><span class="pn">3</span><h2><small>Part three</small>Branching</h2></div>
+      <p class="pd">Try new ideas without breaking the live app.</p>
+      <div class="ls">
+        <button class="l" data-go="06"><span class="no">06</span>Commit history<span class="go">↗</span></button>
+        <button class="l sub" data-go="06a"><span class="no">06A</span>Main<span class="go">↗</span></button>
+        <button class="l" data-go="07"><span class="no">07</span>Branch<span class="go">↗</span></button>
+        <button class="l sub" data-go="07a"><span class="no">07A</span>Clear names<span class="go">↗</span></button>
+        <button class="l sub" data-go="07b"><span class="no">07B</span>Worktree<span class="go">↗</span></button>
+      </div>
+    </div>
+    <div class="part glass">
+      <div class="ph"><span class="pn">4</span><h2><small>Part four</small>Automation</h2></div>
+      <p class="pd">Let robots test and ship, then go live.</p>
+      <div class="ls">
+        <button class="l" data-go="08"><span class="no">08</span>CI &amp; CD<span class="go">↗</span></button>
+        <button class="l" data-go="09"><span class="no">09</span>Webhook<span class="go">↗</span></button>
+        <button class="l" data-go="10"><span class="no">10</span>From your laptop to live<span class="go">↗</span></button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{
+  if(window.top!==window) parent.postMessage({deck:'goto',slide:b.dataset.go},'*');
+  else location.href='github-slide-'+b.dataset.go+'.html';
+}));
+</script>
+<script data-src="assets/base.js">
+// Shared runtime for every slide: fit the 1920×1080 stage, talk to the deck, copy buttons.
+(function(){
+  var stage = document.getElementById('stage');
+  function fit(){ stage.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+  addEventListener('resize', fit); fit();
+
+  // clicks on buttons/links stay inside the slide; anywhere else advances the deck
+  var INTERACTIVE = 'button,a,input,select,textarea,label,[data-tap]';
+  var inDeck = window.top !== window;
+  addEventListener('click', function(e){
+    if(e.target.closest(INTERACTIVE)) return;
+    if(inDeck) parent.postMessage({deck:'click'}, '*');
+  });
+  addEventListener('keydown', function(e){
+    if(e.target.closest('input,textarea')) return;
+    if(inDeck){ e.preventDefault(); parent.postMessage({deck:'key', key:e.key}, '*'); }
+    else if(e.key==='r' || e.key==='R') location.reload();
+  });
+
+  // [data-copy] buttons copy the text of the element they point to
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var src = document.querySelector(b.getAttribute('data-copy'));
+      var text = src ? src.textContent.trim().replace(/^[“"]|[”"]$/g,'') : '';
+      var done = function(){ var t=b.innerHTML; b.textContent='Copied ✓'; b.classList.add('on'); setTimeout(function(){ b.innerHTML=t; b.classList.remove('on'); },1400); };
+      if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(text).then(done, fallback); } else fallback();
+      function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(_){} ta.remove(); done(); }
+    });
+  });
+})();
+</script>
+<script data-src="assets/slide-no.js">
+// Slide number in the header, Super Stack style: [04] GitHub Power Skills for Vibe Coders ────
+// Shared by every github-slide-XX.html. The number comes from the file name, so a new
+// slide only needs a script tag pointing at assets/slide-no.js and a .label header.
+(function(){
+  var m = location.pathname.match(/slide-(\d+)([a-z]?)\.html$/i) || (document.documentElement.getAttribute('data-slide')||'').match(/^(\d+)([a-z]?)$/i);
+  if(!m) return;
+  var no = String(parseInt(m[1],10)).padStart(2,'0') + (m[2]||'').toUpperCase();
+  var stage = document.getElementById('stage');
+  if(!stage) return;
+
+  var old = stage.querySelector('.page');
+  if(old) old.remove();
+
+  var css = document.createElement('style');
+  css.textContent =
+    '.label.numbered{gap:22px}'+
+    '.label.numbered::before{display:none}'+
+    '.slide-no{flex:none;height:50px;min-width:72px;padding:0 14px;display:flex;align-items:center;justify-content:center;border-radius:12px;'+
+      'font:800 30px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;'+
+      'background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.6));border:2px solid rgba(255,255,255,.85);'+
+      'box-shadow:0 0 18px rgba(255,255,255,.3),inset 0 0 12px rgba(255,255,255,.1);'+
+      'animation:slideNoIn .7s .1s cubic-bezier(.3,1.5,.5,1) both}'+
+    '.slide-line{position:relative;flex:none;width:520px;height:2px;margin-left:8px;'+
+      'background:linear-gradient(90deg,rgba(255,255,255,.75),rgba(255,255,255,.25) 60%,transparent);'+
+      'transform-origin:left;animation:slideLineIn 1s .5s cubic-bezier(.2,.8,.2,1) both}'+
+    '.slide-line::before{content:"";position:absolute;left:0;top:-3px;width:150px;height:8px;border-radius:8px;'+
+      'background:linear-gradient(90deg,#fff,rgba(255,255,255,.4));box-shadow:0 0 14px rgba(255,255,255,.6)}'+
+    '@keyframes slideNoIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}'+
+    '@keyframes slideLineIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}'+
+    '@media (prefers-reduced-motion:reduce){.slide-no,.slide-line{animation:none}}';
+  document.head.appendChild(css);
+
+  var label = stage.querySelector('.label');
+  var b = document.createElement('div');
+  b.className = 'slide-no';
+  b.textContent = no;
+  if(label){
+    label.classList.add('numbered');
+    label.prepend(b);
+    var line = document.createElement('i');
+    line.className = 'slide-line';
+    label.appendChild(line);
+  }else{
+    b.style.cssText = 'position:absolute;right:62px;top:22px;z-index:20';
+    stage.appendChild(b);
+  }
+})();
+</script>
+</body>
+</html>

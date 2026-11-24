@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "drafts",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "drafts"],
+      "port": 8765
+    },
+    {
+      "name": "wsl-intro",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "hyperframes@0.9.41", "preview", "videos/wsl-docker/intro", "--port", "3012", "--foreground", "--open=false"],
+      "port": 3012
+    }
+  ]
+}

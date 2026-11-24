@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en" data-slide="03">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What Is a Repo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style data-src="assets/base.css">
+/* Shared look for the GitHub series slides (black, white glass, green accents). */
+:root{
+  --bg:#000;--text:#fff;--body:#E8E8EC;--soft:#B9B9C2;--line:rgba(255,255,255,.78);
+  --green:#4BF03C;--green-soft:#9BF56B;--green-glow:rgba(75,240,60,.55);
+  --red:#F0373C;--red-glow:rgba(240,55,60,.55);
+  --ease:cubic-bezier(.2,.8,.2,1);--pop:cubic-bezier(.3,1.5,.5,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center;
+  background:radial-gradient(900px 560px at 66% 54%,rgba(255,255,255,.05),transparent 70%),var(--bg)}
+.abs{position:absolute}
+
+/* header: the slide number is added by slide-no.js */
+.label{position:absolute;left:72px;top:40px;display:flex;align-items:center;gap:26px;font-size:30px;font-weight:700;letter-spacing:-.015em}
+.label span{animation:fadeRight .7s .25s var(--ease) both}
+.title{position:absolute;left:72px;top:104px;margin:0;font-size:84px;line-height:100px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;padding-bottom:6px}
+.title > span{display:inline-block;animation:rise .9s .35s var(--ease) both}
+.title em{font-style:normal;color:var(--green-soft)}
+.bar{position:absolute;left:74px;top:212px;width:200px;height:12px;border-radius:6px;background:#fff;
+  box-shadow:0 0 18px rgba(255,255,255,.45);transform-origin:left;animation:growX .8s .8s var(--ease) both}
+.hook{position:absolute;left:74px;top:236px;margin:0;font-size:38px;line-height:50px;font-weight:500;color:var(--body);letter-spacing:-.02em;
+  animation:fadeUp .8s 1s var(--ease) both}
+.hook b{color:#fff}
+
+/* glass card */
+.glass{border-radius:36px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 45%,rgba(0,0,0,.4));
+  border:2.5px solid var(--line);box-shadow:0 0 24px rgba(255,255,255,.22),inset 0 0 30px rgba(255,255,255,.06)}
+.glass.g{border-color:var(--green);box-shadow:0 0 26px var(--green-glow),inset 0 0 30px rgba(75,240,60,.08)}
+.glass.r{border-color:var(--red);box-shadow:0 0 26px var(--red-glow),inset 0 0 30px rgba(240,55,60,.08)}
+.ibox{flex:none;width:96px;height:96px;border-radius:22px;display:grid;place-items:center;
+  background:linear-gradient(150deg,#232327,#060607);border:2px solid rgba(255,255,255,.55);
+  box-shadow:0 0 14px rgba(255,255,255,.18),inset 0 1px 0 rgba(255,255,255,.12)}
+.ibox svg,.ico{width:50px;height:50px;stroke:#fff;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+svg *{transform-box:fill-box}
+
+/* interactive buttons */
+.btn{font:700 28px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:14px;
+  padding:18px 30px;border-radius:999px;background:#0b0b0c;border:2.5px solid rgba(255,255,255,.85);
+  box-shadow:0 0 16px rgba(255,255,255,.25);transition:transform .2s var(--ease),box-shadow .2s,background .2s,border-color .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 0 28px rgba(255,255,255,.45)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn.g{border-color:var(--green);box-shadow:0 0 18px var(--green-glow)}
+.btn.g:hover{box-shadow:0 0 34px var(--green)}
+.btn.r{border-color:var(--red);box-shadow:0 0 18px var(--red-glow)}
+.btn.on{background:#fff;color:#000}
+.btn svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.tap-hint{font-size:22px;font-weight:600;color:var(--soft);display:inline-flex;align-items:center;gap:10px}
+.tap-hint::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blip 1.4s ease-in-out infinite}
+@keyframes blip{50%{opacity:.3;transform:scale(.7)}}
+
+/* "Ask your AI" prompt card with a copy button */
+.ask{display:flex;align-items:center;gap:26px;padding:22px 26px 22px 28px;border-radius:28px;
+  background:linear-gradient(90deg,rgba(75,240,60,.08),rgba(255,255,255,.02));border:2.5px solid rgba(155,245,107,.75);box-shadow:0 0 20px rgba(75,240,60,.25)}
+.ask .term{flex:none;width:78px;height:60px;border-radius:12px;border:3.5px solid var(--green);display:grid;place-items:center;box-shadow:0 0 12px var(--green-glow)}
+.ask .term svg{width:46px;height:30px;stroke:var(--green);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ask .term .cur{animation:caret 1s steps(1) infinite}
+.ask .q{flex:1}
+.ask .q small{display:block;font-size:20px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green-soft);margin-bottom:6px}
+.ask .q p{margin:0;font-size:30px;line-height:38px;font-weight:600;letter-spacing:-.02em}
+.ask .copy{font-size:22px;padding:14px 22px}
+@keyframes caret{50%{opacity:0}}
+
+/* closing line used on a few slides only */
+.remember{display:flex;align-items:center;gap:22px;font-size:40px;font-weight:500;letter-spacing:-.02em}
+.remember b{font-weight:800}
+.remember svg{width:60px;height:60px;fill:#fff;filter:drop-shadow(0 0 10px rgba(255,255,255,.4))}
+
+/* keyframes */
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.in{animation:fadeUp .7s var(--ease) both}
+.in-card{animation:cardIn .9s var(--ease) both}
+.in-pop{animation:pop .6s var(--pop) both}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition:none!important}
+}
+</style>
+<style>
+/* left: the idea */
+.def{position:absolute;left:74px;top:360px;width:720px;padding:40px 44px;animation:cardIn .9s 1.2s var(--ease) both}
+.def .tag{display:inline-block;font-size:22px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--green-soft);margin-bottom:14px}
+.def p{margin:0;font-size:40px;line-height:52px;font-weight:600;letter-spacing:-.02em}
+.def p b{color:var(--green-soft)}
+.vs{position:absolute;left:74px;top:690px;width:720px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.vs > div{padding:26px 28px;border-radius:26px;display:flex;flex-direction:column;gap:12px;animation:fadeUp .7s var(--ease) both}
+.vs > div:nth-child(1){animation-delay:1.6s}.vs > div:nth-child(2){animation-delay:1.8s}
+.vs .k{display:flex;align-items:center;gap:14px;font-size:30px;font-weight:800;letter-spacing:-.02em}
+.vs .k svg{width:40px;height:40px;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.vs p{margin:0;font-size:25px;line-height:33px;color:var(--body);font-weight:500}
+.vs .bad .k svg{stroke:var(--red)} .vs .good .k svg{stroke:var(--green)}
+
+/* right: a repo you can poke at */
+.repo{position:absolute;left:880px;top:300px;width:970px;height:640px;overflow:hidden;animation:cardIn .9s 1.4s var(--ease) both}
+.repo .top{display:flex;align-items:center;gap:18px;padding:28px 34px;border-bottom:2px solid rgba(255,255,255,.15)}
+.repo .top svg.gh{width:46px;height:46px;fill:#fff}
+.repo .top b{font-size:34px;font-weight:800;letter-spacing:-.02em}
+.repo .top .lock{margin-left:6px;font-size:20px;font-weight:700;padding:5px 14px;border-radius:999px;border:2px solid rgba(255,255,255,.5);color:var(--soft)}
+.tabs{display:flex;gap:12px;padding:20px 34px 0}
+.tabs .btn{font-size:24px;padding:14px 24px}
+.pane{position:absolute;left:34px;right:34px;top:206px;bottom:30px}
+.pane > div{position:absolute;inset:0;transition:opacity .4s,transform .4s var(--ease)}
+.pane > div:not(.show){opacity:0;transform:translateY(16px);pointer-events:none}
+.row{display:flex;align-items:center;gap:20px;padding:16px 22px;border-radius:16px;font-size:28px;font-weight:600;letter-spacing:-.01em}
+.row + .row{margin-top:6px}
+.row:nth-child(odd){background:rgba(255,255,255,.04)}
+.row svg{width:34px;height:34px;stroke:#cfd1d6;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.row .m{margin-left:auto;font-size:22px;color:var(--soft);font-weight:500}
+.files .row{animation:fadeRight .5s var(--ease) both}
+.files .row:nth-child(1){animation-delay:2s}.files .row:nth-child(2){animation-delay:2.1s}.files .row:nth-child(3){animation-delay:2.2s}.files .row:nth-child(4){animation-delay:2.3s}.files .row:nth-child(5){animation-delay:2.4s}
+.hist .row svg{stroke:var(--green)}
+.hist .row .dot{width:18px;height:18px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);flex:none}
+.hist .row .who{font-size:22px;color:var(--soft);font-weight:500;margin-left:8px}
+.hist.show .row{animation:fadeRight .45s var(--ease) both}
+.hist.show .row:nth-child(2){animation-delay:.08s}.hist.show .row:nth-child(3){animation-delay:.16s}.hist.show .row:nth-child(4){animation-delay:.24s}.hist.show .row:nth-child(5){animation-delay:.32s}
+.tip{position:absolute;left:880px;top:966px;animation:fadeIn .6s 2.6s both}
+.repo{top:330px;height:610px}
+.vs{display:none}
+.inside{position:absolute;left:74px;top:690px;width:720px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;animation:fadeUp .7s 1.6s var(--ease) both}
+.inside .ih{grid-column:1/-1;font-size:22px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.inside .glass{padding:22px 22px;border-radius:22px;display:flex;flex-direction:column;gap:6px}
+.inside b{font-size:30px;font-weight:800;letter-spacing:-.02em}
+.inside span{font-size:22px;color:var(--body);font-weight:500}
+.snaps{position:relative;height:300px;margin:6px 0 0 30px}
+.snap{position:absolute;width:420px;height:250px;border-radius:20px;background:#0c0c0e;border:2px solid rgba(255,255,255,.5);padding:24px 28px;display:flex;flex-direction:column;gap:14px;
+  box-shadow:0 18px 30px rgba(0,0,0,.6);transition:transform .5s var(--ease)}
+.snap b{font-size:24px;font-weight:800;margin-bottom:6px}
+.snap i{display:block;height:12px;border-radius:6px;background:rgba(255,255,255,.18)}
+.snap i.short{width:55%}
+.snap.s3{left:0;top:40px;transform:rotate(-6deg);opacity:.6}
+.snap.s2{left:150px;top:24px;transform:rotate(-2deg);opacity:.8}
+.snap.s1{left:300px;top:10px;transform:rotate(3deg);border-color:var(--green);box-shadow:0 0 24px var(--green-glow),0 18px 30px rgba(0,0,0,.6)}
+.snap.s1 b{color:var(--green-soft)}
+.hist.show .snap.s3{transform:rotate(-8deg) translateX(-12px)}
+.hist.show .snap.s1{transform:rotate(4deg) translateX(14px)}
+.snapcap{margin:16px 0 0;font-size:25px;line-height:33px;font-weight:600;color:var(--body)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs><symbol id="gh" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol></defs></svg>
+
+<div class="stage" id="stage">
+  <div class="label"><span>GitHub Power Skills for Vibe Coders</span></div>
+  <h1 class="title"><span>Repo: a home for your project</span></h1>
+  <div class="bar"></div>
+  <p class="hook">Where does your code live right now? If the answer is <b>“only on my laptop”</b>, that is a problem.</p>
+
+  <div class="def glass">
+    <span class="tag">Repo = repository</span>
+    <p>Your project folder, stored on <b>GitHub</b>, together with the <b>full history</b> of every change.</p>
+  </div>
+  <div class="inside">
+    <span class="ih">Inside every repo</span>
+    <div class="glass"><b>Files</b><span>all your code</span></div>
+    <div class="glass"><b>History</b><span>every saved version</span></div>
+    <div class="glass"><b>Settings</b><span>who can see it</span></div>
+  </div>
+
+  <div class="repo glass">
+    <div class="top"><svg class="gh" viewBox="0 0 16 16"><use href="#gh"/></svg><b>my-shop-app</b><span class="lock">Private</span></div>
+    <div class="tabs">
+      <button class="btn on" data-pane="files"><svg viewBox="0 0 24 24"><path d="M4 20h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-8l-2-3H4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1z"/></svg>Files</button>
+      <button class="btn" data-pane="hist"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>History</button>
+    </div>
+    <div class="pane">
+      <div class="files show">
+        <div class="row"><svg viewBox="0 0 24 24"><path d="M4 20h16a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-8l-2-3H4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1z"/></svg>images<span class="m">folder</span></div>
+        <div class="row"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>index.html<span class="m">page</span></div>
+        <div class="row"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>style.css<span class="m">design</span></div>
+        <div class="row"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>app.js<span class="m">logic</span></div>
+        <div class="row"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>README.md<span class="m">about</span></div>
+      </div>
+      <div class="hist">
+        <div class="snaps">
+          <div class="snap s3"><b>last week</b><i></i><i></i><i class="short"></i></div>
+          <div class="snap s2"><b>yesterday</b><i></i><i></i><i></i><i class="short"></i></div>
+          <div class="snap s1"><b>today</b><i></i><i></i><i></i><i></i><i class="short"></i></div>
+        </div>
+        <p class="snapcap">Every saved version stays in the repo. You can always open an older one.</p>
+      </div>
+    </div>
+  </div>
+  <div class="tip tap-hint">Tap History to see older versions</div>
+</div>
+
+<script>
+const btns=[...document.querySelectorAll('[data-pane]')];
+btns.forEach(b=>b.addEventListener('click',()=>{
+  btns.forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.pane > div').forEach(p=>p.classList.toggle('show',p.classList.contains(b.dataset.pane)));
+}));
+</script>
+<script data-src="assets/base.js">
+// Shared runtime for every slide: fit the 1920×1080 stage, talk to the deck, copy buttons.
+(function(){
+  var stage = document.getElementById('stage');
+  function fit(){ stage.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+  addEventListener('resize', fit); fit();
+
+  // clicks on buttons/links stay inside the slide; anywhere else advances the deck
+  var INTERACTIVE = 'button,a,input,select,textarea,label,[data-tap]';
+  var inDeck = window.top !== window;
+  addEventListener('click', function(e){
+    if(e.target.closest(INTERACTIVE)) return;
+    if(inDeck) parent.postMessage({deck:'click'}, '*');
+  });
+  addEventListener('keydown', function(e){
+    if(e.target.closest('input,textarea')) return;
+    if(inDeck){ e.preventDefault(); parent.postMessage({deck:'key', key:e.key}, '*'); }
+    else if(e.key==='r' || e.key==='R') location.reload();
+  });
+
+  // [data-copy] buttons copy the text of the element they point to
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var src = document.querySelector(b.getAttribute('data-copy'));
+      var text = src ? src.textContent.trim().replace(/^[“"]|[”"]$/g,'') : '';
+      var done = function(){ var t=b.innerHTML; b.textContent='Copied ✓'; b.classList.add('on'); setTimeout(function(){ b.innerHTML=t; b.classList.remove('on'); },1400); };
+      if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(text).then(done, fallback); } else fallback();
+      function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(_){} ta.remove(); done(); }
+    });
+  });
+})();
+</script>
+<script data-src="assets/slide-no.js">
+// Slide number in the header, Super Stack style: [04] GitHub Power Skills for Vibe Coders ────
+// Shared by every github-slide-XX.html. The number comes from the file name, so a new
+// slide only needs a script tag pointing at assets/slide-no.js and a .label header.
+(function(){
+  var m = location.pathname.match(/slide-(\d+)([a-z]?)\.html$/i) || (document.documentElement.getAttribute('data-slide')||'').match(/^(\d+)([a-z]?)$/i);
+  if(!m) return;
+  var no = String(parseInt(m[1],10)).padStart(2,'0') + (m[2]||'').toUpperCase();
+  var stage = document.getElementById('stage');
+  if(!stage) return;
+
+  var old = stage.querySelector('.page');
+  if(old) old.remove();
+
+  var css = document.createElement('style');
+  css.textContent =
+    '.label.numbered{gap:22px}'+
+    '.label.numbered::before{display:none}'+
+    '.slide-no{flex:none;height:50px;min-width:72px;padding:0 14px;display:flex;align-items:center;justify-content:center;border-radius:12px;'+
+      'font:800 30px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;'+
+      'background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.6));border:2px solid rgba(255,255,255,.85);'+
+      'box-shadow:0 0 18px rgba(255,255,255,.3),inset 0 0 12px rgba(255,255,255,.1);'+
+      'animation:slideNoIn .7s .1s cubic-bezier(.3,1.5,.5,1) both}'+
+    '.slide-line{position:relative;flex:none;width:520px;height:2px;margin-left:8px;'+
+      'background:linear-gradient(90deg,rgba(255,255,255,.75),rgba(255,255,255,.25) 60%,transparent);'+
+      'transform-origin:left;animation:slideLineIn 1s .5s cubic-bezier(.2,.8,.2,1) both}'+
+    '.slide-line::before{content:"";position:absolute;left:0;top:-3px;width:150px;height:8px;border-radius:8px;'+
+      'background:linear-gradient(90deg,#fff,rgba(255,255,255,.4));box-shadow:0 0 14px rgba(255,255,255,.6)}'+
+    '@keyframes slideNoIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}'+
+    '@keyframes slideLineIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}'+
+    '@media (prefers-reduced-motion:reduce){.slide-no,.slide-line{animation:none}}';
+  document.head.appendChild(css);
+
+  var label = stage.querySelector('.label');
+  var b = document.createElement('div');
+  b.className = 'slide-no';
+  b.textContent = no;
+  if(label){
+    label.classList.add('numbered');
+    label.prepend(b);
+    var line = document.createElement('i');
+    line.className = 'slide-line';
+    label.appendChild(line);
+  }else{
+    b.style.cssText = 'position:absolute;right:62px;top:22px;z-index:20';
+    stage.appendChild(b);
+  }
+})();
+</script>
+</body>
+</html>

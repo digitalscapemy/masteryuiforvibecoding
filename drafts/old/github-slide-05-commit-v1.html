@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commit Save Point</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/dock.css">
+<style>
+:root{
+  --bg:#000;
+  --text:#fff;
+  --body:#E8E8EC;
+  --line:rgba(255,255,255,.78);
+  --green:#4BF03C;
+  --green-glow:rgba(75,240,60,.55);
+  --red:#F0373C;
+  --red-glow:rgba(240,55,60,.6);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --cycle:7s;
+  --loop:3.4s;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;cursor:pointer}
+
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center;
+  background:radial-gradient(900px 520px at 66% 52%,rgba(255,255,255,.045),transparent 70%),var(--bg)}
+
+/* ---------- Header ---------- */
+.label{position:absolute;left:64px;top:30px;display:flex;align-items:center;gap:26px;font-size:30px;font-weight:700;letter-spacing:-.015em}
+.label::before{content:"";width:2px;height:44px;background:#fff;transform-origin:top;animation:growY .6s .1s var(--ease) both}
+.label span{animation:fadeRight .7s .25s var(--ease) both}
+h1{position:absolute;left:68px;top:92px;margin:0;font-size:88px;line-height:104px;font-weight:800;letter-spacing:-.035em;overflow:hidden;padding-bottom:6px;white-space:nowrap}
+h1 > span{display:inline-block;animation:rise .9s .35s var(--ease) both}
+.bar{position:absolute;left:71px;top:200px;width:214px;height:12px;border-radius:6px;background:#fff;
+  box-shadow:0 0 18px rgba(255,255,255,.45);transform-origin:left;animation:growX .8s .8s var(--ease) both}
+.sub{position:absolute;left:72px;top:222px;margin:0;font-size:35px;line-height:48px;font-weight:500;color:var(--body);letter-spacing:-.02em;white-space:nowrap;
+  animation:fadeUp .8s 1s var(--ease) both}
+.sub q{color:#fff;font-weight:700}
+
+/* ---------- Left list ---------- */
+.row{position:absolute;left:66px;width:560px;display:flex;gap:28px;animation:fadeRight .7s var(--ease) both}
+.r1{top:300px;animation-delay:1.2s}
+.r2{top:440px;animation-delay:1.35s}
+.r3{top:572px;animation-delay:1.5s}
+.r4{top:740px;animation-delay:1.65s}
+.ibox{flex:none;width:100px;height:96px;border-radius:20px;display:grid;place-items:center;
+  background:linear-gradient(150deg,#1d1d20,#050505);border:2px solid rgba(255,255,255,.55);
+  box-shadow:0 0 14px rgba(255,255,255,.18),inset 0 1px 0 rgba(255,255,255,.12)}
+.ibox svg{width:50px;height:50px;stroke:#fff;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.ibox svg *{transform-box:fill-box;transform-origin:center}
+.row p{margin:-4px 0 0;font-size:26px;line-height:32px;font-weight:500;color:var(--body);letter-spacing:-.02em}
+.row p b{color:#fff;font-weight:700}
+.msgs{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:center;margin-top:-2px}
+.msgs span{font-size:24px;font-weight:700;color:#fff;white-space:nowrap}
+.msgs .chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font-size:23px;font-weight:600;padding:3px 12px 5px;border-radius:10px;white-space:nowrap;letter-spacing:-.02em}
+.chip.bad{color:#ffd0d1;background:rgba(240,55,60,.14);border:2px solid rgba(240,55,60,.8);text-decoration:line-through;text-decoration-thickness:2px}
+.chip.good{color:#e6ffe1;background:rgba(75,240,60,.12);border:2px solid var(--green);box-shadow:0 0 10px rgba(75,240,60,.35)}
+.i-cam .flash{animation:flash 3s 3s ease-in-out infinite}
+@keyframes flash{0%,8%,100%{opacity:0}3%{opacity:1}}
+.i-pad .g{animation:wiggle 2.6s 3s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(0)}10%{transform:rotate(-8deg)}20%{transform:rotate(8deg)}30%{transform:rotate(0)}}
+.i-clock .hand{transform-box:view-box;transform-origin:12px 12px;animation:spin 5s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- Timeline card ---------- */
+.card{position:absolute;left:660px;top:296px;width:1208px;height:580px;border-radius:44px;
+  background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.015) 45%,rgba(0,0,0,.4));
+  border:2.5px solid var(--line);box-shadow:0 0 24px rgba(255,255,255,.25),inset 0 0 30px rgba(255,255,255,.06);
+  animation:cardIn .9s 1.3s var(--ease) both}
+.card .cap{position:absolute;left:44px;top:34px;display:flex;align-items:center;gap:14px;font-size:30px;font-weight:800;letter-spacing:-.02em;
+  animation:fadeUp .6s 1.7s var(--ease) both}
+.card .cap svg{width:36px;height:36px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.card svg.tl{position:absolute;left:0;top:0;width:1203px;height:575px;overflow:visible}
+.tl *{transform-box:fill-box}
+.track{stroke:rgba(255,255,255,.85);stroke-width:8;stroke-linecap:round;stroke-dasharray:1 1;stroke-dashoffset:1;
+  filter:drop-shadow(0 0 6px rgba(255,255,255,.4));animation:draw 1s 1.8s ease-in-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.dot{opacity:0;transform-origin:center;animation:nodeIn .45s cubic-bezier(.3,1.7,.5,1) forwards}
+.dot.ok{fill:#38d52c;stroke:#dcffd6;stroke-width:5;filter:drop-shadow(0 0 9px var(--green-glow))}
+.dot.bad{fill:var(--red);stroke:#ffd6d6;stroke-width:5}
+@keyframes nodeIn{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+.broken{animation:nodeIn .45s 2.6s cubic-bezier(.3,1.7,.5,1) forwards, breakIt var(--cycle) var(--loop) ease-in-out infinite;opacity:0}
+@keyframes breakIt{0%,44%,66%,100%{transform:none;filter:drop-shadow(0 0 8px var(--red-glow))}48%{transform:translateX(-5px)}52%{transform:translateX(5px)}56%{transform:translateX(-3px);filter:drop-shadow(0 0 26px var(--red))}60%{transform:none}}
+.restore{animation:nodeIn .45s 2.45s cubic-bezier(.3,1.7,.5,1) forwards, restored var(--cycle) var(--loop) ease-in-out infinite}
+@keyframes restored{0%,70%,92%,100%{filter:drop-shadow(0 0 9px var(--green-glow))}78%,86%{filter:drop-shadow(0 0 30px #b9ffb0)}}
+.back{fill:none;stroke:var(--green);stroke-width:6;stroke-linecap:round;stroke-dasharray:1 1;stroke-dashoffset:1;filter:drop-shadow(0 0 8px var(--green-glow));
+  animation:goBack var(--cycle) var(--loop) ease-in-out infinite}
+@keyframes goBack{0%,58%{stroke-dashoffset:1;opacity:1}72%,90%{stroke-dashoffset:0;opacity:1}96%,100%{stroke-dashoffset:0;opacity:0}}
+.back-head{fill:var(--green);opacity:0;animation:headOn var(--cycle) var(--loop) ease-in-out infinite}
+@keyframes headOn{0%,70%{opacity:0}73%,90%{opacity:1}96%,100%{opacity:0}}
+.reload{opacity:0;animation:headOn var(--cycle) var(--loop) ease-in-out infinite}
+
+.lbl{position:absolute;transform:translateX(-50%);text-align:center;white-space:nowrap;animation:fadeUp .5s var(--ease) both}
+.lbl .msg{display:inline-block;padding:8px 18px 10px;border-radius:14px;background:#0a0a0b;border:2px solid rgba(255,255,255,.6);
+  font-size:24px;font-weight:700;letter-spacing:-.02em}
+.lbl .msg.g{border-color:var(--green);box-shadow:0 0 12px rgba(75,240,60,.4)}
+.lbl .msg.r{border-color:var(--red);box-shadow:0 0 12px rgba(240,55,60,.45);color:#ffd6d6}
+.time{position:absolute;transform:translateX(-50%);font-size:22px;font-weight:600;color:#a8a8b0;white-space:nowrap;animation:fadeUp .5s var(--ease) both}
+
+/* "you are here" marker walking the save points */
+.here{position:absolute;left:0;top:452px;display:flex;flex-direction:column;align-items:center;
+  animation:walk var(--cycle) var(--loop) ease-in-out infinite;opacity:0}
+.here i{width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-bottom:18px solid #fff}
+.here b{margin-top:6px;padding:6px 16px 8px;border-radius:12px;background:#fff;color:#000;font-size:22px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+@keyframes walk{
+  0%{transform:translateX(calc(140px - 50%));opacity:0}
+  4%{opacity:1}
+  12%{transform:translateX(calc(140px - 50%))}
+  20%{transform:translateX(calc(360px - 50%))}
+  28%{transform:translateX(calc(580px - 50%))}
+  36%{transform:translateX(calc(800px - 50%))}
+  44%,62%{transform:translateX(calc(1020px - 50%))}
+  76%,92%{transform:translateX(calc(800px - 50%));opacity:1}
+  98%,100%{transform:translateX(calc(800px - 50%));opacity:0}}
+
+/* ---------- Shared keyframes ---------- */
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+
+.hint{position:fixed;right:14px;bottom:10px;font-size:12px;color:#555;font-family:Inter,sans-serif}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <symbol id="gh" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+</defs></svg>
+
+<div class="stage" id="stage">
+  <div class="label"><span>GitHub Series for Vibe Coders</span></div>
+  <h1><span>Commit: a save point for your code</span></h1>
+  <div class="bar"></div>
+  <p class="sub">Yesterday your app worked. Today AI <q>“helped fix it”</q> and everything is broken. How do you go back?</p>
+
+  <!-- Left list -->
+  <div class="row r1">
+    <div class="ibox i-cam"><svg viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/><circle class="flash" cx="12" cy="13" r="7" fill="rgba(255,255,255,.5)" stroke="none"/></svg></div>
+    <p>A <b>commit</b> is a snapshot of your code at one moment, with a message about what changed.</p>
+  </div>
+  <div class="row r2">
+    <div class="ibox i-pad"><svg viewBox="0 0 24 24"><g class="g"><path d="M6 11h4"/><path d="M8 9v4"/><path d="M15 12h.01"/><path d="M18 10h.01"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></g></svg></div>
+    <p><b>Analogy:</b> a save point in a game before the boss fight. Lose, and you reload.</p>
+  </div>
+  <div class="row r3">
+    <div class="ibox i-clock"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path class="hand" d="M12 6v6l4 2"/></svg></div>
+    <p><b>When to commit:</b> every time one thing is done and working, and before asking AI to make a big change.</p>
+  </div>
+  <div class="row r4">
+    <div class="ibox"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg></div>
+    <div class="msgs">
+      <span>Weak message:</span><div class="chips"><i class="chip bad">update</i><i class="chip bad">fix</i></div>
+      <span>Good message:</span><div class="chips"><i class="chip good">Add Google login button</i></div>
+    </div>
+  </div>
+
+  <!-- Save-point timeline -->
+  <div class="card">
+    <div class="cap"><svg viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Your save points</div>
+    <svg class="tl" viewBox="0 0 1203 575">
+      <line class="track" pathLength="1" x1="80" y1="300" x2="1100" y2="300"/>
+      <!-- roll back: from the broken commit to the one before it -->
+      <path class="back" pathLength="1" d="M1010 262 C 975 150, 835 150, 806 252"/>
+      <polygon class="back-head" points="800,272 786,244 818,246"/>
+      <text class="reload" x="910" y="150" text-anchor="middle" font-family="Inter,sans-serif" font-size="26" font-weight="800" fill="#9BF56B">Reload</text>
+      <circle class="dot ok" cx="140" cy="300" r="22" style="animation-delay:2s"/>
+      <circle class="dot ok" cx="360" cy="300" r="22" style="animation-delay:2.15s"/>
+      <circle class="dot ok" cx="580" cy="300" r="22" style="animation-delay:2.3s"/>
+      <circle class="dot ok restore" cx="800" cy="300" r="22"/>
+      <g class="broken"><circle class="dot bad" cx="1020" cy="300" r="24" style="opacity:1;animation:none"/><path d="M1012 286l8 10-6 6 10 12" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></g>
+    </svg>
+
+    <div class="time" style="left:140px;top:236px;animation-delay:2.1s">Mon 09:10</div>
+    <div class="time" style="left:360px;top:236px;animation-delay:2.25s">Mon 14:32</div>
+    <div class="time" style="left:580px;top:236px;animation-delay:2.4s">Tue 10:05</div>
+    <div class="time" style="left:800px;top:196px;animation-delay:2.55s">Yesterday</div>
+    <div class="time" style="left:1020px;top:196px;animation-delay:2.7s;color:#ff9a9c">Today</div>
+
+    <div class="lbl" style="left:140px;top:344px;animation-delay:2.2s"><span class="msg">Init project</span></div>
+    <div class="lbl" style="left:360px;top:344px;animation-delay:2.35s"><span class="msg">Add navbar</span></div>
+    <div class="lbl" style="left:580px;top:344px;animation-delay:2.5s"><span class="msg">Add login page</span></div>
+    <div class="lbl" style="left:800px;top:344px;animation-delay:2.65s"><span class="msg g">Add Google<br>login button</span></div>
+    <div class="lbl" style="left:1020px;top:344px;animation-delay:2.8s"><span class="msg r">AI “fix”<br>broke it</span></div>
+
+    <div class="here"><i></i><b>You are here</b></div>
+  </div>
+
+  <div class="dock" style="top:906px">
+    <div class="d-term"><svg viewBox="0 0 60 40"><path d="M6 6l16 14L6 34"/><path class="cur" d="M30 34h24"/></svg></div>
+    <p class="d-prompt"><b>AI Prompt:</b> “Commit these changes with a clear message.”</p>
+    <div class="d-sep"></div>
+    <div class="d-rem"><svg viewBox="0 0 16 16"><use href="#gh"/></svg><p><b>Remember:</b><br>It works? Commit first, then continue.</p></div>
+  </div>
+</div>
+<div class="hint">Click / Space to replay</div>
+
+<script>
+const stage = document.getElementById('stage');
+function fit(){ stage.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+addEventListener('resize', fit); fit();
+
+const inDeck = window.top !== window;
+if(inDeck){
+  document.querySelector('.hint')?.remove();
+  addEventListener('click', ()=>parent.postMessage({deck:'click'},'*'));
+  addEventListener('keydown', e=>{ e.preventDefault(); parent.postMessage({deck:'key',key:e.key},'*'); });
+}else{
+  addEventListener('click', ()=>location.reload());
+  addEventListener('keydown', e=>{ if(e.code==='Space'||e.key==='r'){ e.preventDefault(); location.reload(); } });
+}
+</script>
+<script src="assets/slide-no.js"></script>
+</body>
+</html>

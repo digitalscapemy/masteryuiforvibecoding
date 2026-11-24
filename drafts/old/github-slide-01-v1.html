@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is GitHub?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04061C;
+  --cyan:#22E5FF;
+  --blue:#4F9DFF;
+  --violet:#A855F7;
+  --violet-soft:#C084FC;
+  --text:#FFFFFF;
+  --body:#E4E9F7;
+  --muted:#B9C4DE;
+  --glass:rgba(10,32,74,.72);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#02030F;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+
+/* 1920×1080 stage, scaled to fit the window by the script at the bottom */
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));
+  background:
+    radial-gradient(620px 520px at 100% 4%,rgba(8,132,190,.62),transparent 72%),
+    radial-gradient(760px 420px at 100% 100%,rgba(6,126,176,.62),transparent 75%),
+    radial-gradient(620px 460px at 66% 2%,rgba(84,36,190,.42),transparent 72%),
+    radial-gradient(560px 300px at 70% 92%,rgba(126,40,226,.44),transparent 74%),
+    radial-gradient(760px 620px at 0% 0%,rgba(38,28,124,.5),transparent 72%),
+    radial-gradient(620px 420px at 0% 100%,rgba(16,44,120,.4),transparent 72%),
+    var(--bg)}
+.layer{position:absolute;inset:0;width:1920px;height:1080px;pointer-events:none}
+
+/* Header */
+.brand{position:absolute;left:73px;top:38px;display:flex;align-items:center;gap:15px}
+.brand svg{width:72px;height:48px;display:block}
+.brand b{display:block;font-size:28px;font-weight:700;line-height:34px;letter-spacing:-.01em}
+.brand span{display:block;font-size:25px;font-weight:400;line-height:34px;color:var(--body)}
+.progress{position:absolute;left:484px;top:54px;width:354px;height:2px;background:rgba(120,150,220,.28)}
+.progress i{position:absolute;left:0;top:-.5px;width:129px;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px}
+.page{position:absolute;right:50px;top:38px;font-size:33px;line-height:40px;color:#9FB0D4;font-weight:400}
+.page b{color:#fff;font-weight:700}
+
+/* Left column */
+h1{position:absolute;left:84px;top:150px;margin:0;font-size:124px;line-height:120px;font-weight:800;letter-spacing:-.025em}
+h1 em{font-style:normal;display:inline-block;padding-right:8px;font-size:138px;line-height:118px;
+  background:linear-gradient(90deg,#fff 0%,#EBD2FF 22%,#B79CFA 44%,#60A9FF 66%,#22E5FF 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{position:absolute;left:90px;top:404px;margin:0;width:700px;font-size:36px;line-height:41px;font-weight:400;color:var(--body)}
+.bar{position:absolute;left:90px;top:513px;width:102px;height:10px;border-radius:5px;background:linear-gradient(90deg,#B65CF6,#8E5CF6)}
+
+.checks{position:absolute;left:90px;top:553px;margin:0;padding:0;list-style:none;font-size:28.5px;line-height:39px;font-weight:400;color:var(--body)}
+.checks li{position:absolute;left:0;display:flex;align-items:center;gap:20px;white-space:nowrap}
+.checks li:nth-child(1){top:0}
+.checks li:nth-child(2){top:62px}
+.checks li:nth-child(3){top:124px}
+.checks li:nth-child(4){top:188px}
+.checks .box{flex:none;width:47px;height:47px;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(145deg,rgba(40,90,170,.55),rgba(20,50,110,.55));border:1px solid rgba(90,150,240,.45)}
+.checks .box svg{width:28px;height:28px}
+.checks strong{font-weight:700;color:var(--cyan)}
+
+/* Git vs GitHub callout */
+.note{position:absolute;left:73px;top:893px;width:1100px;height:128px;border-radius:22px;display:flex;align-items:center;
+  background:linear-gradient(90deg,rgba(26,34,104,.72),rgba(14,46,102,.72));border:1.5px solid rgba(92,132,232,.55)}
+.note .ico{margin-left:30px;width:58px;height:58px;flex:none}
+.note .tag{flex:none;margin-left:22px;width:236px;font-size:33px;font-weight:700;letter-spacing:-.01em;white-space:nowrap}
+.note .tag span{background:linear-gradient(90deg,#C77DFF,#9C8CFF 55%,#D9E9FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.note .div{width:1.5px;height:70px;background:rgba(150,180,240,.55)}
+.note p{margin:0 0 0 44px;font-size:24.5px;line-height:39px;color:var(--body);white-space:nowrap}
+.note p b{color:#fff;font-weight:700}
+
+/* Perspective panels: each matrix3d pins the four corners to the reference layout */
+.panel{position:absolute;left:0;top:0;transform-origin:0 0}
+.card{border-radius:24px;padding:24px 26px;background:linear-gradient(150deg,rgba(12,52,112,.74),var(--glass) 60%,rgba(18,28,92,.76));
+  border:2px solid rgba(46,205,255,.82);box-shadow:0 0 22px rgba(34,190,255,.42),inset 0 0 26px rgba(40,170,255,.14)}
+.card svg{display:block;width:62px;height:62px}
+.card h3{margin:14px 0 6px;font-size:28px;line-height:34px;font-weight:700;letter-spacing:-.015em;white-space:nowrap}
+.card p{margin:0;font-size:22px;line-height:27px;color:#D5DEF2}
+
+.tile{width:400px;height:420px;border-radius:58px}
+.tile.back{background:linear-gradient(180deg,#7A3BE8,#3C1FA0);box-shadow:0 0 60px rgba(150,80,255,.6)}
+.tile.front{background:radial-gradient(420px 360px at 50% 34%,#37177E 0%,#1C0F58 60%,#150B46 100%);
+  border:5px solid #B57BFF;box-shadow:0 0 34px rgba(190,120,255,.85),inset 0 0 44px rgba(150,80,255,.45);
+  display:flex;flex-direction:column;align-items:center}
+.tile svg{width:216px;height:216px;margin-top:62px;filter:drop-shadow(0 0 16px rgba(255,255,255,.28))}
+.tile strong{margin-top:6px;font-size:96px;line-height:104px;font-weight:700;letter-spacing:-.03em;filter:drop-shadow(0 0 14px rgba(255,255,255,.3))}
+
+.screen{width:420px;height:280px;border-radius:16px;background:#070B24;border:7px solid #A9A5E8;box-shadow:0 0 22px rgba(120,120,255,.55);display:flex;overflow:hidden}
+.side{width:104px;padding:16px 10px;background:#0E1438;display:flex;flex-direction:column;gap:13px}
+.side i{display:block;height:9px;border-radius:5px;background:#3A4A82}
+.side i:first-child{height:18px;background:#22C9EE}
+.code{flex:1;padding:18px 16px;display:flex;flex-direction:column;gap:11px}
+.code div{display:flex;gap:8px}
+.code i{display:block;height:7px;border-radius:4px}
+.c{background:#22E5FF}.v{background:#C084FC}.g{background:#5EEAA0}.p{background:#F472B6}.m{background:#51608F}
+
+.base{width:420px;height:180px;background:linear-gradient(120deg,#8C8DD6,#5A5DB4 55%,#3C3C94);border-radius:10px;box-shadow:0 0 24px rgba(110,110,255,.45)}
+.keys{position:absolute;left:26px;right:26px;top:14px;height:112px;border-radius:6px;background:
+  repeating-linear-gradient(90deg,transparent 0 18px,rgba(120,125,210,.8) 18px 21px),
+  repeating-linear-gradient(0deg,transparent 0 18px,rgba(120,125,210,.8) 18px 21px),#171A48}
+.pad{position:absolute;left:156px;width:108px;top:134px;height:38px;border-radius:5px;background:rgba(40,42,110,.75)}
+</style>
+</head>
+<body>
+<main class="stage" id="stage">
+
+  <!-- Scene behind the panels: floor grid, platform, circuit lines, cloud -->
+  <svg class="layer" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <linearGradient id="rim" x1="0" x2="1"><stop offset="0" stop-color="#A855F7"/><stop offset=".55" stop-color="#E879F9"/><stop offset="1" stop-color="#22E5FF"/></linearGradient>
+      <linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#17156A"/><stop offset=".6" stop-color="#101B66"/><stop offset="1" stop-color="#0D3A7E"/></linearGradient>
+      <linearGradient id="cloud" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3D49C8" stop-opacity=".55"/><stop offset="1" stop-color="#2070C8" stop-opacity=".5"/></linearGradient>
+      <linearGradient id="cloudEdge" x1="0" x2="1"><stop offset="0" stop-color="#8E7BFF"/><stop offset=".5" stop-color="#5AD6FF"/><stop offset="1" stop-color="#8E7BFF"/></linearGradient>
+      <linearGradient id="arrow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BFD8FF"/><stop offset="1" stop-color="#6A7CE8" stop-opacity=".5"/></linearGradient>
+      <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".35" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity=".5"/></linearGradient>
+      <mask id="floor"><rect x="800" y="760" width="1120" height="320" fill="url(#fade)"/></mask>
+      <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="soft" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="30"/></filter>
+    </defs>
+
+    <g mask="url(#floor)" stroke="#34C8F5" stroke-opacity=".3" stroke-width="1.5" fill="none">
+      <path d="M840 868H1920M840 902H1920M840 945H1920M840 1000H1920M840 1068H1920"/>
+      <path d="M1400 760L900 1080M1400 760L1060 1080M1400 760L1230 1080M1400 760L1400 1080M1400 760L1570 1080M1400 760L1740 1080M1400 760L1920 1040M1400 760L1920 930"/>
+    </g>
+
+    <ellipse cx="1370" cy="905" rx="360" ry="46" fill="#8B3CF0" opacity=".55" filter="url(#soft)"/>
+
+    <!-- Platform -->
+    <path d="M870 812Q856 826 884 838L1136 918Q1160 926 1188 925L1370 915Q1392 913 1412 909L1714 838Q1742 828 1720 812L1646 768Q1626 756 1596 756H1000Q972 756 952 768Z" fill="#14105C" stroke="#7C3AED" stroke-width="2"/>
+    <path id="plat" d="M870 790Q856 804 884 816L1136 896Q1160 904 1188 903L1370 893Q1392 891 1412 887L1714 816Q1742 806 1720 790L1646 746Q1626 734 1596 734H1000Q972 734 952 746Z" fill="url(#top)" stroke="url(#rim)" stroke-width="4" filter="url(#glow)"/>
+    <g fill="none" filter="url(#glow)">
+      <ellipse cx="1370" cy="782" rx="330" ry="72" stroke="#22E5FF" stroke-opacity=".55" stroke-width="2"/>
+      <ellipse cx="1370" cy="778" rx="262" ry="56" stroke="#3FA9FF" stroke-opacity=".8" stroke-width="3"/>
+      <ellipse cx="1370" cy="774" rx="200" ry="42" stroke="#22E5FF" stroke-opacity=".9" stroke-width="3"/>
+    </g>
+
+    <!-- Circuit lines -->
+    <g fill="none" stroke="#2FCBF5" stroke-opacity=".7" stroke-width="2.5" filter="url(#glow)">
+      <path d="M1050 416V461"/>
+      <path d="M1106 563H1162"/>
+      <path d="M1143 322H1178"/>
+      <path d="M1120 212L1168 190H1260"/>
+      <path d="M1540 262H1616"/>
+      <path d="M1711 372V442H1576"/>
+      <path d="M1618 568H1580"/>
+      <path d="M1040 664V712L1090 738"/>
+      <path d="M1752 698V750L1700 778"/>
+    </g>
+
+    <!-- Cloud and upload arrow -->
+    <path d="M1290 285A52 52 0 0 1 1284 190A112 112 0 0 1 1506 176A58 58 0 0 1 1500 285Z" fill="url(#cloud)" stroke="url(#cloudEdge)" stroke-width="5" filter="url(#glow)"/>
+    <path d="M1393 160L1466 234H1423V300H1363V234H1320Z" fill="url(#arrow)"/>
+  </svg>
+
+  <!-- GitHub tile -->
+  <div class="panel tile back" style="transform:matrix3d(0.345835,-0.142887,0,-0.000363,-0.048331,0.858386,0,-0.000013,0,0,1,0,1212.631579,279.043062,0,1)"></div>
+  <div class="panel tile front" style="transform:matrix3d(0.301903,-0.161515,0,-0.000397,-0.063775,0.844136,0,-0.000027,0,0,1,0,1173.588517,279.043062,0,1)">
+    <svg viewBox="0 0 16 16" fill="#fff" role="img" aria-label="GitHub mark"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    <strong>GitHub</strong>
+  </div>
+
+  <!-- Feature cards -->
+  <article class="panel card" style="width:252px;height:200px;transform:matrix3d(1.487463,0.224726,0,0.000432,-0.051988,0.98067,0,-0.000045,0,0,1,0,893.397129,204.401914,0,1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#22E5FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+    <h3>Store Code</h3>
+    <p>Keep your projects<br>in the cloud</p>
+  </article>
+
+  <article class="panel card" style="width:256px;height:190px;padding-top:20px;transform:matrix3d(1.525197,0.312175,0,0.000479,-0.0261,1.035986,0,-0.000024,0,0,1,0,850.909091,462.77512,0,1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#22E5FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+    <h3 style="margin-top:8px">Track Changes</h3>
+    <p>See the history<br>of your code</p>
+  </article>
+
+  <article class="panel card" style="width:252px;height:214px;padding-left:36px;border-color:rgba(70,190,255,.85);transform:matrix3d(-0.381466,-0.331341,0,-0.000739,0,0.820999,0,0,0,0,1,0,1615.69378,197.511962,0,1)">
+    <svg viewBox="0 0 24 24" fill="#C084FC" aria-hidden="true"><circle cx="12" cy="7.4" r="3.6"/><circle cx="4.9" cy="9" r="2.5"/><circle cx="19.1" cy="9" r="2.5"/><path d="M5.6 19.2c0-3.9 2.8-7 6.4-7s6.4 3.1 6.4 7c0 .5-.4.8-.8.8H6.4c-.4 0-.8-.3-.8-.8z"/><path d="M4.2 18.4H1.1c-.4 0-.7-.3-.7-.7 0-3 1.9-5.4 4.5-5.4.9 0 1.7.3 2.4.8-1.7 1.4-3 3-3.1 5.3zM19.8 18.4h3.1c.4 0 .7-.3.7-.7 0-3-1.9-5.4-4.5-5.4-.9 0-1.7.3-2.4.8 1.7 1.4 3 3 3.1 5.3z"/></svg>
+    <h3 style="font-size:33px;line-height:38px">Collaborate</h3>
+    <p style="font-size:25px;line-height:30px">Work together<br>with your team</p>
+  </article>
+
+  <article class="panel card" style="width:268px;height:226px;padding:30px 20px 0 40px;transform:matrix3d(-0.142694,-0.354841,0,-0.000607,0,0.914595,0,0,0,0,1,0,1616.842105,471.961722,0,1)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#22E5FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+    <h3 style="font-size:33px;line-height:38px">Deploy</h3>
+    <p style="font-size:24px;line-height:30px">Move your code<br>to production</p>
+  </article>
+
+  <!-- Laptop -->
+  <div class="panel base" aria-hidden="true" style="transform:matrix3d(0.38491,-0.092505,0,-0.000227,-1.763176,-0.718953,0,-0.001103,0,0,1,0,1070.239234,809.569378,0,1)"><div class="keys"></div><div class="pad"></div></div>
+  <div class="panel screen" aria-hidden="true" style="transform:matrix3d(0.147963,-0.21634,0,-0.000364,-0.415215,0.374757,0,-0.000262,0,0,1,0,1108.133971,645.358852,0,1)">
+    <div class="side"><i></i><i style="width:80%"></i><i style="width:64%"></i><i style="width:74%"></i><i style="width:58%"></i><i style="width:70%"></i><i style="width:52%"></i><i style="width:66%"></i></div>
+    <div class="code">
+      <div><i class="v" style="width:42px"></i><i class="c" style="width:76px"></i><i class="m" style="width:40px"></i></div>
+      <div><i class="p" style="width:30px;margin-left:16px"></i><i class="g" style="width:96px"></i></div>
+      <div><i class="c" style="width:60px;margin-left:16px"></i><i class="v" style="width:54px"></i><i class="m" style="width:62px"></i></div>
+      <div><i class="g" style="width:110px;margin-left:32px"></i><i class="p" style="width:36px"></i></div>
+      <div><i class="m" style="width:84px;margin-left:32px"></i><i class="c" style="width:48px"></i></div>
+      <div><i class="v" style="width:50px;margin-left:16px"></i><i class="g" style="width:70px"></i></div>
+      <div><i class="c" style="width:38px;margin-left:16px"></i><i class="p" style="width:82px"></i><i class="m" style="width:30px"></i></div>
+      <div><i class="g" style="width:64px;margin-left:32px"></i><i class="v" style="width:90px"></i></div>
+      <div><i class="m" style="width:46px;margin-left:16px"></i><i class="c" style="width:58px"></i></div>
+      <div><i class="v" style="width:28px"></i><i class="p" style="width:64px"></i></div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="brand">
+    <svg viewBox="0 0 72 48" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <defs><linearGradient id="brandG" x1="0" x2="1"><stop offset="0" stop-color="#7C3AED"/><stop offset="1" stop-color="#C084FC"/></linearGradient></defs>
+      <path d="M21 10L6 24l15 14M51 10l15 14-15 14" stroke="url(#brandG)" stroke-width="8"/>
+      <path d="M41 6L31 42" stroke="#60A9FF" stroke-width="6"/>
+    </svg>
+    <div><b>GitHub Introduction</b><span>For Vibe Coders</span></div>
+  </header>
+  <div class="progress"><i></i></div>
+  <div class="page"><b>04</b> / 11</div>
+
+  <!-- Main copy -->
+  <h1>What is<br><em>GitHub?</em></h1>
+  <p class="sub">A cloud platform to store, manage and collaborate on code.</p>
+  <div class="bar"></div>
+
+  <ul class="checks">
+    <li><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#22E5FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4.5 4.5L19 7"/></svg></span><span>GitHub is a <strong>cloud-based code repository</strong></span></li>
+    <li><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#22E5FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4.5 4.5L19 7"/></svg></span><span>Works with <strong>Git</strong> to track code changes</span></li>
+    <li><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#22E5FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4.5 4.5L19 7"/></svg></span><span>Used to <strong>store, manage and collaborate</strong> on projects</span></li>
+    <li><span class="box"><svg viewBox="0 0 24 24" fill="none" stroke="#22E5FF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 13l4.5 4.5L19 7"/></svg></span><span>Essential for Vibe Coders to <strong>backup, version<br>and deploy</strong> projects easily</span></li>
+  </ul>
+
+  <aside class="note">
+    <svg class="ico" viewBox="0 0 58 58" fill="none" aria-hidden="true"><circle cx="29" cy="29" r="26" stroke="#A855F7" stroke-width="5"/><circle cx="29" cy="17.5" r="3.6" fill="#A855F7"/><path d="M29 26v17" stroke="#A855F7" stroke-width="6" stroke-linecap="round"/></svg>
+    <div class="tag"><span>Git vs GitHub</span></div>
+    <div class="div"></div>
+    <p><b>Git</b> = the version control tool (runs on your PC)<br><b>GitHub</b> = the online platform that hosts your Git repositories</p>
+  </aside>
+</main>
+
+<script>
+  const stage = document.getElementById('stage');
+  function fit() {
+    stage.style.setProperty('--s', Math.min(innerWidth / 1920, innerHeight / 1080));
+  }
+  addEventListener('resize', fit);
+  fit();
+  if(window.top!==window){
+    addEventListener('click', ()=>parent.postMessage({deck:'click'},'*'));
+    addEventListener('keydown', e=>{ e.preventDefault(); parent.postMessage({deck:'key',key:e.key},'*'); });
+  }
+</script>
+<script src="assets/slide-no.js"></script>
+</body>
+</html>

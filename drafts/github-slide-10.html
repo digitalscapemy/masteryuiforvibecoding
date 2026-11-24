@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en" data-slide="10">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laptop to Live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000;
+  --text:#fff;
+  --body:#E8E8EC;
+  --line:rgba(255,255,255,.78);
+  --green:#4BF03C;
+  --green-soft:#9BF56B;
+  --green-glow:rgba(75,240,60,.55);
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --cycle:6s;     /* one laptop → live run */
+  --loop:3.6s;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased;cursor:pointer}
+
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center;
+  background:radial-gradient(1100px 420px at 50% 36%,rgba(75,240,60,.05),transparent 70%),
+             radial-gradient(900px 500px at 50% 60%,rgba(255,255,255,.04),transparent 70%),var(--bg)}
+
+/* ---------- Header ---------- */
+.label{position:absolute;left:64px;top:26px;display:flex;align-items:center;gap:26px;font-size:30px;font-weight:700;letter-spacing:-.015em}
+.label::before{content:"";width:2px;height:44px;background:#fff;transform-origin:top;animation:growY .6s .1s var(--ease) both}
+.label span{animation:fadeRight .7s .25s var(--ease) both}
+h1{position:absolute;left:66px;top:56px;margin:0;font-size:96px;line-height:112px;font-weight:900;letter-spacing:-.04em;overflow:hidden;padding-bottom:6px;white-space:nowrap}
+h1 > span{display:inline-block;animation:rise .9s .35s var(--ease) both}
+.bar{position:absolute;left:67px;top:166px;width:200px;height:12px;border-radius:6px;background:#fff;
+  box-shadow:0 0 18px rgba(255,255,255,.45);transform-origin:left;animation:growX .8s .8s var(--ease) both}
+
+/* ---------- Timeline ---------- */
+.track{position:absolute;left:167px;top:403px;width:1602px;height:12px;border-radius:6px;background:var(--green);
+  box-shadow:0 0 18px var(--green-glow);transform-origin:left;animation:growX 1.4s 1.2s cubic-bezier(.6,0,.3,1) both}
+.pulse{position:absolute;left:155px;top:397px;width:24px;height:24px;border-radius:50%;background:#f0fff0;
+  box-shadow:0 0 18px 8px var(--green-glow);opacity:0;animation:run var(--cycle) var(--loop) linear infinite}
+@keyframes run{0%{transform:translateX(0);opacity:0}3%{opacity:1}66.7%{transform:translateX(1602px);opacity:1}72%,100%{transform:translateX(1602px);opacity:0}}
+
+.st{position:absolute;top:212px;width:240px;margin-left:-120px;text-align:center;
+  animation:fadeUp .7s var(--ease) both}
+.st .pic{height:172px;position:relative;display:flex;align-items:flex-end;justify-content:center}
+.st .ped{position:absolute;left:50%;bottom:0;width:150px;height:34px;margin-left:-75px;border-radius:50%;
+  background:radial-gradient(ellipse at 50% 35%,#5a5e66,#1b1d21 70%);box-shadow:0 6px 14px rgba(0,0,0,.7),0 0 12px rgba(255,255,255,.12)}
+.st .tile{position:relative;margin-bottom:18px;width:124px;height:112px;border-radius:24px;display:grid;place-items:center;
+  background:linear-gradient(160deg,#3a3d43,#121316);border:2px solid rgba(255,255,255,.4);
+  box-shadow:0 10px 20px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.25);
+  animation:lightUp var(--cycle) ease-in-out infinite;animation-delay:var(--on)}
+.st .tile.bare{background:none;border:0;box-shadow:none;width:180px;height:140px;margin-bottom:12px}
+.st svg{overflow:visible}
+.st .tile svg{width:64px;height:64px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.st .tile.bare svg{width:100%;height:100%}
+@keyframes lightUp{0%,14%,100%{filter:none;transform:none}4%{filter:drop-shadow(0 0 22px var(--green));transform:translateY(-8px)}}
+.st .dot{position:absolute;left:50%;top:182px;width:30px;height:30px;margin-left:-15px;border-radius:50%;background:var(--green);
+  border:4px solid #d9ffd3;box-shadow:0 0 14px var(--green)}
+.st .n{width:44px;height:44px;margin:58px auto 0;border-radius:50%;background:var(--green);color:#041a02;display:grid;place-items:center;
+  font-size:28px;font-weight:900;box-shadow:0 0 14px var(--green-glow);animation:numPop var(--cycle) ease-in-out infinite;animation-delay:var(--on)}
+@keyframes numPop{0%,14%,100%{transform:none}4%{transform:scale(1.25)}}
+.st .pill{display:inline-flex;align-items:center;justify-content:center;height:52px;margin-top:14px;padding:0 24px;border-radius:16px;
+  background:#050505;border:2.5px solid rgba(155,245,107,.85);box-shadow:0 0 12px rgba(75,240,60,.35);
+  font-size:32px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.st .pill.sm{font-size:27px;padding:0 16px}
+.st .pill.live{border:3px solid var(--green);box-shadow:0 0 20px var(--green-glow);padding:0 40px}
+.st p{margin:14px 0 0;font-size:27px;line-height:32px;font-weight:500;color:var(--body);letter-spacing:-.02em}
+
+/* per-station icon details */
+.eyes{fill:var(--green);animation:blink 3.5s 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes blink{0%,44%,52%,100%{transform:scaleY(1)}48%{transform:scaleY(.1)}}
+.bell-rays line{stroke:var(--green);stroke-width:5;stroke-linecap:round;animation:rays 1.6s 3s ease-in-out infinite}
+@keyframes rays{0%,100%{opacity:.35}50%{opacity:1}}
+.leds rect{fill:var(--green);animation:led 1.2s steps(1) infinite}
+.leds rect:nth-child(2n){animation-delay:.5s}
+@keyframes led{0%{opacity:1}50%{opacity:.3}}
+.rocket{animation:launch var(--cycle) var(--loop) ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes launch{0%,62%,100%{transform:none}70%{transform:translate(10px,-22px)}80%{transform:translate(0,0)}}
+.flame{animation:flame .25s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:top}
+@keyframes flame{to{transform:scaleY(1.35)}}
+
+/* ---------- AI prompt bar ---------- */
+.prompt{position:absolute;left:84px;top:709px;width:1754px;height:145px;border-radius:44px;display:flex;align-items:center;
+  border:2.5px solid rgba(255,255,255,.85);background:linear-gradient(90deg,rgba(255,255,255,.07),rgba(255,255,255,.02));
+  box-shadow:0 0 24px rgba(255,255,255,.28),inset 0 0 26px rgba(255,255,255,.05);animation:pillIn 1s 2.6s var(--ease) both}
+.prompt .term{margin-left:100px;width:111px;height:84px;border-radius:14px;border:4px solid var(--green);box-shadow:0 0 16px var(--green-glow);
+  display:grid;place-items:center}
+.prompt .term svg{width:70px;height:46px;stroke:var(--green);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.prompt .term .cur{animation:caret 1s steps(1) infinite}
+@keyframes caret{50%{opacity:0}}
+.prompt .sep{width:2px;height:92px;background:rgba(255,255,255,.75);margin:0 46px 0 54px}
+.prompt p{margin:0;font-size:42px;line-height:52px;font-weight:500;letter-spacing:-.025em;clip-path:inset(0 100% 0 0);
+  animation:reveal 1.6s 3s cubic-bezier(.5,0,.3,1) forwards}
+.prompt p b{font-weight:800}
+
+/* ---------- Footer ---------- */
+.outro{position:absolute;left:98px;top:896px;margin:0;font-size:52px;line-height:62px;font-style:italic;font-weight:500;letter-spacing:-.025em}
+.outro span{display:block;animation:fadeUp .8s var(--ease) both}
+.outro span:nth-child(1){animation-delay:3.2s}
+.outro span:nth-child(2){animation-delay:3.45s;font-weight:800;color:var(--green-soft);text-shadow:0 0 18px rgba(75,240,60,.35)}
+.vsep{position:absolute;left:1214px;top:902px;width:2px;height:120px;background:rgba(255,255,255,.7);transform-origin:top;animation:growY .6s 3.3s var(--ease) both}
+.next{position:absolute;left:1316px;top:908px;width:522px;height:105px;border-radius:53px;display:flex;align-items:center;justify-content:center;gap:26px;
+  background:linear-gradient(180deg,#8bff6f,#3fd52f);color:#051a03;font-size:56px;font-weight:800;letter-spacing:-.03em;overflow:hidden;
+  box-shadow:0 0 30px var(--green-glow),inset 0 2px 0 rgba(255,255,255,.5);animation:pop .7s 3.6s cubic-bezier(.3,1.5,.5,1) both}
+.next svg{width:46px;height:46px;flex:none}
+.next .arr{stroke:#051a03;fill:none;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round;animation:nudge 1.6s 4.2s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateX(8px)}}
+.next::after{content:"";position:absolute;top:0;bottom:0;width:120px;left:-160px;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+  transform:skewX(-20deg);animation:shine 3.5s 4.4s ease-in-out infinite}
+@keyframes shine{0%{left:-160px}35%,100%{left:620px}}
+
+/* ---------- Shared keyframes ---------- */
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes pillIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes reveal{to{clip-path:inset(0 0 0 0)}}
+
+.hint{position:fixed;right:14px;bottom:10px;font-size:12px;color:#555;font-family:Inter,sans-serif}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important}
+  .pulse{display:none}
+}
+.st[data-tap]{cursor:pointer}
+.st[data-tap]:hover .tile{filter:drop-shadow(0 0 18px var(--green));transform:translateY(-6px)}
+.st .jump{position:absolute;left:50%;top:-34px;transform:translateX(-50%);font-size:19px;font-weight:800;color:#041a02;background:var(--green);padding:5px 12px;border-radius:999px;white-space:nowrap;opacity:0;transition:opacity .2s}
+.st[data-tap]:hover .jump{opacity:1}
+.tip11{position:absolute;right:70px;top:150px;animation:fadeIn .6s 3s both}
+h1{top:70px}.bar{top:182px}
+h1{top:80px}.bar{top:194px}
+h1{top:90px}.bar{top:204px}
+.next{gap:30px}.next .nx{display:flex;flex-direction:column;line-height:1}.next .nx small{font-size:21px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;opacity:.75;margin-bottom:8px}.next .nx b{font-size:50px;font-weight:900;letter-spacing:-.03em}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="label"><span>GitHub Power Skills for Vibe Coders</span></div>
+  <h1><span>From your laptop to live</span></h1>
+  <div class="bar"></div>
+
+  <div class="tip11 tap-hint">Tap a step to go back to its slide</div>
+  <div class="track"></div>
+  <div class="pulse"></div>
+  <div id="stations"></div>
+
+  <div class="prompt">
+    <div class="term"><svg viewBox="0 0 60 40"><path d="M6 6l16 14L6 34"/><path class="cur" d="M30 34h24"/></svg></div>
+    <div class="sep"></div>
+    <p><b>AI Prompt:</b> Create a branch, build this feature, commit and push.<br>When CI passes, merge into main.</p>
+  </div>
+
+  <p class="outro"><span>You do not need to memorise commands.</span><span>You only need to know what to ask for.</span></p>
+  <div class="vsep"></div>
+  <div class="next">
+    <span class="nx"><small>Next class · coming soon</small><b>Cloudflare</b></span>
+    <svg viewBox="0 0 24 24"><path class="arr" d="M4 12h15M13 5l7 7-7 7"/></svg>
+  </div>
+</div>
+
+<script>
+const stage = document.getElementById('stage');
+function fit(){ stage.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+addEventListener('resize', fit); fit();
+
+// x = centre of each station on the 1920 stage
+const ICON = {
+  laptop:`<div class="tile bare"><svg viewBox="0 0 180 140">
+      <rect x="28" y="12" width="124" height="86" rx="8" fill="#0b0b0d" stroke="#d3d6db" stroke-width="5"/>
+      <path d="M8 104h164l-10 14H18z" fill="#c9ccd1"/><rect x="70" y="104" width="40" height="5" rx="2" fill="#8d9097"/>
+      <path d="M78 42l-14 13 14 13M102 42l14 13-14 13M95 36l-10 38" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></div>`,
+  commit:`<div class="tile bare"><svg viewBox="0 0 180 140">
+      <g stroke="#e8eaee" stroke-width="3"><path d="M26 92l48 22 48-22-48-22z" fill="#4a4d54"/><path d="M26 70l48 22 48-22-48-22z" fill="#7a7e86"/><path d="M26 48l48 22 48-22-48-22z" fill="#b9bdc4"/></g>
+      <circle cx="128" cy="92" r="30" fill="#17181b" stroke="#fff" stroke-width="5"/><path d="M128 76v17l11 7" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+    </svg></div>`,
+  push:`<div class="tile"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/></svg></div>`,
+  ci:`<div class="tile bare"><svg viewBox="0 0 180 140">
+      <line x1="80" y1="8" x2="80" y2="26" stroke="#d3d6db" stroke-width="5"/><circle cx="80" cy="7" r="7" fill="#fff"/>
+      <rect x="30" y="26" width="100" height="76" rx="28" fill="#e9ebee"/><rect x="42" y="40" width="76" height="46" rx="18" fill="#101114"/>
+      <rect x="16" y="50" width="14" height="28" rx="6" fill="#b9bdc4"/><rect x="130" y="50" width="14" height="28" rx="6" fill="#b9bdc4"/>
+      <g class="eyes"><circle cx="64" cy="63" r="9"/><circle cx="96" cy="63" r="9"/></g>
+      <rect x="56" y="104" width="48" height="16" rx="6" fill="#8d9097"/>
+      <circle cx="136" cy="100" r="26" fill="#0c2a09" stroke="#4BF03C" stroke-width="6"/><path d="M124 100l9 9 16-17" fill="none" stroke="#4BF03C" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></div>`,
+  merge:`<div class="tile"><svg viewBox="0 0 24 24"><path d="M12 21V9"/><path d="M8 6l4-4 4 4"/><path d="M12 13 6 19"/><circle cx="5" cy="20" r="2"/><path d="m12 13 6 6"/><circle cx="19" cy="20" r="2"/></svg></div>`,
+  webhook:`<div class="tile"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+      <svg class="bell-rays" viewBox="0 0 40 40" style="position:absolute;right:-30px;top:-40px;width:40px;height:40px"><line x1="10" y1="4" x2="10" y2="18"/><line x1="22" y1="14" x2="32" y2="4"/><line x1="24" y1="26" x2="38" y2="24"/></svg></div>`,
+  cd:`<div class="tile bare"><svg viewBox="0 0 180 140">
+      <rect x="24" y="14" width="132" height="50" rx="10" fill="#6d7179" stroke="#d3d6db" stroke-width="3"/>
+      <rect x="24" y="72" width="132" height="50" rx="10" fill="#6d7179" stroke="#d3d6db" stroke-width="3"/>
+      <circle cx="44" cy="39" r="5" fill="#1c1e22"/><circle cx="60" cy="39" r="5" fill="#1c1e22"/><circle cx="44" cy="97" r="5" fill="#1c1e22"/><circle cx="60" cy="97" r="5" fill="#1c1e22"/>
+      <g class="leds"><rect x="96" y="28" width="46" height="7" rx="3"/><rect x="96" y="43" width="46" height="7" rx="3"/><rect x="96" y="86" width="46" height="7" rx="3"/><rect x="96" y="101" width="46" height="7" rx="3"/></g>
+    </svg></div>`,
+  live:`<div class="tile bare"><svg viewBox="0 0 180 160" style="filter:drop-shadow(0 0 14px rgba(75,240,60,.55))">
+      <g fill="#f2f2f4"><circle cx="54" cy="134" r="22"/><circle cx="86" cy="128" r="28"/><circle cx="120" cy="136" r="20"/></g>
+      <g class="rocket">
+        <path class="flame" d="M66 108l-14 22 22-10z" fill="#ffd36a"/>
+        <path d="M74 112c-6-30 18-72 66-96 4 50-22 86-46 104z" fill="#f4f5f7" stroke="#4BF03C" stroke-width="3"/>
+        <path d="M74 112l-22-6 16-26 18 2zM94 120l6 22 22-20-4-18z" fill="#4BF03C"/>
+        <circle cx="112" cy="58" r="12" fill="#0f1a12" stroke="#4BF03C" stroke-width="4"/>
+      </g>
+    </svg></div>`
+};
+const S = [
+  {x:167, go:'07', i:'laptop',  t:'Branch',          d:'Create a branch<br>for the new<br>feature'},
+  {x:406, go:'04', i:'commit',  t:'Commit',          d:'Save a<br>checkpoint'},
+  {x:643, go:'05', i:'push',    t:'Push',            d:'Send it to<br>GitHub'},
+  {x:863, go:'08', i:'ci',      t:'CI',              d:'The robot<br>checks it'},
+  {x:1097,go:'07', i:'merge',   t:'Merge into main', d:'The feature<br>joins the<br>official version', sm:1},
+  {x:1333,go:'09', i:'webhook', t:'Webhook',         d:'GitHub<br>rings the bell'},
+  {x:1558,go:'08', i:'cd',      t:'CD',              d:'The server<br>deploys'},
+  {x:1769,i:'live',    t:'Live',            d:'', live:1},
+];
+const LOOP = 3.6, RUN = 4; // seconds: loop start, time for the pulse to cross
+const box = document.getElementById('stations');
+S.forEach((s,k)=>{
+  const on = LOOP + (s.x-167)/1602*RUN - 0.15;
+  const el = document.createElement('div');
+  el.className = 'st';
+  el.style.left = s.x+'px';
+  el.style.animationDelay = (1.3 + k*0.12)+'s';
+  el.style.setProperty('--on', on.toFixed(2)+'s');
+  el.innerHTML = `<div class="pic"><div class="ped"></div>${ICON[s.i]}</div>
+    <div class="dot"></div><div class="n">${k+1}</div>
+    <div class="pill${s.sm?' sm':''}${s.live?' live':''}">${s.t}</div>${s.d?`<p>${s.d}</p>`:''}`;
+  if(s.go){ el.dataset.tap=''; el.title='Back to slide '+s.go; el.insertAdjacentHTML('beforeend','<span class="jump">slide '+s.go+' ↗</span>');
+    el.addEventListener('click',()=>{ if(window.top!==window) parent.postMessage({deck:'goto',slide:s.go},'*'); }); }
+  box.appendChild(el);
+});
+
+</script>
+<script data-src="assets/base.js">
+// Shared runtime for every slide: fit the 1920×1080 stage, talk to the deck, copy buttons.
+(function(){
+  var stage = document.getElementById('stage');
+  function fit(){ stage.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+  addEventListener('resize', fit); fit();
+
+  // clicks on buttons/links stay inside the slide; anywhere else advances the deck
+  var INTERACTIVE = 'button,a,input,select,textarea,label,[data-tap]';
+  var inDeck = window.top !== window;
+  addEventListener('click', function(e){
+    if(e.target.closest(INTERACTIVE)) return;
+    if(inDeck) parent.postMessage({deck:'click'}, '*');
+  });
+  addEventListener('keydown', function(e){
+    if(e.target.closest('input,textarea')) return;
+    if(inDeck){ e.preventDefault(); parent.postMessage({deck:'key', key:e.key}, '*'); }
+    else if(e.key==='r' || e.key==='R') location.reload();
+  });
+
+  // [data-copy] buttons copy the text of the element they point to
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var src = document.querySelector(b.getAttribute('data-copy'));
+      var text = src ? src.textContent.trim().replace(/^[“"]|[”"]$/g,'') : '';
+      var done = function(){ var t=b.innerHTML; b.textContent='Copied ✓'; b.classList.add('on'); setTimeout(function(){ b.innerHTML=t; b.classList.remove('on'); },1400); };
+      if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(text).then(done, fallback); } else fallback();
+      function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(_){} ta.remove(); done(); }
+    });
+  });
+})();
+</script>
+<script data-src="assets/slide-no.js">
+// Slide number in the header, Super Stack style: [04] GitHub Power Skills for Vibe Coders ────
+// Shared by every github-slide-XX.html. The number comes from the file name, so a new
+// slide only needs a script tag pointing at assets/slide-no.js and a .label header.
+(function(){
+  var m = location.pathname.match(/slide-(\d+)([a-z]?)\.html$/i) || (document.documentElement.getAttribute('data-slide')||'').match(/^(\d+)([a-z]?)$/i);
+  if(!m) return;
+  var no = String(parseInt(m[1],10)).padStart(2,'0') + (m[2]||'').toUpperCase();
+  var stage = document.getElementById('stage');
+  if(!stage) return;
+
+  var old = stage.querySelector('.page');
+  if(old) old.remove();
+
+  var css = document.createElement('style');
+  css.textContent =
+    '.label.numbered{gap:22px}'+
+    '.label.numbered::before{display:none}'+
+    '.slide-no{flex:none;height:50px;min-width:72px;padding:0 14px;display:flex;align-items:center;justify-content:center;border-radius:12px;'+
+      'font:800 30px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;'+
+      'background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.6));border:2px solid rgba(255,255,255,.85);'+
+      'box-shadow:0 0 18px rgba(255,255,255,.3),inset 0 0 12px rgba(255,255,255,.1);'+
+      'animation:slideNoIn .7s .1s cubic-bezier(.3,1.5,.5,1) both}'+
+    '.slide-line{position:relative;flex:none;width:520px;height:2px;margin-left:8px;'+
+      'background:linear-gradient(90deg,rgba(255,255,255,.75),rgba(255,255,255,.25) 60%,transparent);'+
+      'transform-origin:left;animation:slideLineIn 1s .5s cubic-bezier(.2,.8,.2,1) both}'+
+    '.slide-line::before{content:"";position:absolute;left:0;top:-3px;width:150px;height:8px;border-radius:8px;'+
+      'background:linear-gradient(90deg,#fff,rgba(255,255,255,.4));box-shadow:0 0 14px rgba(255,255,255,.6)}'+
+    '@keyframes slideNoIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}'+
+    '@keyframes slideLineIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}'+
+    '@media (prefers-reduced-motion:reduce){.slide-no,.slide-line{animation:none}}';
+  document.head.appendChild(css);
+
+  var label = stage.querySelector('.label');
+  var b = document.createElement('div');
+  b.className = 'slide-no';
+  b.textContent = no;
+  if(label){
+    label.classList.add('numbered');
+    label.prepend(b);
+    var line = document.createElement('i');
+    line.className = 'slide-line';
+    label.appendChild(line);
+  }else{
+    b.style.cssText = 'position:absolute;right:62px;top:22px;z-index:20';
+    stage.appendChild(b);
+  }
+})();
+</script>
+</body>
+</html>

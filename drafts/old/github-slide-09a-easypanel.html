@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en" data-slide="09a">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Webhook Setup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style data-src="assets/base.css">
+/* Shared look for the GitHub series slides (black, white glass, green accents). */
+:root{
+  --bg:#000;--text:#fff;--body:#E8E8EC;--soft:#B9B9C2;--line:rgba(255,255,255,.78);
+  --green:#4BF03C;--green-soft:#9BF56B;--green-glow:rgba(75,240,60,.55);
+  --red:#F0373C;--red-glow:rgba(240,55,60,.55);
+  --ease:cubic-bezier(.2,.8,.2,1);--pop:cubic-bezier(.3,1.5,.5,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center;
+  background:radial-gradient(900px 560px at 66% 54%,rgba(255,255,255,.05),transparent 70%),var(--bg)}
+.abs{position:absolute}
+
+/* header: the slide number is added by slide-no.js */
+.label{position:absolute;left:72px;top:40px;display:flex;align-items:center;gap:26px;font-size:30px;font-weight:700;letter-spacing:-.015em}
+.label span{animation:fadeRight .7s .25s var(--ease) both}
+.title{position:absolute;left:72px;top:104px;margin:0;font-size:84px;line-height:100px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;padding-bottom:6px}
+.title > span{display:inline-block;animation:rise .9s .35s var(--ease) both}
+.title em{font-style:normal;color:var(--green-soft)}
+.bar{position:absolute;left:74px;top:212px;width:200px;height:12px;border-radius:6px;background:#fff;
+  box-shadow:0 0 18px rgba(255,255,255,.45);transform-origin:left;animation:growX .8s .8s var(--ease) both}
+.hook{position:absolute;left:74px;top:236px;margin:0;font-size:38px;line-height:50px;font-weight:500;color:var(--body);letter-spacing:-.02em;
+  animation:fadeUp .8s 1s var(--ease) both}
+.hook b{color:#fff}
+
+/* glass card */
+.glass{border-radius:36px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 45%,rgba(0,0,0,.4));
+  border:2.5px solid var(--line);box-shadow:0 0 24px rgba(255,255,255,.22),inset 0 0 30px rgba(255,255,255,.06)}
+.glass.g{border-color:var(--green);box-shadow:0 0 26px var(--green-glow),inset 0 0 30px rgba(75,240,60,.08)}
+.glass.r{border-color:var(--red);box-shadow:0 0 26px var(--red-glow),inset 0 0 30px rgba(240,55,60,.08)}
+.ibox{flex:none;width:96px;height:96px;border-radius:22px;display:grid;place-items:center;
+  background:linear-gradient(150deg,#232327,#060607);border:2px solid rgba(255,255,255,.55);
+  box-shadow:0 0 14px rgba(255,255,255,.18),inset 0 1px 0 rgba(255,255,255,.12)}
+.ibox svg,.ico{width:50px;height:50px;stroke:#fff;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+svg *{transform-box:fill-box}
+
+/* interactive buttons */
+.btn{font:700 28px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:14px;
+  padding:18px 30px;border-radius:999px;background:#0b0b0c;border:2.5px solid rgba(255,255,255,.85);
+  box-shadow:0 0 16px rgba(255,255,255,.25);transition:transform .2s var(--ease),box-shadow .2s,background .2s,border-color .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 0 28px rgba(255,255,255,.45)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn.g{border-color:var(--green);box-shadow:0 0 18px var(--green-glow)}
+.btn.g:hover{box-shadow:0 0 34px var(--green)}
+.btn.r{border-color:var(--red);box-shadow:0 0 18px var(--red-glow)}
+.btn.on{background:#fff;color:#000}
+.btn svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.tap-hint{font-size:22px;font-weight:600;color:var(--soft);display:inline-flex;align-items:center;gap:10px}
+.tap-hint::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blip 1.4s ease-in-out infinite}
+@keyframes blip{50%{opacity:.3;transform:scale(.7)}}
+
+/* "Ask your AI" prompt card with a copy button */
+.ask{display:flex;align-items:center;gap:26px;padding:22px 26px 22px 28px;border-radius:28px;
+  background:linear-gradient(90deg,rgba(75,240,60,.08),rgba(255,255,255,.02));border:2.5px solid rgba(155,245,107,.75);box-shadow:0 0 20px rgba(75,240,60,.25)}
+.ask .term{flex:none;width:78px;height:60px;border-radius:12px;border:3.5px solid var(--green);display:grid;place-items:center;box-shadow:0 0 12px var(--green-glow)}
+.ask .term svg{width:46px;height:30px;stroke:var(--green);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ask .term .cur{animation:caret 1s steps(1) infinite}
+.ask .q{flex:1}
+.ask .q small{display:block;font-size:20px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green-soft);margin-bottom:6px}
+.ask .q p{margin:0;font-size:30px;line-height:38px;font-weight:600;letter-spacing:-.02em}
+.ask .copy{font-size:22px;padding:14px 22px}
+@keyframes caret{50%{opacity:0}}
+
+/* closing line used on a few slides only */
+.remember{display:flex;align-items:center;gap:22px;font-size:40px;font-weight:500;letter-spacing:-.02em}
+.remember b{font-weight:800}
+.remember svg{width:60px;height:60px;fill:#fff;filter:drop-shadow(0 0 10px rgba(255,255,255,.4))}
+
+/* keyframes */
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.in{animation:fadeUp .7s var(--ease) both}
+.in-card{animation:cardIn .9s var(--ease) both}
+.in-pop{animation:pop .6s var(--pop) both}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition:none!important}
+}
+</style>
+<style>
+.title{font-size:72px}
+.steps{position:absolute;left:74px;top:280px;width:640px;display:flex;flex-direction:column;gap:16px}
+.st{display:flex;align-items:center;gap:22px;width:100%;text-align:left;justify-content:flex-start;padding:15px 24px;border-radius:24px;font-size:25px;line-height:33px;font-weight:600;animation:fadeRight .6s var(--ease) both}
+.st:nth-child(1){animation-delay:1.1s}.st:nth-child(2){animation-delay:1.25s}.st:nth-child(3){animation-delay:1.4s}.st:nth-child(4){animation-delay:1.55s}
+.st .n{flex:none;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:#1c1c20;border:2px solid rgba(255,255,255,.5);font-size:28px;font-weight:900}
+.st.on{color:#fff;background:rgba(75,240,60,.1);border-color:var(--green);box-shadow:0 0 24px var(--green-glow)}
+.st.on .n{background:var(--green);border-color:var(--green);color:#041a02}
+.st span b{color:#fff}
+.next{margin-top:6px;align-self:flex-start;animation:fadeUp .6s 1.7s var(--ease) both}
+
+.screen{position:absolute;left:770px;top:280px;width:1080px;height:520px;overflow:hidden;animation:cardIn .9s 1.3s var(--ease) both}
+.chrome{display:flex;align-items:center;gap:12px;padding:18px 24px;border-bottom:2px solid rgba(255,255,255,.12);font-size:22px;font-weight:700;color:var(--soft)}
+.chrome i{width:14px;height:14px;border-radius:50%;background:#3a3b40}
+.chrome .url{margin-left:14px;padding:8px 16px;border-radius:10px;background:#0b0b0d;font:500 20px 'JetBrains Mono',monospace;color:#cfd1d6}
+.view{position:absolute;left:0;right:0;top:66px;bottom:0;padding:30px 38px;opacity:0;transform:translateX(30px);transition:opacity .4s,transform .4s var(--ease);pointer-events:none}
+.view.on{opacity:1;transform:none}
+.crumb{font-size:22px;font-weight:700;color:var(--soft);margin-bottom:16px}
+.crumb b{color:#fff}
+.tabsx{display:flex;gap:10px;margin-bottom:22px}
+.tabsx span{font-size:22px;font-weight:700;padding:10px 18px;border-radius:12px;color:var(--soft);background:rgba(255,255,255,.05)}
+.tabsx span.on{color:#041a02;background:var(--green)}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:22px;font-weight:700;margin-bottom:8px}
+.box{display:flex;align-items:center;gap:14px;padding:16px 20px;border-radius:14px;background:#060607;border:2px solid rgba(255,255,255,.3);font:500 22px 'JetBrains Mono',monospace;color:#cfd1d6}
+.box .blur{filter:blur(7px);user-select:none}
+.box .mini{margin-left:auto;font:700 18px Inter,sans-serif;padding:8px 14px;border-radius:10px;background:#fff;color:#000}
+.hl{box-shadow:0 0 0 3px var(--green),0 0 24px var(--green-glow)!important;border-color:var(--green)!important}
+.side{display:flex;gap:26px}
+.side .menu{width:230px;display:flex;flex-direction:column;gap:6px}
+.side .menu span{font-size:22px;font-weight:600;padding:10px 14px;border-radius:10px;color:var(--soft)}
+.side .menu span.on{color:#fff;background:rgba(255,255,255,.1)}
+.side .main{flex:1}
+.side h4{margin:0 0 10px;font-size:30px;font-weight:800}
+.side p{margin:0 0 20px;font-size:22px;color:var(--soft);line-height:30px}
+.fake{display:inline-flex;padding:14px 24px;border-radius:12px;background:#2ea043;color:#fff;font-size:22px;font-weight:800}
+.radio{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:600;margin:8px 0;color:var(--soft)}
+.radio i{width:22px;height:22px;border-radius:50%;border:2px solid #9a9aa3}
+.radio.on{color:#fff}.radio.on i{border:7px solid var(--green)}
+.log{font:500 22px/36px 'JetBrains Mono',monospace;color:#cfd1d6;padding:18px 22px;border-radius:14px;background:#060607;border:2px solid rgba(255,255,255,.2)}
+.log .g{color:var(--green-soft)}
+.liveb{margin-top:18px;display:inline-flex;align-items:center;gap:14px;padding:14px 26px;border-radius:16px;border:3px solid var(--green);background:#071505;font-size:30px;font-weight:900;box-shadow:0 0 24px var(--green-glow)}
+
+.warn,.short{position:absolute;top:830px;width:878px;padding:24px 30px;display:flex;gap:22px;align-items:flex-start;animation:fadeUp .8s var(--ease) both}
+.warn{left:74px;animation-delay:2s}
+.short{left:972px;animation-delay:2.2s}
+.warn svg,.short svg{flex:none;width:52px;height:52px;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.warn svg{stroke:var(--red)} .short svg{stroke:var(--green)}
+.warn p,.short p{margin:0;font-size:24px;line-height:32px;font-weight:500;color:var(--body)}
+.warn p b,.short p b{color:#fff}
+.steps{top:316px;gap:12px}
+.st{padding:13px 22px;font-size:24px}
+.screen{top:316px;height:500px}
+.warn,.short{top:852px;width:868px}
+.short{left:982px}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="label"><span>GitHub Power Skills for Vibe Coders</span></div>
+  <h1 class="title"><span>Set up a webhook with <em>Easypanel</em></span></h1>
+  <div class="bar"></div>
+  <p class="hook">Easypanel is a control panel that runs your app on your server.</p>
+
+  <div class="steps">
+    <button class="btn st on" data-v="0"><i class="n">1</i><span>In Easypanel, copy the <b>Deployment Trigger</b> link</span></button>
+    <button class="btn st" data-v="1"><i class="n">2</i><span>On GitHub: <b>Settings → Webhooks → Add webhook</b></span></button>
+    <button class="btn st" data-v="2"><i class="n">3</i><span>Paste it into <b>Payload URL</b> (the link box), pick <b>Just the push event</b>, save</span></button>
+    <button class="btn st" data-v="3"><i class="n">4</i><span><b>Push to main.</b> Easypanel updates your live app</span></button>
+    <button class="btn g next" id="next">Next step <svg viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+  </div>
+
+  <div class="screen glass">
+    <div class="chrome"><i></i><i></i><i></i><span class="url" id="url">easypanel · my-shop-app</span></div>
+    <div class="view on">
+      <div class="crumb">Project → <b>my-shop-app</b> (app service)</div>
+      <div class="tabsx"><span>Overview</span><span>Source</span><span class="on">Deployments</span><span>Domains</span></div>
+      <div class="field"><label>Deployment Trigger</label><div class="box hl">https://panel.example.com/api/deploy/<span class="blur">a9f3c2e81b7d44</span><span class="mini">Copy</span></div></div>
+      <p style="margin:0;font-size:22px;color:var(--soft)">This link is secret. The blurred part is the token, a password hidden inside the link.</p>
+    </div>
+    <div class="view">
+      <div class="crumb">github.com → <b>my-shop-app</b> → Settings</div>
+      <div class="side"><div class="menu"><span>General</span><span>Collaborators</span><span>Branches</span><span class="on">Webhooks</span><span>Secrets</span></div>
+        <div class="main"><h4>Webhooks</h4><p>Webhooks let other services know when something happens in your repo.</p><span class="fake hl">Add webhook</span></div></div>
+    </div>
+    <div class="view">
+      <div class="crumb">Settings → Webhooks → <b>Add webhook</b></div>
+      <div class="field"><label>Payload URL</label><div class="box hl">https://panel.example.com/api/deploy/<span class="blur">a9f3c2e81b7d44</span></div></div>
+      <div class="field"><label>Which events would you like to trigger this webhook?</label>
+        <div class="radio on"><i></i>Just the push event.</div><div class="radio"><i></i>Send me everything.</div></div>
+      <span class="fake hl">Add webhook</span>
+    </div>
+    <div class="view">
+      <div class="crumb">Your laptop → GitHub → Easypanel</div>
+      <div class="log">$ git push origin main <span style="color:#7a7b84"># your AI runs this</span><br><span class="g">✓</span> GitHub calls the webhook<br><span class="g">✓</span> Easypanel: building…<br><span class="g">✓</span> Easypanel: deployed</div>
+      <div class="liveb"><svg viewBox="0 0 24 24" style="width:36px;height:36px"><circle cx="12" cy="12" r="11" fill="#4BF03C"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="#041a02" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>Your app is live</div>
+    </div>
+  </div>
+
+  <div class="warn glass r"><svg viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4M12 17h.01"/></svg>
+    <p><b>Keep the link secret.</b> Anyone who has it can trigger a deploy. Blur it in screen recordings. If it leaks, refresh the token in Easypanel and paste the new link into GitHub.</p></div>
+  <div class="short glass g"><svg viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    <p><b>Shortcut:</b> if the service's source is GitHub, Easypanel's <b>Enable Auto Deploy</b> button sets this up for you. The manual way is to understand the idea.</p></div>
+</div>
+
+<script>
+const sts=[...document.querySelectorAll('.st')], views=[...document.querySelectorAll('.view')], url=document.getElementById('url');
+const URLS=['easypanel · my-shop-app','github.com/you/my-shop-app/settings/hooks','github.com/you/my-shop-app/settings/hooks/new','terminal · git push'];
+let cur=0;
+function show(i){ cur=i; sts.forEach((b,k)=>b.classList.toggle('on',k===i)); views.forEach((v,k)=>v.classList.toggle('on',k===i)); url.textContent=URLS[i]; }
+sts.forEach(b=>b.addEventListener('click',()=>show(+b.dataset.v)));
+document.getElementById('next').addEventListener('click',()=>show((cur+1)%4));
+</script>
+<script data-src="assets/base.js">
+// Shared runtime for every slide: fit the 1920×1080 stage, talk to the deck, copy buttons.
+(function(){
+  var stage = document.getElementById('stage');
+  function fit(){ stage.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+  addEventListener('resize', fit); fit();
+
+  // clicks on buttons/links stay inside the slide; anywhere else advances the deck
+  var INTERACTIVE = 'button,a,input,select,textarea,label,[data-tap]';
+  var inDeck = window.top !== window;
+  addEventListener('click', function(e){
+    if(e.target.closest(INTERACTIVE)) return;
+    if(inDeck) parent.postMessage({deck:'click'}, '*');
+  });
+  addEventListener('keydown', function(e){
+    if(e.target.closest('input,textarea')) return;
+    if(inDeck){ e.preventDefault(); parent.postMessage({deck:'key', key:e.key}, '*'); }
+    else if(e.key==='r' || e.key==='R') location.reload();
+  });
+
+  // [data-copy] buttons copy the text of the element they point to
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var src = document.querySelector(b.getAttribute('data-copy'));
+      var text = src ? src.textContent.trim().replace(/^[“"]|[”"]$/g,'') : '';
+      var done = function(){ var t=b.innerHTML; b.textContent='Copied ✓'; b.classList.add('on'); setTimeout(function(){ b.innerHTML=t; b.classList.remove('on'); },1400); };
+      if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(text).then(done, fallback); } else fallback();
+      function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(_){} ta.remove(); done(); }
+    });
+  });
+})();
+</script>
+<script data-src="assets/slide-no.js">
+// Slide number in the header, Super Stack style: [04] GitHub Power Skills for Vibe Coders ────
+// Shared by every github-slide-XX.html. The number comes from the file name, so a new
+// slide only needs a script tag pointing at assets/slide-no.js and a .label header.
+(function(){
+  var m = location.pathname.match(/slide-(\d+)([a-z]?)\.html$/i) || (document.documentElement.getAttribute('data-slide')||'').match(/^(\d+)([a-z]?)$/i);
+  if(!m) return;
+  var no = String(parseInt(m[1],10)).padStart(2,'0') + (m[2]||'').toUpperCase();
+  var stage = document.getElementById('stage');
+  if(!stage) return;
+
+  var old = stage.querySelector('.page');
+  if(old) old.remove();
+
+  var css = document.createElement('style');
+  css.textContent =
+    '.label.numbered{gap:22px}'+
+    '.label.numbered::before{display:none}'+
+    '.slide-no{flex:none;height:50px;min-width:72px;padding:0 14px;display:flex;align-items:center;justify-content:center;border-radius:12px;'+
+      'font:800 30px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;'+
+      'background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.6));border:2px solid rgba(255,255,255,.85);'+
+      'box-shadow:0 0 18px rgba(255,255,255,.3),inset 0 0 12px rgba(255,255,255,.1);'+
+      'animation:slideNoIn .7s .1s cubic-bezier(.3,1.5,.5,1) both}'+
+    '.slide-line{position:relative;flex:none;width:520px;height:2px;margin-left:8px;'+
+      'background:linear-gradient(90deg,rgba(255,255,255,.75),rgba(255,255,255,.25) 60%,transparent);'+
+      'transform-origin:left;animation:slideLineIn 1s .5s cubic-bezier(.2,.8,.2,1) both}'+
+    '.slide-line::before{content:"";position:absolute;left:0;top:-3px;width:150px;height:8px;border-radius:8px;'+
+      'background:linear-gradient(90deg,#fff,rgba(255,255,255,.4));box-shadow:0 0 14px rgba(255,255,255,.6)}'+
+    '@keyframes slideNoIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}'+
+    '@keyframes slideLineIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}'+
+    '@media (prefers-reduced-motion:reduce){.slide-no,.slide-line{animation:none}}';
+  document.head.appendChild(css);
+
+  var label = stage.querySelector('.label');
+  var b = document.createElement('div');
+  b.className = 'slide-no';
+  b.textContent = no;
+  if(label){
+    label.classList.add('numbered');
+    label.prepend(b);
+    var line = document.createElement('i');
+    line.className = 'slide-line';
+    label.appendChild(line);
+  }else{
+    b.style.cssText = 'position:absolute;right:62px;top:22px;z-index:20';
+    stage.appendChild(b);
+  }
+})();
+</script>
+</body>
+</html>
