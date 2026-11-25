@@ -8,7 +8,7 @@ courses/ui-mastery/          kelas Mastering UI for Vibe Coding (deck dalam deck
 courses/github-power-skills/ kelas GitHub Power Skills for Vibe Coders
 tutorials/wsl-docker/        tutorial WSL + Docker
 short-videos/                stiker-material, skrill-microstock, vibe-fbads, remotion-wow
-courses/cloudflare/          kelas Cloudflare for Vibe Coders (DRAF, baru content)
+courses/cloudflare/          kelas Cloudflare Gatekeeper for Vibe Coders (DRAF, baru content)
 courses/hosting-tools/       video hosting tools (Netlify…Dokploy) untuk kelas beginner (DRAF: content + 32 slide)
 _archive/                    versi lama (ignored) — jangan edit, rujukan sahaja
 OpenMontage/                 repo luar (ignored)
@@ -20,7 +20,7 @@ Semua VO: ElevenLabs voice "Mikhail" (`6olOdhsgLdwwt9DbIIyp`), model `eleven_v4`
 
 | Apa | Sumber (edit sini) | Nota |
 |---|---|---|
-| Slide | `slides/github-slide-XX.html` | 19 slide, susunan dalam `SLIDES` di `slides/github-deck.html` |
+| Slide | `slides/github-slide-XX.html` | 21 slide (03C, 03D = README), susunan dalam `SLIDES` di `slides/github-deck.html` |
 | Deck (tayang) | `slides/github-deck.html` | preview: launch config `github-slides` → http://localhost:8765/github-deck.html |
 | Shared CSS/JS slide | `slides/assets/` (`base.css`, `base.js`, `dock.css`, `slide-no.js`) | lepas edit: `python tools/inline.py` dari `slides/` |
 | VO (skrip) | `vo.md` | klip c1–c39 (tiada c36); ID ElevenLabs dalam `video/.vo-ids.txt` |
@@ -62,16 +62,16 @@ Gaya VO: "Coach" + "Awak"; jangan guna "elemen", "lega", "bekas"; jangan sebut t
 `export/WSL-Docker-Full-VO.mp4` = dua video di atas digabung. Sumber rakaman: `video/src/wsl-docker-original.mp4` (salinan dari `Downloads/WSL Dockers.mp4`), sambungan: `video/src/sambungan-blur.mp4`.
 Versi VO yang dipakai: `v08b`, `v13b` (`v08`, `v13` lama dalam `_archive/`). `v01` dalam video penuh, `v01b` dalam intro.
 
-## 4. Kelas Cloudflare for Vibe Coders (DRAF) — `courses/cloudflare/`
+## 4. Kelas Cloudflare Gatekeeper for Vibe Coders (DRAF) — `courses/cloudflare/`
 
 | Apa | Sumber (edit sini) | Nota |
 |---|---|---|
-| Content | `slide-content.md` (v4.1, fakta disemak 25 Nov 2026) | 4 part: Domain & DNS, Proxy & SSL, Security, R2 + bonus Email Routing. Fokus: Cloudflare di DEPAN app (VPS + EasyPanel), bukan host app di Cloudflare |
-| Slide | `slides/cf-slide-XX.html` | 18 slide (01–09 + A–D), susunan dalam `SLIDES` di `slides/cf-deck.html`. Setiap slide layout lain-lain |
+| Content | `slide-content.md` (v4.1, fakta disemak 25 Nov 2026) | 4 part: Domain & DNS, Proxy & SSL, Security, R2 cloud storage (tiada bahagian email). Fokus: Cloudflare di DEPAN app (VPS + EasyPanel), bukan host app di Cloudflare |
+| Slide | `slides/cf-slide-XX.html` | 18 slide (01–08 + A–D, 02 = agenda), susunan dalam `SLIDES` di `slides/cf-deck.html`. Setiap slide layout lain-lain |
 | Deck (tayang) | `slides/cf-deck.html` | launch config `cloudflare-slides` → http://localhost:8767/cf-deck.html |
 | Shared CSS/JS | `slides/assets/` (`base.css` tema hitam-oren, `dock.css`, `cf.js` ikon + butang PRO, `base.js`, `slide-no.js`) | lepas edit: `python -I tools/inline.py` dari `slides/` |
 
-Contoh tetap sepanjang kelas (sama dengan Super Stack): domain `sitiscakes.com`, IP `203.0.113.10`, Exabytes, VPS + EasyPanel. Butang **PRO** kanan atas = nota developer pro. Belum ada `vo.md` dan `video/`.
+Contoh tetap sepanjang kelas (sama dengan Super Stack): domain `sitiscakes.com`, IP `203.0.113.10`, registrar tempatan (jangan sebut nama jenama registrar), VPS + EasyPanel. Butang **PRO** kanan atas = nota developer pro. Belum ada `vo.md` dan `video/`.
 
 ## 4b. Hosting Tools for Vibe Coders (DRAF) — `courses/hosting-tools/`
 

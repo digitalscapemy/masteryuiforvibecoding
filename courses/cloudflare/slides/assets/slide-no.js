@@ -1,4 +1,4 @@
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

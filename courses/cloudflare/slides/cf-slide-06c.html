@@ -159,8 +159,8 @@ svg *{transform-box:fill-box}
 </style>
 <style>
 /* LAYOUT: one big illustrated scene (house with a front gate, a back door and an admin room) + 3 fix buttons stacked on the right */
-.scene{position:absolute;left:74px;top:318px;width:1180px;height:572px;padding:0;overflow:hidden;animation:cardIn .9s 1.1s var(--ease) both}
-.scene svg.art{position:absolute;inset:0;width:1180px;height:572px}
+.scene{position:absolute;left:74px;top:324px;width:1180px;height:560px;padding:0;overflow:hidden;animation:cardIn .9s 1.1s var(--ease) both}
+.scene svg.art{position:absolute;left:0;top:-6px;width:1180px;height:572px}
 .wall{fill:#0f0f12;stroke:#fff;stroke-width:4}
 .roof{fill:#1b1b20;stroke:#fff;stroke-width:4;stroke-linejoin:round}
 .gate path{fill:var(--or)}
@@ -189,9 +189,9 @@ svg *{transform-box:fill-box}
 .vis{animation:walk 3.5s 2s linear infinite}
 @keyframes walk{0%{transform:translateX(0)}80%{transform:translateX(150px);opacity:1}100%{transform:translateX(160px);opacity:0}}
 
-.fixes{position:absolute;left:1290px;top:318px;width:560px;display:flex;flex-direction:column;gap:18px}
+.fixes{position:absolute;left:1290px;top:324px;width:560px;display:flex;flex-direction:column;gap:18px}
 .fx{display:flex;align-items:flex-start;gap:18px;padding:22px 24px;text-align:left;color:#fff;font-family:inherit;cursor:pointer;border:2.5px solid var(--line);transition:transform .2s var(--ease),border-color .25s,box-shadow .25s;animation:fadeLeft .7s var(--ease) both}
-.fx:nth-child(1){animation-delay:1.4s}.fx:nth-child(2){animation-delay:1.55s}.fx:nth-child(3){animation-delay:1.7s}
+.fx:nth-child(1){animation-delay:1.4s}.fx:nth-child(3){animation-delay:1.7s}.fx:nth-child(4){animation-delay:1.85s}
 .fx:hover{transform:translateX(-4px)}
 .fx.on{border-color:var(--or);box-shadow:0 0 26px var(--or-glow)}
 .fx .ibox{width:66px;height:66px;border-radius:16px}.fx .ibox svg{width:34px;height:34px}
@@ -200,12 +200,12 @@ svg *{transform-box:fill-box}
 .fx b{display:block;font-size:27px;line-height:32px;font-weight:900;letter-spacing:-.02em}
 .fx span{display:block;margin-top:6px;font-size:20px;line-height:27px;color:var(--soft);font-weight:500}
 .fx em{font-style:normal;color:var(--or-soft);font-weight:800}
-.or{text-align:center;font-size:18px;font-weight:900;letter-spacing:.14em;color:var(--soft);margin:-8px 0}
+.or{text-align:center;font-size:18px;font-weight:900;letter-spacing:.14em;color:var(--soft);margin:-8px 0;animation:fadeIn .5s 1.6s both}
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
-  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Part 3 · Security</b></span></div>
+  <div class="label"><span>Cloudflare Gatekeeper for Vibe Coders · <b class="part">Part 3 · Security</b></span></div>
   <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
     <p>Keep <b>SSH reachable another way</b> (your own IP, a VPN, or Access for SSH) before you lock the firewall. Do not lock yourself out.</p>
     <p>Cloudflare publishes its IP ranges at <code>cloudflare.com/ips</code>, and the list has changed before. <b>Tunnel</b> avoids maintaining that list: its connections are outbound-only.</p>
@@ -250,12 +250,12 @@ svg *{transform-box:fill-box}
 
   <div class="fixes">
     <button class="fx glass" data-c="fw"><div class="ibox"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v6M15 10v5M9 15v5"/></svg></div>
-      <div class="tx"><b>Firewall</b><span>The server accepts web traffic <em>only from Cloudflare's IP ranges.</em></span></div></button>
+      <div class="tx"><b>Firewall</b><span>Only let <em>Cloudflare</em> in.</span></div></button>
     <div class="or">OR</div>
     <button class="fx glass" data-c="tn"><div class="ibox"><svg viewBox="0 0 24 24"><path d="M3 18c0-6 4-11 9-11s9 5 9 11"/><path d="M7 18c0-3.5 2.2-6.5 5-6.5s5 3 5 6.5"/></svg></div>
-      <div class="tx"><b>Cloudflare Tunnel</b><span>Your server connects <em>out</em> to Cloudflare. No open web ports, no IP to find.</span></div></button>
+      <div class="tx"><b>Cloudflare Tunnel</b><span>No open door at all. <em>Easiest.</em></span></div></button>
     <button class="fx glass" data-c="ac"><div class="ibox"><svg viewBox="0 0 24 24"><use href="#lock"/></svg></div>
-      <div class="tx"><b>Cloudflare Access</b><span>admin. and EasyPanel ask for a <em>one-time email code</em> before the page loads. Free for 50 users.</span></div></button>
+      <div class="tx"><b>Cloudflare Access</b><span>Admin pages ask for an <em>email code</em> first.</span></div></button>
   </div>
 
   <div class="dock" style="top:912px">
@@ -340,7 +340,7 @@ document.querySelectorAll('.fx').forEach(b=>b.addEventListener('click',()=>{
 })();
 </script>
 <script data-src="assets/slide-no.js">
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

@@ -159,7 +159,7 @@ svg *{transform-box:fill-box}
 </style>
 <style>
 /* LAYOUT: a 30-night calendar that fills up and rolls over (left) + a numbered EasyPanel recipe (right) */
-.cal{position:absolute;left:74px;top:318px;width:960px;height:572px;padding:26px 30px;animation:cardIn .9s 1.1s var(--ease) both}
+.cal{position:absolute;left:74px;top:324px;width:960px;height:560px;padding:26px 30px;animation:cardIn .9s 1.1s var(--ease) both}
 .cal .hd{display:flex;align-items:center;gap:14px}
 .cal small{font-size:18px;font-weight:900;letter-spacing:.12em;color:var(--soft)}
 .cal .moon{margin-left:auto;display:flex;align-items:center;gap:10px;font:800 24px 'JetBrains Mono',monospace;color:var(--or-soft)}
@@ -179,25 +179,25 @@ svg *{transform-box:fill-box}
 .restore .r{flex:1;font-size:22px;font-weight:700;color:var(--soft)}
 .restore .r.ok{color:var(--or-soft)}
 
-.rec{position:absolute;left:1066px;top:318px;width:784px;height:572px;padding:26px 30px;animation:cardIn .9s 1.3s var(--ease) both}
+.rec{position:absolute;left:1066px;top:324px;width:784px;height:560px;display:flex;flex-direction:column;justify-content:center;padding:26px 30px;animation:cardIn .9s 1.3s var(--ease) both}
 .rec small{font-size:18px;font-weight:900;letter-spacing:.12em;color:var(--or-soft)}
-.st{display:flex;gap:18px;margin-top:20px}
+.st{display:flex;gap:18px;margin-top:34px}
 .st .n{flex:none;width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:var(--or);color:#160800;font-size:24px;font-weight:900}
-.st b{display:block;font-size:26px;line-height:32px;font-weight:900}
-.st span{display:block;margin-top:4px;font:700 19px 'JetBrains Mono',monospace;color:var(--soft)}
+.st b{display:block;font-size:30px;line-height:36px;font-weight:900}
+.st span{display:block;margin-top:6px;font:700 21px 'JetBrains Mono',monospace;color:var(--soft)}
 .dbs{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
-.lic{margin-top:22px;padding:16px 18px;border-radius:16px;border:2px dashed rgba(246,130,31,.6);font-size:21px;line-height:29px;color:#ffe2c4;font-weight:600}
+.lic{margin-top:36px;padding:16px 18px;border-radius:16px;border:2px dashed rgba(246,130,31,.6);font-size:21px;line-height:29px;color:#ffe2c4;font-weight:600}
 .lic b{color:#fff}
 .code{margin-top:14px;font-size:20px;color:var(--soft);font-weight:600}
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
-  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Part 4 · R2 Storage</b></span></div>
+  <div class="label"><span>Cloudflare Gatekeeper for Vibe Coders · <b class="part">Part 4 · R2 Cloud Storage</b></span></div>
   <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
     <p>R2 tokens have <b>no write-only permission</b> ("Object Read &amp; Write" can also delete). Use a separate bucket and token for backups, never the app's token.</p>
     <p>Add a <b>bucket lock</b> on the backup bucket so a hacked server can't delete its own backups. A lock overrides lifecycle rules, so keep it shorter than the lifecycle age.</p>
-    <p>Encrypt dumps that hold personal data before upload.</p></div></div>
+    <p>Works for PostgreSQL, MySQL, MariaDB and MongoDB. Encrypt dumps that hold personal data before upload.</p></div></div>
   <h1 class="title"><span>Backups to R2: <em>every night</em></span></h1>
   <div class="bar"></div>
   <p class="hook">Your VPS dies. The code is on GitHub. <b>The database is not.</b></p>
@@ -205,17 +205,16 @@ svg *{transform-box:fill-box}
   <div class="cal glass">
     <div class="hd"><small>PRIVATE BUCKET · sitiscakes-backups</small><span class="moon"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><span id="clk">03:00</span></span></div>
     <div class="days" id="days"></div>
-    <div class="life"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span><b>Lifecycle rule:</b> delete backups older than 30 days, automatically. Storage stays cheap.</span></div>
+    <div class="life"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg><span><b>Lifecycle rule:</b> old backups delete themselves after 30 days.</span></div>
     <div class="restore"><button class="btn o" id="rs">Test a restore</button><span class="r" id="rr">A backup you never restored is only a hope.</span></div>
   </div>
 
   <div class="rec glass o">
     <small>IN EASYPANEL</small>
-    <div class="st"><span class="n">1</span><div><b>Add R2 as storage</b><span>Server Settings → Storage Providers → Cloudflare R2</span></div></div>
-    <div class="st"><span class="n">2</span><div><b>Schedule the backup</b><span>Database service → Backups → Create Database Backup</span></div></div>
-    <div class="st"><span class="n">3</span><div><b>Add the lifecycle rule</b><span>R2 bucket → Settings → Object lifecycle → 30 days</span></div></div>
-    <div class="dbs"><span class="chip o">PostgreSQL</span><span class="chip o">MySQL</span><span class="chip o">MariaDB</span><span class="chip o">MongoDB</span></div>
-    <div class="lic"><b>Needs EasyPanel Hobby or above.</b> The Free plan has no database backups. On Free: ask the AI for a nightly <b>pg_dump</b> script that uploads to R2.</div>
+    <div class="st"><span class="n">1</span><div><b>Add R2 as storage</b><span>Settings → Storage Providers</span></div></div>
+    <div class="st"><span class="n">2</span><div><b>Schedule the backup</b><span>Database → Backups</span></div></div>
+    <div class="st"><span class="n">3</span><div><b>Add the lifecycle rule</b><span>delete after 30 days</span></div></div>
+    <div class="lic"><b>Needs EasyPanel Hobby plan.</b> On the free plan, ask your AI for a backup script instead.</div>
   </div>
 
   <div class="dock" style="top:912px">
@@ -307,7 +306,7 @@ document.getElementById('rs').addEventListener('click',()=>{ const r=document.ge
 })();
 </script>
 <script data-src="assets/slide-no.js">
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

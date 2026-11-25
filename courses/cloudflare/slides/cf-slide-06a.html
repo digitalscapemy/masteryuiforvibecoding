@@ -159,7 +159,7 @@ svg *{transform-box:fill-box}
 </style>
 <style>
 /* LAYOUT: a rule that reads like a sentence (left) + a speedometer for /login you can attack (right) + free-plan limits strip */
-.rule{position:absolute;left:74px;top:322px;width:1010px;height:460px;padding:30px 34px;animation:cardIn .9s 1.1s var(--ease) both}
+.rule{position:absolute;left:74px;top:324px;width:1010px;height:560px;padding:30px 34px;animation:cardIn .9s 1.1s var(--ease) both}
 .rule small{font-size:18px;font-weight:900;letter-spacing:.12em;color:var(--soft)}
 .sent{margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:14px;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1}
 .sent .w{color:var(--soft);font-weight:700}
@@ -174,7 +174,7 @@ svg *{transform-box:fill-box}
 .tip{position:absolute;left:34px;right:34px;bottom:28px;padding:16px 20px;border-radius:16px;border:2px dashed rgba(246,130,31,.6);font-size:22px;line-height:30px;color:#ffe2c4;font-weight:600}
 .tip b{color:#fff}
 
-.gauge{position:absolute;left:1120px;top:322px;width:730px;height:460px;padding:26px 30px;text-align:center;animation:cardIn .9s 1.3s var(--ease) both}
+.gauge{position:absolute;left:1120px;top:324px;width:730px;height:560px;padding:26px 30px;text-align:center;animation:cardIn .9s 1.3s var(--ease) both}
 .gauge small{display:block;text-align:left;font-size:18px;font-weight:900;letter-spacing:.12em;color:var(--soft)}
 .gauge svg{width:464px;height:250px;margin-top:4px;overflow:visible}
 .gauge .trk{fill:none;stroke:#2a2a2f;stroke-width:34}
@@ -196,7 +196,7 @@ svg *{transform-box:fill-box}
 </head>
 <body>
 <div class="stage" id="stage">
-  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Part 3 · Security</b></span></div>
+  <div class="label"><span>Cloudflare Gatekeeper for Vibe Coders · <b class="part">Part 3 · Security</b></span></div>
   <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
     <p>Free plan: <b>5 custom rules</b> (combine conditions with or / and in one rule). Actions: Block, Managed Challenge, JS Challenge, Interactive Challenge, Skip. <b>Log is Enterprise-only.</b></p>
     <p><b>1 rate-limiting rule</b>: fixed 10-second period, 10-second block, counted per IP, matching on path only. Shared mobile IPs can trip it together, so set it for real usage.</p></div></div>
@@ -205,14 +205,14 @@ svg *{transform-box:fill-box}
   <p class="hook">Someone tries <b>500 passwords a minute</b> on your login page.</p>
 
   <div class="rule glass">
-    <small>WAF CUSTOM RULE · "Block scanners"</small>
+    <small>WAF RULE = "IF this, THEN that"</small>
     <div class="sent"><span class="w">IF</span><span class="pill f">URI Path</span><span class="w">contains</span><span class="pill v">/wp-admin</span><span class="w">or</span><span class="pill v">/xmlrpc.php</span><span class="w">or</span><span class="pill v">/.env</span></div>
     <div class="then"><span>THEN</span><div class="act" id="act"><button>Block</button><button class="on">Managed Challenge</button><button>JS Challenge</button><button class="ent" title="Enterprise only">Log</button></div></div>
-    <div class="tip"><b>Start with Managed Challenge, not Block.</b> Watch Security Events for a day, then tighten. Block only paths you never use.</div>
+    <div class="tip"><b>Tip:</b> start with <b>Managed Challenge</b>. Switch to Block once you are sure.</div>
   </div>
 
   <div class="gauge glass o">
-    <small>RATE LIMIT · POST /login · per IP per 10 s</small>
+    <small>RATE LIMIT = "too many tries? wait"</small>
     <svg viewBox="0 0 520 280">
       <path class="trk" d="M40 250 A220 220 0 0 1 480 250"/>
       <path class="ok" d="M40 250 A220 220 0 0 1 370 59.5"/>
@@ -226,7 +226,6 @@ svg *{transform-box:fill-box}
     <button class="btn r" id="atk">Simulate attack</button>
   </div>
 
-  <div class="limits"><small>FREE PLAN</small><span class="chip o">5 custom rules</span><span class="chip o">1 rate-limit rule</span><span class="chip">10 s window</span><span class="chip">10 s block</span><span class="chip r">no "Log" action</span></div>
 
   <div class="dock" style="top:912px">
     <div class="d-term"><svg viewBox="0 0 60 40"><path d="M6 6l16 14L6 34"/><path class="cur" d="M30 34h24"/></svg></div>
@@ -315,7 +314,7 @@ $('atk').addEventListener('click',()=>{
 })();
 </script>
 <script data-src="assets/slide-no.js">
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

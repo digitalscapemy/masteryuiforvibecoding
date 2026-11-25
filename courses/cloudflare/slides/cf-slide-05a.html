@@ -159,7 +159,7 @@ svg *{transform-box:fill-box}
 </style>
 <style>
 /* LAYOUT: a segmented mode picker on top, a 2-half road below it, a mini browser showing the result, settings column on the right */
-.seg{position:absolute;left:74px;top:322px;display:flex;padding:8px;border-radius:24px;background:#0b0b0c;border:2.5px solid rgba(255,255,255,.4);animation:fadeUp .7s 1.1s var(--ease) both}
+.seg{position:absolute;left:74px;top:324px;display:flex;padding:8px;border-radius:24px;background:#0b0b0c;border:2.5px solid rgba(255,255,255,.4);animation:fadeUp .7s 1.1s var(--ease) both}
 .seg button{font:800 26px Inter,sans-serif;color:var(--body);background:none;border:0;padding:16px 30px;border-radius:16px;cursor:pointer;transition:background .25s,color .25s}
 .seg button.on{background:var(--or);color:#160800;box-shadow:0 0 20px var(--or-glow)}
 .seg button.bad.on{background:var(--red);color:#fff;box-shadow:0 0 20px var(--red-glow)}
@@ -184,7 +184,7 @@ svg *{transform-box:fill-box}
 @keyframes flow{to{stroke-dashoffset:-28}}
 .m-flex .loop{opacity:1}
 
-.brw{position:absolute;left:74px;top:690px;width:1240px;height:196px;padding:0;overflow:hidden;animation:cardIn .9s 1.5s var(--ease) both}
+.brw{position:absolute;left:74px;top:688px;width:1240px;height:196px;padding:0;overflow:hidden;animation:cardIn .9s 1.5s var(--ease) both}
 .brw .bar2{display:flex;align-items:center;gap:14px;height:62px;padding:0 22px;background:rgba(255,255,255,.05);border-bottom:2px solid rgba(255,255,255,.1)}
 .brw .dots{display:flex;gap:8px}.brw .dots i{width:13px;height:13px;border-radius:50%;background:#3a3a40}
 .brw .url{flex:1;display:flex;align-items:center;gap:10px;height:40px;padding:0 16px;border-radius:12px;background:#0b0b0c;font:700 21px 'JetBrains Mono',monospace;color:var(--body)}
@@ -194,23 +194,23 @@ svg *{transform-box:fill-box}
 .brw .body p{margin:4px 0 0;font-size:23px;line-height:30px;color:var(--soft);font-weight:500}
 .brw.err .big{color:#ff8a8d}.brw.ok .big{color:var(--or-soft)}.brw.meh .big{color:#ffd59a}
 
-.also{position:absolute;left:1350px;top:322px;width:500px;height:564px;padding:26px 28px;animation:cardIn .9s 1.4s var(--ease) both}
+.also{position:absolute;left:1350px;top:324px;width:500px;height:560px;padding:30px 30px;display:flex;flex-direction:column;justify-content:center;animation:cardIn .9s 1.4s var(--ease) both}
 .also small{font-size:18px;font-weight:900;letter-spacing:.12em;color:var(--soft)}
-.it{display:flex;align-items:center;gap:16px;margin-top:14px;padding:13px 18px;border-radius:18px;background:rgba(255,255,255,.04);width:100%;border:0;color:#fff;font-family:inherit;text-align:left;cursor:pointer}
+.it{display:flex;align-items:center;gap:16px;margin-top:26px;padding:22px 20px;border-radius:18px;background:rgba(255,255,255,.04);width:100%;border:0;color:#fff;font-family:inherit;text-align:left;cursor:pointer}
 .it .tx{flex:1}
-.it b{display:block;font-size:25px;font-weight:800}
-.it span{display:block;margin-top:3px;font-size:19px;line-height:25px;color:var(--soft);font-weight:500}
+.it b{display:block;font-size:28px;font-weight:800}
+.it span{display:block;margin-top:6px;font-size:21px;line-height:28px;color:var(--soft);font-weight:500}
 .it .val{flex:none;font:800 22px 'JetBrains Mono',monospace;color:var(--or-soft)}
 .auto{margin-top:16px;padding:14px 18px;border-radius:16px;border:2px dashed rgba(246,130,31,.6);font-size:20px;line-height:28px;color:#ffe2c4;font-weight:600}
 </style>
 </head>
 <body>
 <div class="stage" id="stage">
-  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Part 2 · Proxy &amp; SSL</b></span></div>
+  <div class="label"><span>Cloudflare Gatekeeper for Vibe Coders · <b class="part">Part 2 · Proxy &amp; SSL</b></span></div>
   <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
     <p>New zones default to <b>Automatic SSL/TLS</b>, which picks the strongest mode your origin supports. Set Full (strict) yourself so you know what runs.</p>
     <p>An <b>Origin CA</b> certificate works only while the record is orange.</p>
-    <p>Cloudflare recommends TLS 1.3 minimum when all users have modern browsers; 1.2 is the safe, compatible choice. Enable <b>HSTS</b> last: browsers remember it for the whole max-age.</p></div></div>
+    <p>Set <b>Minimum TLS Version</b> to 1.2 (default is 1.0; 1.3 if all users have modern browsers). Or use a free <b>Cloudflare Origin Certificate</b> on the server. Enable <b>HSTS</b> last: browsers remember it for the whole max-age.</p></div></div>
   <h1 class="title"><span>SSL modes: <em>the setting that breaks sites</em></span></h1>
   <div class="bar"></div>
   <p class="hook">You turned on the orange cloud. Now the site says <b>"too many redirects"</b>. Pick a mode:</p>
@@ -236,11 +236,9 @@ svg *{transform-box:fill-box}
   </div>
 
   <div class="also glass o">
-    <small>ALSO SWITCH ON (FREE)</small>
+    <small>ALSO CHECK</small>
     <button class="it on"><div class="tx"><b>Always Use HTTPS</b><span>http visitors are sent to https</span></div><i class="sw"></i></button>
-    <div class="it"><div class="tx"><b>Minimum TLS Version</b><span>blocks old, weak connections (default 1.0)</span></div><span class="val">1.2</span></div>
-    <div class="it"><div class="tx"><b>Server certificate</b><span>EasyPanel's Let's Encrypt, or a free Cloudflare Origin Certificate</span></div></div>
-    <div class="auto">New zones may show <b>Automatic</b>. Pick Full (strict) yourself so you know exactly what runs.</div>
+    <div class="it"><div class="tx"><b>Server certificate</b><span>EasyPanel makes one for you (free)</span></div></div>
   </div>
 
   <div class="dock" style="top:912px">
@@ -253,9 +251,9 @@ svg *{transform-box:fill-box}
 </div>
 <script>
 const M={
-  flex:['lock','plain','https','plain http','Too many redirects','ERR_TOO_MANY_REDIRECTS · your server forces https, Cloudflare keeps asking with http.','err'],
-  full:['lock','lock','https','https, cert NOT checked','It loads','Encrypted all the way, but any certificate is accepted, even a fake one.','meh'],
-  strict:['lock','lock','https','https + valid cert','Secure','Encrypted all the way, and Cloudflare checks your server’s certificate.','ok']
+  flex:['lock','plain','https','plain http','Too many redirects','The page bounces between http and https forever, and never loads.','err'],
+  full:['lock','lock','https','https, cert NOT checked','It loads','Locked all the way, but Cloudflare does not check who the server is.','meh'],
+  strict:['lock','lock','https','https + valid cert','Secure','Locked all the way, and Cloudflare checks it is really your server.','ok']
 };
 const $=id=>document.getElementById(id), stage=$('stage');
 function set(m){ const d=M[m];
@@ -333,7 +331,7 @@ set('flex');
 })();
 </script>
 <script data-src="assets/slide-no.js">
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

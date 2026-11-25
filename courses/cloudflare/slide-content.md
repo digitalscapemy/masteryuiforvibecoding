@@ -1,16 +1,16 @@
-# Cloudflare for Vibe Coders
+# Cloudflare Gatekeeper for Vibe Coders
 
 Draf content v4.1 · 25 Nov 2026 · @Mykel · fakta disemak dengan docs rasmi 25 Nov 2026 (✅ = disahkan, **[semak]** = perlu dry run)
 
 **Fokus kelas:** domain, proxy, keselamatan dan R2 cloud storage.
 **Bukan fokus:** host app di Cloudflare (Pages, Workers). App kekal di tempat asal (VPS + EasyPanel, atau mana-mana host). Cloudflare berdiri **di depan** app tu.
 
-**Struktur:** 11 bahagian · 18 skrin. Penomboran ikut gaya Super Stack: **NN** = slide utama, **NNA, NNB…** = slide susulan. Setiap slide susulan tambah satu idea baru.
+**Struktur:** 10 bahagian · 18 skrin. Penomboran ikut gaya Super Stack: **NN** = slide utama, **NNA, NNB…** = slide susulan. Setiap slide susulan tambah satu idea baru.
 
 **Contoh sepanjang kelas** (sama dengan Super Stack):
 - Domain `sitiscakes.com` (Siti's Cake Shop)
 - IP server `203.0.113.10`
-- Domain dibeli di Exabytes
+- Domain dibeli di registrar tempatan (syarikat jual domain .my)
 - App di VPS + EasyPanel
 
 **Audiens bercampur.** Setiap slide ada 2 lapis:
@@ -31,22 +31,30 @@ Tanda dalam draf:
 ## START HERE
 
 ### 01 · Cover
-**Cloudflare for Vibe Coders**
+**Cloudflare Gatekeeper for Vibe Coders**
 Your domain, your gate, your storage.
 
-**Visual:** A visitor on the left, Siti's Cake Shop on the right, and an orange cloud standing between them like a guarded gate. A small warehouse sits beside the gate.
+**Visual:** Full-screen cover artwork `slides/assets/cover.webp` (glowing "Cloudflare Gatekeeper for Vibe Coders" panel with a shield and lock). Fades in with a slow push-in, same as the GitHub deck cover.
 
-### 02 · Cloudflare Stands in Front, Not Instead
+### 02 · Class Agenda
+**Hook:** Four stops on the road from sitiscakes.com to your server.
+
+- **Part 1 · Domain & DNS:** 03 Rent it, lock it · 04 Nameservers · 04A Demo
+- **Part 2 · Proxy & SSL:** 05 The orange cloud · 05A SSL modes · 05B Cache & purge
+- **Part 3 · Security:** 06 Free security guard · 06A WAF & rate limiting · 06B Turnstile · 06C Lock the back door · 06D Secure your account
+- **Part 4 · R2 Cloud Storage:** 07 R2 · 07A Public or private files · 07B Backups
+- Start with 02A, finish with 08 (checklist). Every lesson is a button that jumps to that slide.
+
+**Visual:** One orange road with 4 numbered stations and a finish flag. Each station drops a card listing its lessons.
+
+### 02A · Cloudflare Stands in Front, Not Instead
 **Hook:** Your app stays on your server. Cloudflare guards the road to it.
 
 - **Your app stays where it is:** VPS + EasyPanel (Super Stack), or any host.
 - **Cloudflare sits in front:** every visitor passes through it first.
-- **Today, 4 parts:**
-  1. **Domain & DNS:** connect sitiscakes.com the right way
-  2. **Proxy & SSL:** the orange cloud, https and cache
-  3. **Security:** block bots, attacks and strangers on the free plan
-  4. **R2 Storage:** where uploads and backups should live
-- **Bonus:** free email on your own domain
+- **Stays on your server:** code, database, EasyPanel, `.env` secrets
+- **Moves to Cloudflare:** DNS, SSL / https, cache, security rules
+- **New, also on Cloudflare:** R2 cloud storage for uploads and backups
 
 **Visual:** Reuse the Super Stack 03 flow (Frontend → Backend → Database → Server → Domain). An orange cloud slides in between Domain and Server. An R2 warehouse docks beside the server.
 
@@ -65,7 +73,7 @@ Your domain, your gate, your storage.
 - **Lock it:**
   - turn on **2FA** on the registrar account
   - turn on **Registrar Lock** (blocks transfers)
-- **Where to buy:** Cloudflare Registrar sells at cost, but not every extension. `.my` and `.com.my` are bought locally (e.g. Exabytes), then connected to Cloudflare.
+- **Where to buy:** Cloudflare Registrar sells at cost, but not every extension. `.my` and `.com.my` are bought at a local registrar, then connected to Cloudflare.
 - **Subdomains are free:** `app.sitiscakes.com`, `files.sitiscakes.com`, `admin.sitiscakes.com`.
 
 **Prompt for AI:** "I own sitiscakes.com. Suggest a subdomain plan for my shop, admin panel, API and file storage."
@@ -74,15 +82,15 @@ Your domain, your gate, your storage.
 
 **Visual:** A calendar with the renewal date circled and an "auto-renew ON" toggle, then a padlock snapping onto a domain card.
 
-**Pro note:** Most domain hijacks start with a stolen registrar login, not a technical hack. At Exabytes, Registrar Lock changes the domain status to `DomainTransferProhibited`; it blocks transfers, not DNS changes. Domains on Cloudflare Registrar must use Cloudflare nameservers, so it suits people who want everything in one place.
+**Pro note:** Most domain hijacks start with a stolen registrar login, not a technical hack. At your registrar, Registrar Lock changes the domain status to `DomainTransferProhibited`; it blocks transfers, not DNS changes. Domains on Cloudflare Registrar must use Cloudflare nameservers, so it suits people who want everything in one place.
 
-> ✅ Disahkan 25 Nov: `.my` / `.com.my` tiada dalam senarai TLD Cloudflare Registrar. Nama setting di Exabytes: **Registrar Lock**.
+> ✅ Disahkan 25 Nov: `.my` / `.com.my` tiada dalam senarai TLD Cloudflare Registrar. Nama setting biasa di registrar: **Registrar Lock**.
 
 ### 04 · Nameservers: Who Holds the Phonebook
-**Hook:** You added the A record in Cloudflare. Nothing happens. The internet is still reading the phonebook at Exabytes.
+**Hook:** You added the A record in Cloudflare. Nothing happens. The internet is still reading the phonebook at your registrar.
 
 - **Quick recap (Super Stack 16):** A → IP, CNAME → another name, MX → mail server.
-- **Nameservers decide who holds the phonebook.** Only one place is in charge. If they point to Exabytes, records you add in Cloudflare are ignored.
+- **Nameservers decide who holds the phonebook.** Only one place is in charge. If they point to your registrar, records you add in Cloudflare are ignored.
 - **TXT records:** notes that prove you own the domain and protect your email (SPF, DKIM). Delete them by mistake and email starts going to spam.
 - **Changes take time:** from minutes up to 48 hours. Do not keep changing things while you wait.
 
@@ -90,37 +98,37 @@ Your domain, your gate, your storage.
 
 💡 Records say where. Nameservers say who.
 
-**Visual:** Two phonebooks. Exabytes is greyed out; Cloudflare is highlighted. One arrow from "the internet" points to Cloudflare. Inside it, two tabs: Web (A, CNAME) and Email (MX, TXT).
+**Visual:** Two phonebooks. The registrar's one is greyed out; Cloudflare is highlighted. One arrow from "the internet" points to Cloudflare. Inside it, two tabs: Web (A, CNAME) and Email (MX, TXT).
 
 **Pro note:** "Propagation" is really caching. Resolvers keep old answers until the TTL runs out, and a nameserver change waits on the TLD's TTL. Check with `dig sitiscakes.com NS +short` or `nslookup`. A CNAME cannot sit on the root in standard DNS; Cloudflare allows it through CNAME flattening.
 
-### 04A · Demo: Exabytes → Cloudflare
+### 04A · Demo: registrar → Cloudflare
 **Hook:** Two settings connect everything.
 
-- **Nameservers, set at Exabytes:** "Cloudflare holds my phonebook now."
+- **Nameservers, set at your registrar:** "Cloudflare holds my phonebook now."
 - **A record, set at Cloudflare:** "My app lives at 203.0.113.10."
 
 **Demo steps:**
 1. In Cloudflare, add sitiscakes.com and choose the Free plan.
-2. Cloudflare scans your records. Keep MX and TXT. Delete old A records that point to Exabytes hosting.
+2. Cloudflare scans your records. Keep MX and TXT. Delete old A records that point to your old hosting.
 3. Copy the two Cloudflare nameservers.
-4. In Exabytes: Domains → My Domains → **⋯** → Manage Domain. If **DNSSEC/DS Records** has an entry, remove it first.
+4. At your registrar, open the domain. If **DNSSEC/DS Records** has an entry, remove it first.
 5. Left menu **Nameservers** → "Use custom nameservers" → paste both → save.
 6. Wait (Cloudflare says up to 24 hours). Cloudflare emails you and the domain shows **Active**.
 7. Cloudflare DNS: A `@` → 203.0.113.10 (orange cloud). CNAME `www` → sitiscakes.com.
 8. Open sitiscakes.com in the browser.
 
-**Prompt for AI:** "My domain is at Exabytes and my app runs on a VPS at [IP]. Walk me through moving it to Cloudflare, one step at a time. Remind me about DNSSEC and email records."
+**Prompt for AI:** "My domain is at [registrar] and my app runs on a VPS at [IP]. Walk me through moving it to Cloudflare, one step at a time. Remind me about DNSSEC and email records."
 
 💡 Nameservers point to Cloudflare. The A record points to your server.
 
-**Visual:** Exabytes → Cloudflare → VPS (203.0.113.10). Arrow 1: "nameservers, set at Exabytes". Arrow 2: "A record, set at Cloudflare". Stickers: "DNSSEC off first" and "keep MX & TXT".
+**Visual:** registrar → Cloudflare → VPS (203.0.113.10). Arrow 1: "nameservers, set at the registrar". Arrow 2: "A record, set at Cloudflare". Stickers: "DNSSEC off first" and "keep MX & TXT".
 
 **Pro note:** The record scan is a best guess, so compare it with an export of the old zone. After the zone is Active, turn DNSSEC back on from Cloudflare (that comes in 06D).
 
-Nama menu Exabytes dan Cloudflare berubah dari masa ke masa. Buat dry run sebelum kelas.
+Nama menu registrar dan Cloudflare berubah dari masa ke masa. Buat dry run sebelum kelas.
 
-> ✅ Disahkan 25 Nov dalam browser (artikel Exabytes MY "How to manage .MY domain name?", dikemas kini 9 Jul 2025): laluan Domains → My Domains → ⋯ → Manage Domain, menu Nameservers ("Use custom nameservers (enter below)"), Registrar Lock dan DNSSEC/DS Records. Artikel MY tak suruh matikan Registrar Lock untuk tukar nameserver (cuma artikel Exabytes Indonesia sebut). **[semak]** Pastikan masa dry run.
+> ✅ Disahkan 25 Nov dalam browser (artikel sokongan registrar .MY): laluan Domains → My Domains → ⋯ → Manage Domain, menu Nameservers ("Use custom nameservers (enter below)"), Registrar Lock dan DNSSEC/DS Records. Artikel MY tak suruh matikan Registrar Lock untuk tukar nameserver (sesetengah registrar suruh matikan dulu). **[semak]** Pastikan masa dry run.
 
 ---
 
@@ -286,7 +294,7 @@ Nama menu Exabytes dan Cloudflare berubah dari masa ke masa. Buat dry run sebelu
 **Hook:** Your setup is perfect. Then someone logs in to your Cloudflare account.
 
 - **2FA on your Cloudflare account.** Everything above is one login away.
-- **DNSSEC on** (now that the domain is Active): stops fake answers to "where is sitiscakes.com". Add the DS record at Exabytes.
+- **DNSSEC on** (now that the domain is Active): stops fake answers to "where is sitiscakes.com". Add the DS record at your registrar.
 - **API tokens, not the Global API Key:** when the AI or a tool needs access, give it a token for one zone and only the permissions it needs.
 - **Members, not shared passwords:** invite your developer as a member, and remove them when the job ends.
 
@@ -302,12 +310,12 @@ Nama menu Exabytes dan Cloudflare berubah dari masa ke masa. Buat dry run sebelu
 
 ---
 
-## PART 4 · R2 Storage
+## PART 4 · R2 Cloud Storage
 
-### 07 · R2: A Warehouse With No Exit Toll
+### 07 · R2: Cloud Storage With No Exit Toll
 **Hook:** A customer uploads a cake photo. You redeploy. The photo is gone.
 
-- **Object storage** holds files: images, PDFs, videos, backups. The database holds records, not files.
+- **R2 is Cloudflare's cloud storage for files** (object storage): images, PDFs, videos, backups. The database holds records, not files.
 - **Why not keep uploads on the server?** Files inside a container can disappear on redeploy, and the disk fills up.
 - **Egress** = data leaving storage. Every image view counts. Most cloud storage charges per GB, so the bill grows with traffic.
 - **R2 charges $0 for egress.** You pay for storage and requests, with a free monthly allowance.
@@ -383,39 +391,9 @@ How it is worked out: S3 at about $0.023/GB stored and $0.09/GB egress after the
 
 ---
 
-## BONUS
-
-### 08 · Email on Your Own Domain, Free
-**Hook:** Your shop looks professional. Your contact email is sitiscakes2024@gmail.com.
-
-- **Email Routing** forwards `orders@sitiscakes.com` to your existing inbox (e.g. Gmail). Free.
-- Make as many addresses as you need: `orders@`, `hello@`, `support@`, all into one inbox.
-- Cloudflare adds the records for you: MX, plus TXT records for SPF and DKIM.
-- **Limits:**
-  - It receives and forwards only. No mailbox, and Email Routing does not send.
-  - If you already pay for email hosting at Exabytes, its MX records clash. Pick one.
-
-**Prompt for AI:** "My domain is on Cloudflare. Set up Email Routing so orders@sitiscakes.com forwards to my Gmail. Warn me if my existing MX records will conflict."
-
-💡 Your own email address, forwarded free.
-
-**Visual:** Envelopes for orders@, hello@ and support@ flow into an orange funnel and come out in one Gmail inbox.
-
-**Hook kelas lain:** "Super Stack 16 showed orders@sitiscakes.com in the MX example. Here it actually works."
-
-**Pro note:**
-- The destination inbox must be verified by email link first. Limits: 200 rules per domain, 25 MiB per message.
-- Sending app email (sign-ups, password resets) is a different job.
-  - Cloudflare **Email Sending** exists, but in public beta and on the Workers Paid plan only.
-  - Otherwise use a transactional email service with SPF, DKIM and DMARC on the same domain.
-
-> ✅ Disahkan 25 Nov: rekod yang ditambah (MX, SPF, DKIM), had, dan status Email Sending (public beta sejak 16 Apr 2026). **[semak]** Tengok macam mana dashboard minta buang MX lama masa dry run.
-
----
-
 ## WRAP-UP
 
-### 09 · Your Cloudflare Checklist
+### 08 · Your Cloudflare Checklist
 **Hook:** Ten switches. Set them once.
 
 **Domain & DNS**
@@ -433,7 +411,7 @@ How it is worked out: S3 at about $0.023/GB stored and $0.09/GB egress after the
 8. Back door closed (firewall or Tunnel), admin behind Access
 9. 2FA on Cloudflare, DNSSEC on, scoped API tokens
 
-**R2 Storage**
+**R2 Cloud Storage**
 10. Uploads and nightly backups in R2, keys for one bucket only, restore tested
 
 **Prompt for AI:** "Here are screenshots of my Cloudflare dashboard [attach]. Go through this 10-point checklist and tell me what is missing for sitiscakes.com."
@@ -448,17 +426,16 @@ CTA: [next class or link]
 
 ## Senarai semak "kemas" sebelum bina slide
 - [ ] Istilah sama di semua slide: "orange cloud" / "grey cloud", "Full (strict)", "nameservers", "bucket", "presigned URL"
-- [ ] Contoh sama: `sitiscakes.com`, `203.0.113.10`, Exabytes, VPS + EasyPanel
+- [ ] Contoh sama: `sitiscakes.com`, `203.0.113.10`, registrar tempatan, VPS + EasyPanel
 - [ ] Masa DNS sama dengan Super Stack: "minutes up to 48 hours"
 - [ ] Setiap slide: 1 hook, maksimum 5 bullet, 1 prompt, 1 💡
 - [ ] Pro note pendek, tak lebih besar dari teks utama
-- [ ] Dry run penuh: Exabytes → Cloudflare → SSL → cache → security rules → Access → R2 → backup → Email Routing, dengan screenshot setiap menu
+- [ ] Dry run penuh: registrar → Cloudflare → SSL → cache → security rules → Access → R2 → backup, dengan screenshot setiap menu
 - [ ] Semua item **[semak]** disahkan
 
 ## Sources (disemak 25 Nov 2026)
 Pautan utama yang dipakai semasa semakan:
 - https://www.cloudflare.com/tld-policies/ · https://developers.cloudflare.com/registrar/faq/
-- https://support.exabytes.com.my/en/support/solutions/articles/14000151426-how-to-manage-my-domain-name-
 - https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/ · https://developers.cloudflare.com/dns/cname-flattening/
 - https://developers.cloudflare.com/fundamentals/reference/network-ports/
 - https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/ · https://developers.cloudflare.com/ssl/troubleshooting/too-many-redirects/ · https://developers.cloudflare.com/ssl/origin-configuration/origin-ca/ · https://developers.cloudflare.com/ssl/reference/protocols/
@@ -477,7 +454,7 @@ Topik ikut slide:
 - Cloudflare Registrar: supported TLDs and at-cost pricing (03)
 - Cloudflare: Change your nameservers (Full setup), DNSSEC (04, 04A, 06D)
 - Cloudflare: CNAME flattening (04)
-- Exabytes: Switching to Cloudflare nameservers (04A)
+- Registrar: switching to Cloudflare nameservers (04A)
 - Cloudflare: Proxy status (orange/grey cloud), network ports (05)
 - Cloudflare: SSL/TLS encryption modes, ERR_TOO_MANY_REDIRECTS, Origin CA, Always Use HTTPS, Minimum TLS, HSTS (05A)
 - Cloudflare Cache: default cached extensions, Cache Rules, Purge, cf-cache-status (05B)
@@ -487,7 +464,6 @@ Topik ikut slide:
 - Cloudflare IP ranges, Cloudflare Tunnel, Cloudflare Access / Zero Trust free plan (06C)
 - Cloudflare API tokens vs Global API Key, account members (06D)
 - Cloudflare R2: pricing and free tier, public buckets and custom domains, presigned URLs, CORS, lifecycle rules (07, 07A, 07B)
-- Cloudflare Email Routing (08)
 
 Kadar AWS S3 dalam 07 dari ringkasan pihak ketiga, jadi ditanda approximate.
 
@@ -503,4 +479,3 @@ Kadar AWS S3 dalam 07 dari ringkasan pihak ketiga, jadi ditanda approximate.
 | Backup | Senarai semak (18) | Code di GitHub | — | Backup DB ke R2 |
 | Keselamatan web (WAF, bot, Turnstile, Access, Tunnel) | — | — | — | **Baru** |
 | Keselamatan akaun (2FA, DNSSEC, scoped token) | — | — | — | **Baru** |
-| Email Routing | MX contoh (16) | — | — | **Baru** |

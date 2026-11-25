@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>R2: No Exit Toll</title>
+<title>R2: Cloud Storage, No Exit Toll</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
@@ -159,7 +159,7 @@ svg *{transform-box:fill-box}
 </style>
 <style>
 /* LAYOUT: two warehouses with trucks (left column) + a live bill calculator with sliders and bars (right) */
-.why{position:absolute;left:74px;top:318px;width:700px;height:572px;padding:26px 30px;animation:cardIn .9s 1.1s var(--ease) both}
+.why{position:absolute;left:74px;top:324px;width:700px;height:560px;padding:26px 30px;animation:cardIn .9s 1.1s var(--ease) both}
 .why small{font-size:18px;font-weight:900;letter-spacing:.12em;color:var(--soft)}
 .wh{position:relative;height:186px;margin-top:16px;border-radius:22px;background:rgba(255,255,255,.03);border:2px solid rgba(255,255,255,.12);overflow:hidden}
 .wh svg.house{position:absolute;left:22px;top:40px;width:130px;height:110px;overflow:visible}
@@ -180,7 +180,7 @@ svg *{transform-box:fill-box}
 .facts{margin-top:18px;display:flex;flex-direction:column;gap:10px;font-size:22px;line-height:29px;font-weight:500;color:var(--body)}
 .facts b{color:#fff}
 
-.calc{position:absolute;left:806px;top:318px;width:1044px;height:572px;padding:22px 32px;animation:cardIn .9s 1.3s var(--ease) both}
+.calc{position:absolute;left:806px;top:324px;width:1044px;height:560px;padding:22px 32px;animation:cardIn .9s 1.3s var(--ease) both}
 .calc small{font-size:18px;font-weight:900;letter-spacing:.12em;color:var(--or-soft)}
 .sl{margin-top:14px}
 .sl label{display:flex;justify-content:space-between;font-size:24px;font-weight:800}
@@ -204,24 +204,24 @@ svg *{transform-box:fill-box}
 </head>
 <body>
 <div class="stage" id="stage">
-  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Part 4 · R2 Storage</b></span></div>
+  <div class="label"><span>Cloudflare Gatekeeper for Vibe Coders · <b class="part">Part 4 · R2 Cloud Storage</b></span></div>
   <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
     <p>Docker volumes keep files across redeploys, but tie them to one server: scaling and backups get harder.</p>
-    <p>Requests: <b>Class A</b> (writes, lists) $4.50/million, <b>Class B</b> (reads) $0.36/million. Free each month: 10 GB storage, 1M Class A, 10M Class B. Deletes are free.</p>
+    <p>S3 us-east-1: $0.023/GB stored, $0.09/GB egress after 100 GB free. R2: $0.015/GB after 10 GB free. Requests: <b>Class A</b> (writes, lists) $4.50/million, <b>Class B</b> (reads) $0.36/million. Free each month: 10 GB storage, 1M Class A, 10M Class B. Deletes are free.</p>
     <p>R2 speaks the <b>S3 API</b> (endpoint <code>&lt;account_id&gt;.r2.cloudflarestorage.com</code>, region <code>auto</code>).</p></div></div>
-  <h1 class="title"><span>R2: a warehouse with <em>no exit toll</em></span></h1>
+  <h1 class="title"><span>R2: <em>cloud storage</em> with no exit toll</span></h1>
   <div class="bar"></div>
   <p class="hook">A customer uploads a cake photo. You redeploy. <b>The photo is gone.</b></p>
 
   <div class="why glass">
-    <small>EGRESS = DATA LEAVING THE WAREHOUSE</small>
+    <small>EGRESS = EVERY TIME SOMEONE DOWNLOADS A FILE</small>
     <div class="wh s3"><svg class="house" viewBox="0 0 120 96"><path d="M8 40 60 8l52 32v52H8z" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><rect x="30" y="54" width="60" height="38" fill="none" stroke="#fff" stroke-width="4"/></svg><b>Most cloud storage</b>
       <i class="road"></i><svg class="booth" viewBox="0 0 80 90"><rect x="6" y="6" width="68" height="60" rx="6"/><text x="22" y="44">$$</text></svg>
       <svg class="truck" viewBox="0 0 70 44"><rect x="0" y="6" width="44" height="26" rx="4"/><rect x="44" y="14" width="20" height="18" rx="3"/><circle cx="14" cy="36" r="6"/><circle cx="52" cy="36" r="6"/></svg></div>
     <div class="wh r2w"><svg class="house" viewBox="0 0 120 96"><path d="M8 40 60 8l52 32v52H8z" fill="none" stroke-width="5" stroke-linejoin="round"/><rect x="30" y="54" width="60" height="38" fill="none" stroke-width="4"/></svg><b style="color:var(--or-soft)">Cloudflare R2</b>
       <i class="road"></i><span class="gate">open gate · $0</span>
       <svg class="truck" viewBox="0 0 70 44"><rect x="0" y="6" width="44" height="26" rx="4"/><rect x="44" y="14" width="20" height="18" rx="3"/><circle cx="14" cy="36" r="6"/><circle cx="52" cy="36" r="6"/></svg></div>
-    <div class="facts"><div><b>Object storage</b> holds files. The database holds records, not files.</div></div>
+    <div class="facts"><div><b>R2 = Cloudflare's cloud storage for files</b> like photos, PDFs and backups.</div></div>
   </div>
 
   <div class="calc glass o">
@@ -233,7 +233,7 @@ svg *{transform-box:fill-box}
       <div class="br c"><b>Cloudflare R2</b><div class="tr"><i id="bc"></i></div><span class="v" id="vc"></span><span class="split" id="sc"></span></div>
     </div>
     <div class="save" id="save"></div>
-    <div class="fine">S3 Standard us-east-1: $0.023/GB stored, $0.09/GB egress after the first 100 GB (AWS price data, Nov 2026). R2: $0.015/GB after 10 GB free, egress $0. Request charges left out.</div>
+    <div class="fine">Official AWS and Cloudflare prices, Nov 2026. Request fees not included.</div>
   </div>
 
   <div class="dock" style="top:912px">
@@ -323,7 +323,7 @@ function calc(){
 })();
 </script>
 <script data-src="assets/slide-no.js">
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

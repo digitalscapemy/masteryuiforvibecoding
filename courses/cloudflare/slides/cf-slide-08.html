@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-slide="09">
+<html lang="en" data-slide="08">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -159,20 +159,20 @@ svg *{transform-box:fill-box}
 </style>
 <style>
 /* LAYOUT: a control panel. 10 switch tiles in a 5x2 grid, colour-tagged by part + a progress ring that lights the shop when all are on */
-.board{position:absolute;left:74px;top:318px;width:1400px;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:242px 242px;gap:16px}
+.board{position:absolute;left:74px;top:324px;width:1400px;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:242px 242px;gap:16px}
 .k{position:relative;display:flex;flex-direction:column;align-items:flex-start;padding:18px 18px 16px;border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.015));
   border:2.5px solid rgba(255,255,255,.4);color:#fff;font-family:Inter,sans-serif;text-align:left;cursor:pointer;transition:border-color .25s,box-shadow .25s,transform .2s var(--ease);animation:cardIn .7s var(--ease) both}
 .k:hover{transform:translateY(-4px)}
 .k .nm{font:900 44px/1 'JetBrains Mono',monospace;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.55);transition:all .25s}
 .k .pt{position:absolute;right:16px;top:18px;font-size:14px;font-weight:900;letter-spacing:.08em;padding:5px 9px;border-radius:8px;background:#151517;border:1.5px solid rgba(255,255,255,.3);color:var(--soft)}
-.k .tx{margin-top:14px;font-size:22px;line-height:27px;font-weight:800;letter-spacing:-.015em}
+.k .tx{margin-top:16px;font-size:24px;line-height:30px;font-weight:800;letter-spacing:-.015em}
 .k .tx small{display:block;margin-top:5px;font-size:17px;line-height:22px;font-weight:600;color:var(--soft)}
 .k .sw{margin-top:auto;width:68px;height:38px;border-radius:19px}.k .sw::after{width:28px;height:28px}
 .k.on{border-color:var(--or);box-shadow:0 0 22px var(--or-glow)}
 .k.on .nm{color:var(--or);-webkit-text-stroke:0}
 .k.on .sw::after{transform:translateX(30px)}
 
-.side{position:absolute;left:1500px;top:318px;width:350px;height:500px;padding:20px 26px;text-align:center;animation:cardIn .9s 1.5s var(--ease) both}
+.side{position:absolute;left:1500px;top:324px;width:350px;height:500px;padding:20px 26px;text-align:center;animation:cardIn .9s 1.5s var(--ease) both}
 .ring{position:relative;width:230px;height:230px;margin:0 auto}
 .ring svg{width:230px;height:230px;transform:rotate(-90deg)}
 .ring .bg{fill:none;stroke:#222;stroke-width:18}
@@ -201,7 +201,7 @@ svg *{transform-box:fill-box}
 </head>
 <body>
 <div class="stage" id="stage">
-  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Wrap-up</b></span></div>
+  <div class="label"><span>Cloudflare Gatekeeper for Vibe Coders · <b class="part">Wrap-up</b></span></div>
   <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
     <p>Re-run this list after every big change: a <b>new subdomain</b> (orange or grey?), a <b>new form</b> (Turnstile?), a <b>new secret</b> (scoped token?), a <b>new server</b> (back door closed?).</p></div></div>
   <h1 class="title"><span>Your Cloudflare <em>checklist</em></span></h1>
@@ -209,16 +209,16 @@ svg *{transform-box:fill-box}
   <p class="hook">Ten switches. <b>Set them once.</b> Tap each one as you finish it.</p>
 
   <div class="board" id="board">
-    <button class="k" style="animation-delay:1.00s"><span class="nm">01</span><span class="pt">DNS</span><span class="tx">Auto-renew, 2FA, Registrar Lock<small>at Exabytes</small></span><i class="sw"></i></button>
-    <button class="k" style="animation-delay:1.06s"><span class="nm">02</span><span class="pt">DNS</span><span class="tx">Nameservers on Cloudflare<small>MX &amp; TXT kept</small></span><i class="sw"></i></button>
-    <button class="k" style="animation-delay:1.12s"><span class="nm">03</span><span class="pt">SSL</span><span class="tx">Web orange, mail &amp; SSH grey<small>no IP leaks</small></span><i class="sw"></i></button>
-    <button class="k" style="animation-delay:1.18s"><span class="nm">04</span><span class="pt">SSL</span><span class="tx">Full (strict) + Always HTTPS<small>min TLS 1.2</small></span><i class="sw"></i></button>
-    <button class="k" style="animation-delay:1.24s"><span class="nm">05</span><span class="pt">SEC</span><span class="tx">Bot Fight Mode on<small>Security Events weekly</small></span><i class="sw"></i></button>
-    <button class="k" style="animation-delay:1.30s"><span class="nm">06</span><span class="pt">SEC</span><span class="tx">WAF rule + /login rate limit<small>start with challenge</small></span><i class="sw"></i></button>
-    <button class="k" style="animation-delay:1.36s"><span class="nm">07</span><span class="pt">SEC</span><span class="tx">Turnstile on forms<small>verified on the server</small></span><i class="sw"></i></button>
-    <button class="k" style="animation-delay:1.42s"><span class="nm">08</span><span class="pt">SEC</span><span class="tx">Back door closed<small>firewall or Tunnel, Access</small></span><i class="sw"></i></button>
-    <button class="k" style="animation-delay:1.48s"><span class="nm">09</span><span class="pt">SEC</span><span class="tx">2FA, DNSSEC, scoped tokens<small>your Cloudflare account</small></span><i class="sw"></i></button>
-    <button class="k" style="animation-delay:1.54s"><span class="nm">10</span><span class="pt">R2</span><span class="tx">Uploads + backups in R2<small>one-bucket keys, restore tested</small></span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.00s"><span class="nm">01</span><span class="pt">DNS</span><span class="tx">Auto-renew, 2FA, Registrar Lock</span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.06s"><span class="nm">02</span><span class="pt">DNS</span><span class="tx">Nameservers on Cloudflare</span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.12s"><span class="nm">03</span><span class="pt">SSL</span><span class="tx">Web orange, mail &amp; SSH grey</span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.18s"><span class="nm">04</span><span class="pt">SSL</span><span class="tx">Full (strict) + Always HTTPS</span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.24s"><span class="nm">05</span><span class="pt">SEC</span><span class="tx">Bot Fight Mode on</span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.30s"><span class="nm">06</span><span class="pt">SEC</span><span class="tx">WAF rule + /login rate limit</span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.36s"><span class="nm">07</span><span class="pt">SEC</span><span class="tx">Turnstile on forms</span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.42s"><span class="nm">08</span><span class="pt">SEC</span><span class="tx">Back door closed</span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.48s"><span class="nm">09</span><span class="pt">SEC</span><span class="tx">2FA, DNSSEC, scoped tokens</span><i class="sw"></i></button>
+    <button class="k" style="animation-delay:1.54s"><span class="nm">10</span><span class="pt">R2</span><span class="tx">Uploads + backups in R2</span><i class="sw"></i></button>
   </div>
 
   <div class="side glass o" id="side">
@@ -308,7 +308,7 @@ document.getElementById('all').addEventListener('click',()=>{ K.forEach((k,i)=>s
 })();
 </script>
 <script data-src="assets/slide-no.js">
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

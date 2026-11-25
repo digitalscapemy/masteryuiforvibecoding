@@ -159,8 +159,8 @@ svg *{transform-box:fill-box}
 </style>
 <style>
 /* LAYOUT: a 4-panel comic strip (story of one deploy) + a two-column "cached / not cached" shelf below */
-.strip{position:absolute;left:74px;top:322px;width:1776px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
-.pn{position:relative;height:350px;padding:22px 24px;display:flex;flex-direction:column;animation:cardIn .8s var(--ease) both}
+.strip{position:absolute;left:74px;top:324px;width:1776px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.pn{position:relative;height:376px;padding:22px 24px;display:flex;flex-direction:column;animation:cardIn .8s var(--ease) both}
 .pn:nth-child(1){animation-delay:1.1s}.pn:nth-child(2){animation-delay:1.25s}.pn:nth-child(3){animation-delay:1.4s}.pn:nth-child(4){animation-delay:1.55s}
 .pn .no{font-size:18px;font-weight:900;letter-spacing:.12em;color:var(--soft)}
 .pn h3{margin:6px 0 0;font-size:30px;line-height:36px;font-weight:900;letter-spacing:-.02em}
@@ -175,13 +175,13 @@ svg *{transform-box:fill-box}
 .face{font-size:44px}
 .purge{font-size:26px;padding:18px 30px}
 .purge.done{background:var(--or);color:#160800}
-.hdr{display:inline-flex;align-self:flex-start;margin-top:10px;padding:8px 14px;border-radius:10px;background:#0b0b0c;border:2px solid rgba(255,255,255,.3);font:700 19px 'JetBrains Mono',monospace;color:var(--body)}
+.hdr{display:inline-flex;gap:8px;align-self:flex-start;margin-top:10px;padding:8px 14px;border-radius:10px;background:#0b0b0c;border:2px solid rgba(255,255,255,.3);font:700 19px 'JetBrains Mono',monospace;color:var(--body)}
 .hdr b{color:#ff8a8d}.hdr.hit b{color:var(--or-soft)}
 .p4{opacity:.45;transition:opacity .4s,border-color .4s,box-shadow .4s}
 .p4.go{opacity:1;border-color:var(--or);box-shadow:0 0 26px var(--or-glow)}
 
-.shelf{position:absolute;left:74px;top:698px;width:1776px;display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:24px}
-.sh{height:188px;padding:20px 26px;animation:fadeUp .7s var(--ease) both}
+.shelf{position:absolute;left:74px;top:724px;width:1776px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.sh{height:160px;padding:24px 28px;animation:fadeUp .7s var(--ease) both}
 .sh:nth-child(1){animation-delay:1.8s}.sh:nth-child(2){animation-delay:1.9s}.sh:nth-child(3){animation-delay:2s}
 .sh small{font-size:18px;font-weight:900;letter-spacing:.12em;color:var(--soft)}
 .tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
@@ -193,11 +193,11 @@ svg *{transform-box:fill-box}
 </head>
 <body>
 <div class="stage" id="stage">
-  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Part 2 · Proxy &amp; SSL</b></span></div>
+  <div class="label"><span>Cloudflare Gatekeeper for Vibe Coders · <b class="part">Part 2 · Proxy &amp; SSL</b></span></div>
   <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
     <p>Cloudflare caches by <b>file extension</b> and respects <code>Cache-Control</code>. Use Cache Rules to bypass <code>/api/*</code> or to cache HTML on purpose.</p>
     <p>Read the <code>cf-cache-status</code> header in DevTools: HIT, MISS, DYNAMIC, BYPASS, EXPIRED.</p>
-    <p>Ports 2052–2096, 8443 and 8880 are proxied but never cached.</p></div></div>
+    <p><b>Long-term fix:</b> let your build add a hash to file names (<code>app.3f9a.css</code>), so every deploy is a new file and nothing needs purging.</p></div></div>
   <h1 class="title"><span>Cache &amp; purge: <em>why visitors see old files</em></span></h1>
   <div class="bar"></div>
   <p class="hook">You pushed the fix. EasyPanel deployed it. Visitors still see <b>the old CSS.</b></p>
@@ -205,22 +205,21 @@ svg *{transform-box:fill-box}
   <div class="strip">
     <div class="pn glass"><span class="no">1 · DEPLOY</span><h3>Server has v2</h3>
       <div class="art"><svg class="ic" viewBox="0 0 48 48"><use href="#server"/></svg><div class="file v2">app.css<small>v2</small></div></div>
-      <p>CD from the GitHub class did its job.</p></div>
+      <p>Your new file is live.</p></div>
     <div class="pn glass"><span class="no">2 · VISITOR</span><h3>Cloudflare serves v1</h3>
       <div class="art"><svg class="ic cf" viewBox="0 0 64 40"><use href="#cf"/></svg><div class="file v1">app.css<small>v1</small></div></div>
-      <span class="hdr">cf-cache-status: <b>HIT (old)</b></span></div>
+      <span class="hdr">Visitor sees: <b>old file</b></span></div>
     <div class="pn glass o"><span class="no">3 · YOU</span><h3>Purge it</h3>
       <div class="art"><button class="btn o purge" id="purge">Purge URL</button></div>
-      <p>Caching → Configuration → <b style="color:#fff">Purge Cache</b>. One URL first; Everything for big changes.</p></div>
+      <p>Caching → <b style="color:#fff">Purge Cache</b></p></div>
     <div class="pn glass p4" id="p4"><span class="no">4 · VISITOR</span><h3 id="p4h">Waiting for purge…</h3>
       <div class="art"><svg class="ic cf" viewBox="0 0 64 40"><use href="#cf"/></svg><div class="file v1" id="f4">app.css<small>v1</small></div></div>
-      <span class="hdr" id="h4">cf-cache-status: <b>HIT (old)</b></span></div>
+      <span class="hdr" id="h4">Visitor sees: <b>old file</b></span></div>
   </div>
 
   <div class="shelf">
-    <div class="sh glass y"><small>CACHED BY DEFAULT</small><div class="tags"><span>.css</span><span>.js</span><span>.png</span><span>.jpg</span><span>.webp</span><span>.woff2</span></div></div>
-    <div class="sh glass"><small>NOT CACHED BY DEFAULT</small><div class="tags"><span>HTML pages</span><span>/api/*</span><span>JSON</span><span>grey records</span></div></div>
-    <div class="sh glass t o"><small>LONG-TERM FIX</small><p>Let your build add a hash to file names: <code>app.3f9a.css</code>. Every deploy is a new file, so nothing needs purging.</p></div>
+    <div class="sh glass y"><small>SAVED NEAR VISITORS</small><div class="tags"><span>.css</span><span>.js</span><span>.png</span><span>.jpg</span></div></div>
+    <div class="sh glass"><small>ALWAYS FRESH FROM YOUR SERVER</small><div class="tags"><span>HTML pages</span><span>/api/*</span><span>JSON</span></div></div>
   </div>
 
   <div class="dock" style="top:912px">
@@ -239,7 +238,7 @@ $('purge').addEventListener('click',()=>{
   $('p4').classList.toggle('go',done);
   $('p4h').textContent=done?'Visitor gets v2':'Waiting for purge…';
   $('f4').className='file '+(done?'v2':'v1'); $('f4').innerHTML='app.css<small>'+(done?'v2':'v1')+'</small>';
-  $('h4').className='hdr'+(done?' hit':''); $('h4').innerHTML='cf-cache-status: <b>'+(done?'MISS → v2':'HIT (old)')+'</b>';
+  $('h4').className='hdr'+(done?' hit':''); $('h4').innerHTML='Visitor sees: <b>'+(done?'new file':'old file')+'</b>';
 });
 </script>
 <script data-src="assets/cf.js">
@@ -307,7 +306,7 @@ $('purge').addEventListener('click',()=>{
 })();
 </script>
 <script data-src="assets/slide-no.js">
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

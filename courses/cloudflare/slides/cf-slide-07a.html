@@ -159,7 +159,7 @@ svg *{transform-box:fill-box}
 </style>
 <style>
 /* LAYOUT: split screen, open shop window vs locked cabinet, with a presigned "ticket" that counts down */
-.side{position:absolute;top:318px;width:868px;height:572px;padding:28px 32px;animation:cardIn .9s var(--ease) both}
+.side{position:absolute;top:324px;width:868px;height:560px;padding:28px 32px;animation:cardIn .9s var(--ease) both}
 .pub{left:74px;animation-delay:1.1s}.prv{left:982px;animation-delay:1.3s}
 .side .hd{display:flex;align-items:center;gap:16px}
 .side .hd .ibox{width:64px;height:64px;border-radius:16px}.side .hd .ibox svg{width:34px;height:34px}
@@ -191,7 +191,7 @@ svg *{transform-box:fill-box}
 </head>
 <body>
 <div class="stage" id="stage">
-  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Part 4 · R2 Storage</b></span></div>
+  <div class="label"><span>Cloudflare Gatekeeper for Vibe Coders · <b class="part">Part 4 · R2 Cloud Storage</b></span></div>
   <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
     <p>The <code>r2.dev</code> URL is rate-limited, has no WAF or cache, and is for development only. In production use a <b>custom domain</b> in the same Cloudflare account.</p>
     <p>Browser uploads: issue a presigned <b>PUT</b> URL and add a <b>CORS</b> rule for your domain. Presigned POST is not supported. Validate type and size on the server before signing.</p></div></div>
@@ -219,7 +219,7 @@ svg *{transform-box:fill-box}
     <div class="try"><span>GET /INV-1042.pdf</span><span class="no">→ 403 Forbidden</span></div>
     <div class="ticket" id="tk">
       <button class="btn o" id="mk">Create presigned link</button>
-      <span class="tx" id="tx">one file · works for a set time (1 s to 7 days)</span>
+      <span class="tx" id="tx">a link that works for 5 minutes, then expires</span>
       <span class="tm" id="tm"></span>
     </div>
   </div>
@@ -307,7 +307,7 @@ $('mk').addEventListener('click',()=>{
 })();
 </script>
 <script data-src="assets/slide-no.js">
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

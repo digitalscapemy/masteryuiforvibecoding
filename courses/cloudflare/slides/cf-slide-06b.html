@@ -159,7 +159,7 @@ svg *{transform-box:fill-box}
 </style>
 <style>
 /* LAYOUT: a sign-up form mock on a phone-sized card (left) + a 3-lane sequence diagram (right) */
-.form{position:absolute;left:150px;top:316px;width:560px;height:576px;padding:34px 38px;animation:cardIn .9s 1.1s var(--ease) both}
+.form{position:absolute;left:150px;top:324px;width:560px;height:560px;padding:34px 38px;animation:cardIn .9s 1.1s var(--ease) both}
 .form h3{margin:0;font-size:34px;font-weight:900;letter-spacing:-.02em}
 .form .sub{margin:4px 0 22px;font-size:20px;color:var(--soft)}
 .fld{height:62px;margin-bottom:14px;padding:0 20px;display:flex;align-items:center;border-radius:14px;background:#0b0b0c;border:2px solid rgba(255,255,255,.25);font-size:22px;color:var(--body)}
@@ -175,7 +175,7 @@ svg *{transform-box:fill-box}
 .go.ready{opacity:1;box-shadow:0 0 20px var(--or-glow)}
 .form .tok{margin-top:16px;font:700 17px 'JetBrains Mono',monospace;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.seq{position:absolute;left:800px;top:316px;width:1050px;height:576px;padding:26px 30px;animation:cardIn .9s 1.3s var(--ease) both}
+.seq{position:absolute;left:800px;top:324px;width:1050px;height:560px;padding:26px 30px;animation:cardIn .9s 1.3s var(--ease) both}
 .lanes{position:absolute;left:30px;right:30px;top:24px;display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
 .lanes div{font-size:24px;font-weight:900}
 .lanes small{display:block;font-size:18px;font-weight:600;color:var(--soft)}
@@ -201,7 +201,7 @@ svg *{transform-box:fill-box}
 </head>
 <body>
 <div class="stage" id="stage">
-  <div class="label"><span>Cloudflare for Vibe Coders · <b class="part">Part 3 · Security</b></span></div>
+  <div class="label"><span>Cloudflare Gatekeeper for Vibe Coders · <b class="part">Part 3 · Security</b></span></div>
   <div class="pro"><button>PRO</button><div class="note" data-tap><small>PRO NOTE</small>
     <p>A widget without server-side verification (the <b>Siteverify API</b>) protects nothing; bots just skip the widget.</p>
     <p>Tokens are <b>single-use</b> and expire after <b>300 seconds</b>. The site key is public; the secret key goes in <code>.env</code>. The Free plan allows 20 widgets, and it works even on sites not proxied by Cloudflare.</p></div></div>
@@ -226,7 +226,7 @@ svg *{transform-box:fill-box}
     <div class="msg r m2" id="m2"><span>② verify(token, secret)</span></div>
     <div class="msg l m3" id="m3"><span>③ success: true</span></div>
     <div class="botpath"><span>bot posts the form directly</span></div>
-    <button class="bad" id="bad"><span class="tx"><b style="color:#fff">What if the server never checks?</b> Bots skip the widget and post straight to your server.</span><i class="sw"></i></button>
+    <button class="bad" id="bad"><span class="tx"><b style="color:#fff">Server never checks?</b> Bots skip the box.</span><i class="sw"></i></button>
   </div>
 
   <div class="dock" style="top:912px">
@@ -311,7 +311,7 @@ $('bad').addEventListener('click',()=>{ $('bad').classList.toggle('on'); $('seq'
 })();
 </script>
 <script data-src="assets/slide-no.js">
-// Slide number in the header, Super Stack style: [04] Cloudflare for Vibe Coders ────
+// Slide number in the header, Super Stack style: [04] Cloudflare Gatekeeper for Vibe Coders ────
 // Shared by every cf-slide-XX.html. The number comes from the file name, so a new
 // slide only needs a script tag pointing at assets/slide-no.js and a .label header.
 (function(){

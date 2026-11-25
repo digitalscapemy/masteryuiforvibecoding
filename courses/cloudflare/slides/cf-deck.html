@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cloudflare for Vibe Coders Deck</title>
+<title>Cloudflare Gatekeeper for Vibe Coders</title>
 <style>
 :root{--bg:#000;--dot:rgba(255,255,255,.28);--dot-on:#F6821F}
 *{box-sizing:border-box}
@@ -19,15 +19,26 @@ body:hover .ui,.ui.show{opacity:1}
 .ui button.on{background:var(--dot-on);width:28px;border-radius:5px}
 .count{position:fixed;right:16px;bottom:10px;z-index:10;font-size:12px;color:#666;opacity:0;transition:opacity .3s}
 body:hover .count{opacity:1}
+/* left / right arrows: show on hover, always on touch screens */
+.arrow{position:fixed;top:50%;z-index:11;width:56px;height:56px;margin-top:-28px;border-radius:50%;display:grid;place-items:center;cursor:pointer;
+  background:rgba(10,10,12,.75);border:2px solid rgba(246,130,31,.8);color:#F6821F;opacity:0;transition:opacity .3s,background .2s}
+.arrow svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.arrow:hover{background:#F6821F;color:#160800}
+.arrow.l{left:14px}.arrow.r{right:14px}
+.arrow[disabled]{visibility:hidden}
+body:hover .arrow{opacity:.9}
+@media (hover:none){.arrow,.ui{opacity:.9}}
 </style>
 </head>
 <body>
 <nav class="ui" id="ui"></nav>
 <div class="count" id="count"></div>
+<button class="arrow l" id="prevBtn" aria-label="Previous slide"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+<button class="arrow r" id="nextBtn" aria-label="Next slide"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
 
 <script>
 // Order of the deck. Add new slides here.
-const SLIDES = ['cf-slide-01.html','cf-slide-02.html','cf-slide-03.html','cf-slide-04.html','cf-slide-04a.html','cf-slide-05.html','cf-slide-05a.html','cf-slide-05b.html','cf-slide-06.html','cf-slide-06a.html','cf-slide-06b.html','cf-slide-06c.html','cf-slide-06d.html','cf-slide-07.html','cf-slide-07a.html','cf-slide-07b.html','cf-slide-08.html','cf-slide-09.html'];
+const SLIDES = ['cf-slide-01.html','cf-slide-02.html','cf-slide-02a.html','cf-slide-03.html','cf-slide-04.html','cf-slide-04a.html','cf-slide-05.html','cf-slide-05a.html','cf-slide-05b.html','cf-slide-06.html','cf-slide-06a.html','cf-slide-06b.html','cf-slide-06c.html','cf-slide-06d.html','cf-slide-07.html','cf-slide-07a.html','cf-slide-07b.html','cf-slide-08.html'];
 
 // the number printed on each slide: 00, 01, 02, 02A ... (taken from the file name)
 const NUM = SLIDES.map(src=>src.replace(/^cf-slide-|\.html$/g,'').toUpperCase());
@@ -62,9 +73,13 @@ function go(i){
   cur = i;
   dots.forEach((d,k)=>d.classList.toggle('on',k===i));
   count.textContent = 'Slide '+NUM[i];
+  document.getElementById('prevBtn').disabled = i===0;
+  document.getElementById('nextBtn').disabled = i===SLIDES.length-1;
   history.replaceState(null,'','#'+(i+1));
 }
 const next = ()=>go(cur+1), prev = ()=>go(cur-1);
+document.getElementById('prevBtn').onclick = e=>{ e.stopPropagation(); prev(); };
+document.getElementById('nextBtn').onclick = e=>{ e.stopPropagation(); next(); };
 
 function onKey(key){
   if(['ArrowRight','ArrowDown','PageDown',' ','Spacebar','Enter'].includes(key)) next();
