@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en" data-slide="03c">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>README: the Front Page</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style data-src="assets/base.css">
+/* Shared look for the GitHub series slides (black, white glass, green accents). */
+:root{
+  --bg:#000;--text:#fff;--body:#E8E8EC;--soft:#B9B9C2;--line:rgba(255,255,255,.78);
+  --green:#4BF03C;--green-soft:#9BF56B;--green-glow:rgba(75,240,60,.55);
+  --red:#F0373C;--red-glow:rgba(240,55,60,.55);
+  --ease:cubic-bezier(.2,.8,.2,1);--pop:cubic-bezier(.3,1.5,.5,1);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{font-family:Inter,system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+.stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;
+  transform:translate(-50%,-50%) scale(var(--s,1));transform-origin:center;
+  background:radial-gradient(900px 560px at 66% 54%,rgba(255,255,255,.05),transparent 70%),var(--bg)}
+.abs{position:absolute}
+
+/* header: the slide number is added by slide-no.js */
+.label{position:absolute;left:72px;top:40px;display:flex;align-items:center;gap:26px;font-size:30px;font-weight:700;letter-spacing:-.015em}
+.label span{animation:fadeRight .7s .25s var(--ease) both}
+.title{position:absolute;left:72px;top:104px;margin:0;font-size:84px;line-height:100px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;padding-bottom:6px}
+.title > span{display:inline-block;animation:rise .9s .35s var(--ease) both}
+.title em{font-style:normal;color:var(--green-soft)}
+.bar{position:absolute;left:74px;top:212px;width:200px;height:12px;border-radius:6px;background:#fff;
+  box-shadow:0 0 18px rgba(255,255,255,.45);transform-origin:left;animation:growX .8s .8s var(--ease) both}
+.hook{position:absolute;left:74px;top:236px;margin:0;font-size:38px;line-height:50px;font-weight:500;color:var(--body);letter-spacing:-.02em;
+  animation:fadeUp .8s 1s var(--ease) both}
+.hook b{color:#fff}
+
+/* glass card */
+.glass{border-radius:36px;background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 45%,rgba(0,0,0,.4));
+  border:2.5px solid var(--line);box-shadow:0 0 24px rgba(255,255,255,.22),inset 0 0 30px rgba(255,255,255,.06)}
+.glass.g{border-color:var(--green);box-shadow:0 0 26px var(--green-glow),inset 0 0 30px rgba(75,240,60,.08)}
+.glass.r{border-color:var(--red);box-shadow:0 0 26px var(--red-glow),inset 0 0 30px rgba(240,55,60,.08)}
+.ibox{flex:none;width:96px;height:96px;border-radius:22px;display:grid;place-items:center;
+  background:linear-gradient(150deg,#232327,#060607);border:2px solid rgba(255,255,255,.55);
+  box-shadow:0 0 14px rgba(255,255,255,.18),inset 0 1px 0 rgba(255,255,255,.12)}
+.ibox svg,.ico{width:50px;height:50px;stroke:#fff;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+svg *{transform-box:fill-box}
+
+/* interactive buttons */
+.btn{font:700 28px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:14px;
+  padding:18px 30px;border-radius:999px;background:#0b0b0c;border:2.5px solid rgba(255,255,255,.85);
+  box-shadow:0 0 16px rgba(255,255,255,.25);transition:transform .2s var(--ease),box-shadow .2s,background .2s,border-color .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 0 28px rgba(255,255,255,.45)}
+.btn:active{transform:translateY(1px) scale(.98)}
+.btn.g{border-color:var(--green);box-shadow:0 0 18px var(--green-glow)}
+.btn.g:hover{box-shadow:0 0 34px var(--green)}
+.btn.r{border-color:var(--red);box-shadow:0 0 18px var(--red-glow)}
+.btn.on{background:#fff;color:#000}
+.btn svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.tap-hint{font-size:22px;font-weight:600;color:var(--soft);display:inline-flex;align-items:center;gap:10px}
+.tap-hint::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blip 1.4s ease-in-out infinite}
+@keyframes blip{50%{opacity:.3;transform:scale(.7)}}
+
+/* "Ask your AI" prompt card with a copy button */
+.ask{display:flex;align-items:center;gap:26px;padding:22px 26px 22px 28px;border-radius:28px;
+  background:linear-gradient(90deg,rgba(75,240,60,.08),rgba(255,255,255,.02));border:2.5px solid rgba(155,245,107,.75);box-shadow:0 0 20px rgba(75,240,60,.25)}
+.ask .term{flex:none;width:78px;height:60px;border-radius:12px;border:3.5px solid var(--green);display:grid;place-items:center;box-shadow:0 0 12px var(--green-glow)}
+.ask .term svg{width:46px;height:30px;stroke:var(--green);fill:none;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.ask .term .cur{animation:caret 1s steps(1) infinite}
+.ask .q{flex:1}
+.ask .q small{display:block;font-size:20px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--green-soft);margin-bottom:6px}
+.ask .q p{margin:0;font-size:30px;line-height:38px;font-weight:600;letter-spacing:-.02em}
+.ask .copy{font-size:22px;padding:14px 22px}
+@keyframes caret{50%{opacity:0}}
+
+/* closing line used on a few slides only */
+.remember{display:flex;align-items:center;gap:22px;font-size:40px;font-weight:500;letter-spacing:-.02em}
+.remember b{font-weight:800}
+.remember svg{width:60px;height:60px;fill:#fff;filter:drop-shadow(0 0 10px rgba(255,255,255,.4))}
+
+/* keyframes */
+@keyframes rise{from{transform:translateY(105%)}to{transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(-18px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes growY{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.in{animation:fadeUp .7s var(--ease) both}
+.in-card{animation:cardIn .9s var(--ease) both}
+.in-pop{animation:pop .6s var(--pop) both}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition:none!important}
+}
+</style>
+<style>
+/* left: the six parts of a good README */
+.parts{position:absolute;left:74px;top:322px;width:730px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.pt{position:relative;display:flex;align-items:center;gap:18px;width:100%;padding:18px 18px;border-radius:24px;text-align:left;cursor:pointer;
+  font-family:inherit;color:#fff;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(0,0,0,.35));border:2px solid rgba(255,255,255,.45);
+  transition:border-color .25s,box-shadow .25s,transform .25s var(--ease),background .25s;animation:fadeRight .6s var(--ease) both}
+.pt:hover{transform:translateX(6px)}
+.pt.on{border-color:var(--green);background:linear-gradient(90deg,rgba(75,240,60,.14),rgba(0,0,0,.3));box-shadow:0 0 22px var(--green-glow)}
+.pt .n{flex:none;width:50px;height:50px;border-radius:14px;display:grid;place-items:center;font-size:26px;font-weight:900;
+  background:#141518;border:2px solid rgba(255,255,255,.6)}
+.pt.on .n{background:var(--green);border-color:var(--green);color:#000}
+.pt b{display:block;font-size:28px;font-weight:800;letter-spacing:-.02em}
+.pt span{display:block;font-size:20px;color:var(--soft);font-weight:500;margin-top:2px}
+.pt:nth-child(1){animation-delay:1.2s}.pt:nth-child(2){animation-delay:1.32s}.pt:nth-child(3){animation-delay:1.44s}
+.pt:nth-child(4){animation-delay:1.56s}.pt:nth-child(5){animation-delay:1.68s}.pt:nth-child(6){animation-delay:1.8s}
+.hint{position:absolute;left:74px;top:686px;animation:fadeIn .6s 2.4s both}
+.why{position:absolute;left:74px;top:736px;width:730px;margin:0;font-size:25px;line-height:34px;font-weight:500;color:var(--body);
+  padding-left:22px;border-left:4px solid var(--green);animation:fadeUp .7s 2.6s var(--ease) both}
+.why b{color:#fff}
+
+/* right: a repo page with its README */
+.repo{position:absolute;left:850px;top:322px;width:1000px;height:690px;overflow:hidden;animation:cardIn .9s 1.4s var(--ease) both}
+.repo .top{display:flex;align-items:center;gap:16px;padding:20px 30px;border-bottom:2px solid rgba(255,255,255,.15)}
+.repo .top svg{width:36px;height:36px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.repo .top b{font:700 26px/1 'JetBrains Mono',monospace}
+.repo .top .tag{margin-left:auto;font-size:18px;font-weight:700;padding:6px 14px;border-radius:999px;border:2px solid rgba(255,255,255,.45);color:var(--soft)}
+.md{position:relative;display:grid;grid-template-columns:1fr 340px;gap:14px 30px;padding:24px 30px}
+.sec{position:relative;padding:8px 14px;border-radius:14px;border:2px solid transparent;transition:opacity .3s,border-color .3s,box-shadow .3s,background .3s}
+.md.focus .sec{opacity:.28}
+.md.focus .sec.on{opacity:1;border-color:var(--green);background:rgba(75,240,60,.07);box-shadow:0 0 18px var(--green-glow)}
+.sec h4{margin:0 0 6px;font-size:23px;font-weight:800;letter-spacing:-.01em;padding-bottom:6px;border-bottom:1.5px solid rgba(255,255,255,.15)}
+.sec p,.sec li{margin:0;font-size:19px;line-height:27px;color:var(--body);font-weight:500}
+.sec ul{margin:0;padding-left:22px}
+.s1{grid-column:1/-1}
+.s1 h3{margin:0;font-size:38px;font-weight:900;letter-spacing:-.03em}
+.s1 p{font-size:22px}
+.s2{grid-column:2;grid-row:2/span 3}
+.shot{height:100%;min-height:250px;border-radius:12px;overflow:hidden;border:1.5px solid rgba(255,255,255,.3);background:#f6efe8;display:flex;flex-direction:column}
+.shot .bar2{height:24px;background:#2a1d17;display:flex;align-items:center;gap:6px;padding:0 10px}
+.shot .bar2 i{width:9px;height:9px;border-radius:50%;background:#ff8a7a}
+.shot .bar2 i:nth-child(2){background:#ffd36b}.shot .bar2 i:nth-child(3){background:#7be37b}
+.shot .hero{margin:14px;flex:none;height:86px;border-radius:10px;background:linear-gradient(120deg,#ff9fb2,#ffcf8a);display:flex;align-items:center;padding:0 16px;
+  font:900 22px/1.1 Inter,sans-serif;color:#4a1b25}
+.shot .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 14px}
+.shot .cards i{height:74px;border-radius:9px;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.shot .cards i::before{content:"";display:block;height:46px;border-radius:9px 9px 0 0;background:#f4c6a8}
+.code{margin-top:4px;padding:8px 12px;border-radius:9px;background:#050506;border:1.5px solid rgba(255,255,255,.2);font:500 18px/26px 'JetBrains Mono',monospace;color:var(--green-soft)}
+.row2{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:10px 30px}
+.chip{display:inline-block;margin:2px 6px 0 0;padding:3px 10px;border-radius:999px;font-size:17px;font-weight:700;background:rgba(255,255,255,.09);border:1.5px solid rgba(255,255,255,.3)}
+
+.ask{position:absolute;left:74px;top:820px;width:730px;padding:20px 22px;gap:20px;animation:fadeUp .8s 2.8s var(--ease) both}
+.ask .term{width:66px;height:52px}.ask .term svg{width:40px;height:26px}
+.ask .q p{font-size:25px;line-height:33px}
+.ask .copy{font-size:20px;padding:12px 18px}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="label"><span>GitHub Power Skills for Vibe Coders</span></div>
+  <h1 class="title"><span>README: the <em>front page</em> of your repo</span></h1>
+  <div class="bar"></div>
+  <p class="hook">The first file people read. It says <b>what</b> your project is and <b>how</b> to run it.</p>
+
+  <div class="parts">
+    <button class="pt" data-s="1"><span class="n">1</span><div><b>Name + one line</b><span>what it is, in one sentence</span></div></button>
+    <button class="pt" data-s="2"><span class="n">2</span><div><b>Screenshot</b><span>show it, don't just tell</span></div></button>
+    <button class="pt" data-s="3"><span class="n">3</span><div><b>Features</b><span>what it can do</span></div></button>
+    <button class="pt" data-s="4"><span class="n">4</span><div><b>How to run</b><span>the steps to start it</span></div></button>
+    <button class="pt" data-s="5"><span class="n">5</span><div><b>Tech stack</b><span>what it is built with</span></div></button>
+    <button class="pt" data-s="6"><span class="n">6</span><div><b>License</b><span>who is allowed to use it</span></div></button>
+  </div>
+  <div class="hint tap-hint">Tap a part to find it in the README</div>
+  <p class="why">A good README is for <b>future you</b>, your team, and your <b>AI</b>.</p>
+
+  <div class="repo glass">
+    <div class="top"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/></svg><b>README.md</b><span class="tag">shows on your repo page</span></div>
+    <div class="md" id="md">
+      <div class="sec s1" data-s="1"><h3>my-shop-app</h3><p>An online shop for homemade cakes. Order in three taps.</p></div>
+      <div class="sec s2" data-s="2"><div class="shot"><div class="bar2"><i></i><i></i><i></i></div><div class="hero">Fresh cakes,<br>baked today</div><div class="cards"><i></i><i></i><i></i></div></div></div>
+      <div class="sec" data-s="3"><h4>Features</h4><ul><li>Browse cakes by flavour</li><li>Cart and online payment</li><li>Order status by email</li></ul></div>
+      <div class="sec" data-s="4"><h4>How to run</h4><div class="code">npm install<br>npm run dev</div></div>
+      <div class="row2">
+        <div class="sec" data-s="5"><h4>Tech stack</h4><span class="chip">Next.js</span><span class="chip">Tailwind</span><span class="chip">Supabase</span></div>
+        <div class="sec" data-s="6"><h4>License</h4><p>MIT: free to use and change.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ask">
+    <div class="term"><svg viewBox="0 0 60 40"><path d="M6 6l16 14L6 34"/><path class="cur" d="M30 34h24"/></svg></div>
+    <div class="q"><small>Ask your AI</small><p id="p1">Read my project and write a README.md with these six parts: name, screenshot, features, how to run, tech stack, license.</p></div>
+    <button class="btn copy" data-copy="#p1">Copy</button>
+  </div>
+</div>
+
+<script>
+const md=document.getElementById('md'), pts=[...document.querySelectorAll('.pt')], secs=[...md.querySelectorAll('.sec')];
+let cur=null;
+pts.forEach(p=>p.addEventListener('click',()=>{
+  cur = cur===p.dataset.s ? null : p.dataset.s;
+  pts.forEach(x=>x.classList.toggle('on',x.dataset.s===cur));
+  secs.forEach(x=>x.classList.toggle('on',x.dataset.s===cur));
+  md.classList.toggle('focus',!!cur);
+}));
+</script>
+<script data-src="assets/base.js">
+// Shared runtime for every slide: fit the 1920×1080 stage, talk to the deck, copy buttons.
+(function(){
+  var stage = document.getElementById('stage');
+  function fit(){ stage.style.setProperty('--s', Math.min(innerWidth/1920, innerHeight/1080)); }
+  addEventListener('resize', fit); fit();
+
+  // clicks on buttons/links stay inside the slide; anywhere else advances the deck
+  var INTERACTIVE = 'button,a,input,select,textarea,label,[data-tap]';
+  var inDeck = window.top !== window;
+  addEventListener('click', function(e){
+    if(e.target.closest(INTERACTIVE)) return;
+    if(inDeck) parent.postMessage({deck:'click'}, '*');
+  });
+  addEventListener('keydown', function(e){
+    if(e.target.closest('input,textarea')) return;
+    if(inDeck){ e.preventDefault(); parent.postMessage({deck:'key', key:e.key}, '*'); }
+    else if(e.key==='r' || e.key==='R') location.reload();
+  });
+
+  // [data-copy] buttons copy the text of the element they point to
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var src = document.querySelector(b.getAttribute('data-copy'));
+      var text = src ? src.textContent.trim().replace(/^[“"]|[”"]$/g,'') : '';
+      var done = function(){ var t=b.innerHTML; b.textContent='Copied ✓'; b.classList.add('on'); setTimeout(function(){ b.innerHTML=t; b.classList.remove('on'); },1400); };
+      if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(text).then(done, fallback); } else fallback();
+      function fallback(){ var ta=document.createElement('textarea'); ta.value=text; document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); }catch(_){} ta.remove(); done(); }
+    });
+  });
+})();
+</script>
+<script data-src="assets/slide-no.js">
+// Slide number in the header, Super Stack style: [04] GitHub Power Skills for Vibe Coders ────
+// Shared by every github-slide-XX.html. The number comes from the file name, so a new
+// slide only needs a script tag pointing at assets/slide-no.js and a .label header.
+(function(){
+  var m = location.pathname.match(/slide-(\d+)([a-z]?)\.html$/i) || (document.documentElement.getAttribute('data-slide')||'').match(/^(\d+)([a-z]?)$/i);
+  if(!m) return;
+  var no = String(parseInt(m[1],10)).padStart(2,'0') + (m[2]||'').toUpperCase();
+  var stage = document.getElementById('stage');
+  if(!stage) return;
+
+  var old = stage.querySelector('.page');
+  if(old) old.remove();
+
+  var css = document.createElement('style');
+  css.textContent =
+    '.label.numbered{gap:22px}'+
+    '.label.numbered::before{display:none}'+
+    '.slide-no{flex:none;height:50px;min-width:72px;padding:0 14px;display:flex;align-items:center;justify-content:center;border-radius:12px;'+
+      'font:800 30px/1 Inter,system-ui,sans-serif;letter-spacing:-.01em;color:#fff;'+
+      'background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(0,0,0,.6));border:2px solid rgba(255,255,255,.85);'+
+      'box-shadow:0 0 18px rgba(255,255,255,.3),inset 0 0 12px rgba(255,255,255,.1);'+
+      'animation:slideNoIn .7s .1s cubic-bezier(.3,1.5,.5,1) both}'+
+    '.slide-line{position:relative;flex:none;width:520px;height:2px;margin-left:8px;'+
+      'background:linear-gradient(90deg,rgba(255,255,255,.75),rgba(255,255,255,.25) 60%,transparent);'+
+      'transform-origin:left;animation:slideLineIn 1s .5s cubic-bezier(.2,.8,.2,1) both}'+
+    '.slide-line::before{content:"";position:absolute;left:0;top:-3px;width:150px;height:8px;border-radius:8px;'+
+      'background:linear-gradient(90deg,#fff,rgba(255,255,255,.4));box-shadow:0 0 14px rgba(255,255,255,.6)}'+
+    '@keyframes slideNoIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}'+
+    '@keyframes slideLineIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}'+
+    '@media (prefers-reduced-motion:reduce){.slide-no,.slide-line{animation:none}}';
+  document.head.appendChild(css);
+
+  var label = stage.querySelector('.label');
+  var b = document.createElement('div');
+  b.className = 'slide-no';
+  b.textContent = no;
+  if(label){
+    label.classList.add('numbered');
+    label.prepend(b);
+    var line = document.createElement('i');
+    line.className = 'slide-line';
+    label.appendChild(line);
+  }else{
+    b.style.cssText = 'position:absolute;right:62px;top:22px;z-index:20';
+    stage.appendChild(b);
+  }
+})();
+</script>
+</body>
+</html>
