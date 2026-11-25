@@ -5,7 +5,7 @@ Draf content v4.1 · 25 Nov 2026 · @Mykel · fakta disemak dengan docs rasmi 25
 **Fokus kelas:** domain, proxy, keselamatan dan R2 cloud storage.
 **Bukan fokus:** host app di Cloudflare (Pages, Workers). App kekal di tempat asal (VPS + EasyPanel, atau mana-mana host). Cloudflare berdiri **di depan** app tu.
 
-**Struktur:** 10 bahagian · 18 skrin. Penomboran ikut gaya Super Stack: **NN** = slide utama, **NNA, NNB…** = slide susulan. Setiap slide susulan tambah satu idea baru.
+**Struktur:** 10 bahagian · 19 skrin. Penomboran ikut gaya Super Stack: **NN** = slide utama, **NNA, NNB…** = slide susulan. Setiap slide susulan tambah satu idea baru.
 
 **Contoh sepanjang kelas** (sama dengan Super Stack):
 - Domain `sitiscakes.com` (Siti's Cake Shop)
@@ -43,7 +43,7 @@ Your domain, your gate, your storage.
 - **Part 2 · Proxy & SSL:** 05 The orange cloud · 05A SSL modes · 05B Cache & purge
 - **Part 3 · Security:** 06 Free security guard · 06A WAF & rate limiting · 06B Turnstile · 06C Lock the back door · 06D Secure your account
 - **Part 4 · R2 Cloud Storage:** 07 R2 · 07A Public or private files · 07B Backups
-- Start with 02A, finish with 08 (checklist). Every lesson is a button that jumps to that slide.
+- Start with 02A, finish with 08 (real setup) and 09 (checklist). Every lesson is a button that jumps to that slide.
 
 **Visual:** One orange road with 4 numbered stations and a finish flag. Each station drops a card listing its lessons.
 
@@ -393,7 +393,33 @@ How it is worked out: S3 at about $0.023/GB stored and $0.09/GB egress after the
 
 ## WRAP-UP
 
-### 08 · Your Cloudflare Checklist
+### 08 · The Real Setup (case study)
+**Hook:** One domain, one VPS. Tap each tool: what it really does, and how it is used.
+
+**Visual:** A system map. Visitors and the registrar on the left, Cloudflare in the middle, the VPS (EasyPanel) and R2 on the right. Each tool is a button on the map. Tapping it opens a case card: *What it really does* · *How it is used* · *Result*. Tools marked **MY SETUP** are what I use myself; the rest are labelled **COMMON USE**.
+
+| # | Tool | What it really does | How it is used | Result |
+|---|---|---|---|---|
+| 1 | Nameservers (MY SETUP) | Cloudflare becomes the phonebook for your domain. The domain stays at your registrar. | I point my nameservers from my registrar to Cloudflare. One switch, and every tool here works. | One dashboard for every record |
+| 2 | Proxy, orange cloud (MY SETUP) | Visitors connect to Cloudflare first. Only clean traffic is passed on to your server. | My web records are orange. Visitors see Cloudflare's IP, not my VPS, so a DDoS hits Cloudflare. | VPS IP hidden, DDoS risk down |
+| 3 | SSL Full (strict) | A free padlock, encrypted all the way to your server. | A shop turns on Full (strict), so logins and orders are encrypted on both legs. | Padlock on, no "Not secure" |
+| 4 | Cache | Copies of images, CSS and JS are kept in data centres near visitors. | A cake shop's product photos load from a city near the buyer. The VPS sends far fewer files. | Faster pages, lighter VPS |
+| 5 | WAF + rate limit | Rules check every request and stop bad ones before the server. | Block bots scanning for /wp-admin. Make anyone trying many passwords on /login wait. | Less junk traffic |
+| 6 | Turnstile | A free "are you human?" check; most visitors never see a puzzle. | On contact and sign-up forms. Bots stopped, customers just press Send. | No more spam sign-ups |
+| 7 | Tunnel + Access | No open web ports; admin pages ask for an email code first. | EasyPanel and admin pages open only for the team, after a one-time email code. | Admin pages off the internet |
+| 8 | R2 storage (MY SETUP) | Cloud storage for files: 10 GB free every month, downloads $0. | My uploads go to R2, not the VPS disk, so the VPS keeps its disk and bandwidth for the app. | VPS resources saved |
+
+**Prompt for AI:** "Domain at [registrar], app on EasyPanel. Which Cloudflare tools should I turn on first, and why?"
+
+**Remember:** Cloudflare in front. App at home.
+
+**Pro note:**
+- The proxy hides your IP only if nothing else leaks it: grey records (mail, SSH), DNS history sites, or emails sent straight from the VPS. Close the back door too (06C).
+- R2 free tier per month: 10 GB stored, 1 million Class A (writes), 10 million Class B (reads). Egress always $0.
+
+---
+
+### 09 · Your Cloudflare Checklist
 **Hook:** Ten switches. Set them once.
 
 **Domain & DNS**

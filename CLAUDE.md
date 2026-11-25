@@ -20,7 +20,7 @@ Semua VO: ElevenLabs voice "Mikhail" (`6olOdhsgLdwwt9DbIIyp`), model `eleven_v4`
 
 | Apa | Sumber (edit sini) | Nota |
 |---|---|---|
-| Slide | `slides/github-slide-XX.html` | 21 slide (03C, 03D = README), susunan dalam `SLIDES` di `slides/github-deck.html` |
+| Slide | `slides/github-slide-XX.html` | 25 slide (03C, 03D = README; 11 = summary, 11A–11C = case study), susunan dalam `SLIDES` di `slides/github-deck.html` |
 | Deck (tayang) | `slides/github-deck.html` | preview: launch config `github-slides` → http://localhost:8765/github-deck.html |
 | Shared CSS/JS slide | `slides/assets/` (`base.css`, `base.js`, `dock.css`, `slide-no.js`) | lepas edit: `python tools/inline.py` dari `slides/` |
 | VO (skrip) | `vo.md` | klip c1–c39 (tiada c36); ID ElevenLabs dalam `video/.vo-ids.txt` |
@@ -67,7 +67,7 @@ Versi VO yang dipakai: `v08b`, `v13b` (`v08`, `v13` lama dalam `_archive/`). `v0
 | Apa | Sumber (edit sini) | Nota |
 |---|---|---|
 | Content | `slide-content.md` (v4.1, fakta disemak 25 Nov 2026) | 4 part: Domain & DNS, Proxy & SSL, Security, R2 cloud storage (tiada bahagian email). Fokus: Cloudflare di DEPAN app (VPS + EasyPanel), bukan host app di Cloudflare |
-| Slide | `slides/cf-slide-XX.html` | 18 slide (01–08 + A–D, 02 = agenda), susunan dalam `SLIDES` di `slides/cf-deck.html`. Setiap slide layout lain-lain |
+| Slide | `slides/cf-slide-XX.html` | 19 slide (01–09 + A–D, 02 = agenda, 08 = case study "The real setup", 09 = checklist), susunan dalam `SLIDES` di `slides/cf-deck.html`. Setiap slide layout lain-lain |
 | Deck (tayang) | `slides/cf-deck.html` | launch config `cloudflare-slides` → http://localhost:8767/cf-deck.html |
 | Shared CSS/JS | `slides/assets/` (`base.css` tema hitam-oren, `dock.css`, `cf.js` ikon + butang PRO, `base.js`, `slide-no.js`) | lepas edit: `python -I tools/inline.py` dari `slides/` |
 
